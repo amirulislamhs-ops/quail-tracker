@@ -153,8 +153,13 @@ th:first-child,td:first-child{text-align:left}
 .tabs .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding-inline:8px}
 .tabs button{min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;color:var(--muted);font:600 12px var(--font-display)}
 .tabs button[aria-current="page"]{color:var(--ink);box-shadow:inset 0 3px 0 var(--accent)}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:20;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;text-align:center}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(132px + env(safe-area-inset-bottom,0px));z-index:20;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;text-align:center}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.other-desc{margin-top:12px}
+.savebar{position:sticky;bottom:calc(66px + env(safe-area-inset-bottom,0px));z-index:5}
+.btn.save{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 18px rgba(20,36,29,.28)}
+.btn.save .ic{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.btn.save:disabled{opacity:.55}
 #connect{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;padding:calc(env(safe-area-inset-top) + 16px) 16px 32px}
 #connect[hidden]{display:none}
 a.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
@@ -229,6 +234,7 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
       <div class="card">
         <h2>Costs today (Tk)</h2>
         <div class="grid2" id="cost-grid"></div>
+        <label class="field other-desc"><span>What was the “Other” cost? (optional)</span><input id="f-othernote" class="inp" maxlength="80" autocomplete="off" placeholder="For example: cage repair, vaccine, rent"></label>
         <div class="total-row"><span>Total cost</span><b id="f-total">Tk 0</b></div>
       </div>
 
@@ -236,6 +242,8 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
         <label class="field"><span>Notes (optional)</span><input id="f-notes" class="inp" maxlength="200" autocomplete="off" placeholder="Anything to remember about this day"></label>
       </div>
     </fieldset>
+
+    <div class="savebar"><button id="save-btn" class="btn save" type="button" disabled><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span id="save-label">Submit</span></button></div>
 
     <div class="foot">
       <span id="save-status" role="status" data-kind="loading">Loading your records…</span>
@@ -328,7 +336,7 @@ var CATS=[
   {key:'feed',label:'Feed'},
   {key:'medicine',label:'Medicine & vitamins'},
   {key:'transport',label:'Transport'},
-  {key:'utilities',label:'Electricity & water'},
+  {key:'utilities',label:'Electricity'},
   {key:'labor',label:'Labor / helper'},
   {key:'packaging',label:'Packaging'},
   {key:'other',label:'Other'}
@@ -412,12 +420,12 @@ function compact(n){
 function csvCell(v){var s=(v===null||v===undefined)?'':String(v);return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
 function toCsv(rows){return rows.map(function(r){return r.map(csvCell).join(',');}).join('\r\n');}
 function dailyRows(days,defPrice){
-  var head=['Date','Eggs sold','Price per dozen (Tk)','Revenue (Tk)'].concat(CATS.map(function(c){return c.label+' (Tk)';}),['Total cost (Tk)','Net profit (Tk)','Notes']);
+  var head=['Date','Eggs sold','Price per dozen (Tk)','Revenue (Tk)'].concat(CATS.map(function(c){return c.label+' (Tk)';}),['Total cost (Tk)','Net profit (Tk)','Notes','Other cost description']);
   var rows=[head];
   Object.keys(days).sort().forEach(function(id){
     var r=days[id],c=dayCalc(r,defPrice);
     rows.push([id,r.eggs===undefined?'':r.eggs,r.price===undefined?defPrice:r.price,r2(c.revenue)].concat(
-      CATS.map(function(k){return r[k.key]===undefined?'':r[k.key];}),[r2(c.cost),r2(c.net),r.notes||'']));
+      CATS.map(function(k){return r[k.key]===undefined?'':r[k.key];}),[r2(c.cost),r2(c.net),r.notes||'',r.otherNote||'']));
   });
   return rows;
 }
@@ -469,7 +477,7 @@ function errMsg(e){
   if(c==='resource_exhausted')return 'Too many saves at once. Wait a moment and try again.';
   return (e&&e.message)||'Saving failed.';
 }
-function applyReadOnly(){$('today-fields').disabled=state.readOnly||!state.ready;}
+function applyReadOnly(){$('today-fields').disabled=state.readOnly||!state.ready;$('save-btn').disabled=state.readOnly||!state.ready;}
 
 /* ---------- status and toast ---------- */
 function setStatus(kind,msg){
@@ -490,6 +498,7 @@ function readForm(){
   if(eggs!==null){rec.eggs=Math.floor(eggs);rec.price=price!==null?price:state.settings.price;}
   CATS.forEach(function(c){var v=parseField($('c-'+c.key).value);if(v!==null)rec[c.key]=v;});
   var notes=$('f-notes').value.trim();if(notes)rec.notes=notes;
+  var on=$('f-othernote').value.trim();if(on)rec.otherNote=on;
   return rec;
 }
 function formJson(){var r=readForm();return JSON.stringify(Object.keys(r).length?r:null);}
@@ -510,6 +519,7 @@ function populateForm(){
   $('f-price').value=String(rec.price!==undefined?rec.price:state.settings.price);
   CATS.forEach(function(c){$('c-'+c.key).value=rec[c.key]!==undefined?String(rec[c.key]):'';});
   $('f-notes').value=rec.notes||'';
+  $('f-othernote').value=rec.otherNote||'';
   $('d-label').textContent=dayLabel(curDate);
   $('d-badge').hidden=curDate!==t;
   $('d-input').value=curDate;$('d-input').max=t;
@@ -570,7 +580,7 @@ function renderHistory(){
     var rec=state.days[id],c=dayCalc(rec,state.settings.price);
     html+='<button class="day" type="button" data-date="'+id+'"><span class="d-main"><b>'+esc(shortDay(id))+'</b><span class="sub">'+
       (c.eggs?esc(fmtNum(c.eggs))+' eggs · '+esc(fmtDoz(c.eggs))+' dozen':'No eggs sold')+'</span>'+
-      (rec.notes?'<span class="sub note-line">'+esc(rec.notes)+'</span>':'')+'</span><span class="d-side"><b class="net '+netClass(c.net)+'">'+esc(fmtNet(c.net))+
+      (rec.otherNote?'<span class="sub note-line">Other: '+esc(rec.otherNote)+'</span>':'')+(rec.notes?'<span class="sub note-line">'+esc(rec.notes)+'</span>':'')+'</span><span class="d-side"><b class="net '+netClass(c.net)+'">'+esc(fmtNet(c.net))+
       '</b><span class="sub">Earned '+esc(fmtTk(c.revenue))+' · Spent '+esc(fmtTk(c.cost))+'</span></span></button>';
   });
   if(open)html+='</div>';
@@ -939,6 +949,7 @@ function init(){
   $('f-price').addEventListener('input',function(){sanitize(this,true);onEdit();});
   CATS.forEach(function(c){$('c-'+c.key).addEventListener('input',function(){sanitize(this,true);onEdit();});});
   $('f-notes').addEventListener('input',onEdit);
+  $('f-othernote').addEventListener('input',onEdit);
   Array.prototype.forEach.call(document.querySelectorAll('[data-add]'),function(b){
     b.addEventListener('click',function(){
       var a=b.dataset.add,cur=parseField($('f-eggs').value)||0;
@@ -949,6 +960,17 @@ function init(){
   $('d-prev').addEventListener('click',function(){gotoDate(shiftDay(-1));});
   $('d-next').addEventListener('click',function(){var n=shiftDay(1);if(n<=todayStr())gotoDate(n);});
   $('d-input').addEventListener('change',function(){var v=this.value;if(v&&v<=todayStr())gotoDate(v);else populateForm();});
+  $('save-btn').addEventListener('click',function(){
+    if(!state.ready||state.readOnly)return;
+    var btn=this,lab=$('save-label');btn.disabled=true;lab.textContent='Submitting…';
+    dirty=true;
+    flushSave().then(function(){return (db&&db.sync)?db.sync():null;}).then(function(){
+      btn.disabled=false;lab.textContent='Submit';
+      if(dirty){toast('Could not submit. Tap Try again.');return;}
+      var waiting=(typeof syncInfo!=='undefined')&&(syncInfo.pending>0||navigator.onLine===false);
+      toast(waiting?'Submitted on this phone. It uploads when you are online.':'Submitted');
+    });
+  });
   $('retry').addEventListener('click',function(){dirty=true;setStatus('saving');flushSave();});
   $('clear-day').addEventListener('click',function(){
     var b=this;
@@ -956,7 +978,7 @@ function init(){
       clearTimer=setTimeout(function(){b.dataset.arm='0';b.textContent='Clear this day';},4000);return;}
     b.dataset.arm='0';b.textContent='Clear this day';
     if(!state.ready||state.readOnly)return;
-    $('f-eggs').value='';CATS.forEach(function(c){$('c-'+c.key).value='';});$('f-notes').value='';
+    $('f-eggs').value='';CATS.forEach(function(c){$('c-'+c.key).value='';});$('f-notes').value='';$('f-othernote').value='';
     $('f-price').value=String(state.settings.price);dirty=true;flushSave();renderStrip();
   });
 
