@@ -11,6 +11,7 @@
   --accent:#F2B230; --accent-ink:#241A00; --brand:#14241D; --brand-ink:#F1EAD8;
   --good:#17713F; --good-bg:#E1F2E8; --bad:#B3302A; --bad-bg:#FBE4E1; --focus:#8A5A00;
   --c-rev:#E3A21A; --c-cost:#3E4C45;
+  --submit:#1E6B52; --submit-ink:#FFFFFF; --danger-solid:#B3302A; --danger-ink:#FFFFFF;
   --speckle:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='100'%3E%3Cg fill='%23F1EAD8'%3E%3Cellipse cx='14' cy='18' rx='2.4' ry='1.7' opacity='.28'/%3E%3Cellipse cx='52' cy='62' rx='1.8' ry='1.3' opacity='.2'/%3E%3Cellipse cx='96' cy='24' rx='3' ry='2.1' opacity='.24'/%3E%3Cellipse cx='132' cy='70' rx='2' ry='1.5' opacity='.3'/%3E%3Cellipse cx='76' cy='88' rx='2.6' ry='1.8' opacity='.2'/%3E%3Cellipse cx='148' cy='12' rx='1.6' ry='1.2' opacity='.22'/%3E%3Cellipse cx='30' cy='84' rx='1.5' ry='1.1' opacity='.26'/%3E%3Cellipse cx='112' cy='50' rx='1.4' ry='1' opacity='.18'/%3E%3C/g%3E%3C/svg%3E");
 }
 @media (prefers-color-scheme: dark){
@@ -19,6 +20,7 @@
     --accent:#F2B230; --accent-ink:#241A00; --brand:#0B1410; --brand-ink:#F1EAD8;
     --good:#5FD08E; --good-bg:#163626; --bad:#FF8A7E; --bad-bg:#3B1D1A; --focus:#F2B230;
     --c-rev:#F2B230; --c-cost:#8FA196; color-scheme:dark;
+    --submit:#3DBE8E; --submit-ink:#06231A; --danger-solid:#FF8A7E; --danger-ink:#3B0D09;
   }
 }
 :root[data-theme="dark"]{
@@ -26,6 +28,7 @@
   --accent:#F2B230; --accent-ink:#241A00; --brand:#0B1410; --brand-ink:#F1EAD8;
   --good:#5FD08E; --good-bg:#163626; --bad:#FF8A7E; --bad-bg:#3B1D1A; --focus:#F2B230;
   --c-rev:#F2B230; --c-cost:#8FA196; color-scheme:dark;
+  --submit:#3DBE8E; --submit-ink:#06231A; --danger-solid:#FF8A7E; --danger-ink:#3B0D09;
 }
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font:400 16px/1.45 var(--font-body);font-variant-numeric:tabular-nums;-webkit-text-size-adjust:100%}
@@ -101,6 +104,7 @@ fieldset:disabled{opacity:.55}
 .foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 #save-status{font-size:14px;color:var(--muted);font-weight:500}
 #save-status[data-kind="error"]{color:var(--bad);font-weight:600}
+#save-status[data-kind="draft"]{color:var(--focus);font-weight:700}
 
 /* History */
 .mgroup{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
@@ -160,9 +164,10 @@ th:first-child,td:first-child{text-align:left}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 .other-desc{margin-top:12px}
 .savebar{position:sticky;bottom:calc(66px + env(safe-area-inset-bottom,0px));z-index:5}
-.btn.save{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 18px rgba(20,36,29,.28)}
+.btn.save{background:var(--submit);color:var(--submit-ink);width:100%;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 18px rgba(20,36,29,.28)}
 .btn.save .ic{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .btn.save:disabled{opacity:.55}
+.btn.clear{background:var(--danger-solid);color:var(--danger-ink);border:0}
 #connect{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;padding:calc(env(safe-area-inset-top) + 16px) 16px 32px}
 #connect[hidden]{display:none}
 a.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
@@ -238,7 +243,7 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
       <div class="card">
         <h2>Costs today (Tk)</h2>
         <div class="grid2" id="cost-grid"></div>
-        <label class="field other-desc"><span>What was the “Other” cost? (optional)</span><input id="f-othernote" class="inp" maxlength="80" autocomplete="off" placeholder="For example: cage repair, vaccine, rent"></label>
+        <label class="field other-desc"><span>What was the “Other” cost? (optional)</span><input id="f-othernote" class="inp" maxlength="80" autocomplete="off" placeholder="For example: cage repair"></label>
         <div class="total-row"><span>Total cost</span><b id="f-total">Tk 0</b></div>
       </div>
 
@@ -251,7 +256,7 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 
     <div class="foot">
       <span id="save-status" role="status" data-kind="loading">Loading your records…</span>
-      <span class="btn-row"><button id="retry" class="btn ghost" type="button" hidden>Try again</button><button id="clear-day" class="btn ghost" type="button">Clear this day</button></span>
+      <span class="btn-row"><button id="retry" class="btn ghost" type="button" hidden>Try again</button><button id="clear-day" class="btn clear" type="button">Clear this day</button></span>
     </div>
   </section>
 
@@ -486,7 +491,7 @@ function applyReadOnly(){$('today-fields').disabled=state.readOnly||!state.ready
 /* ---------- status and toast ---------- */
 function setStatus(kind,msg){
   var el=$('save-status');el.dataset.kind=kind;
-  el.textContent=({loading:'Loading your records…',saving:'Saving…',saved:'Saved',idle:'All changes saved',error:msg||'Saving failed.'})[kind];
+  el.textContent=({loading:'Loading your records…',saving:'Submitting…',saved:'Submitted',idle:'Up to date',draft:'Not submitted yet. Tap Submit to save.',error:msg||'Could not submit.'})[kind];
   $('retry').hidden=kind!=='error'||state.readOnly;
   clearTimeout(idleTimer);
   if(kind==='saved')idleTimer=setTimeout(function(){if(el.dataset.kind==='saved')setStatus('idle');},2500);
@@ -517,24 +522,40 @@ function renderStrip(){
   var p=parseField($('f-price').value),rb=$('price-reset');
   if(p!==null&&p!==state.settings.price){rb.hidden=false;rb.textContent='Use the usual price, '+fmtTk(state.settings.price)+' per dozen';}else rb.hidden=true;
 }
-function populateForm(){
-  var rec=state.days[curDate]||{},t=todayStr();
+function setFields(rec){
   $('f-eggs').value=rec.eggs!==undefined?String(rec.eggs):'';
   $('f-price').value=String(rec.price!==undefined?rec.price:state.settings.price);
   CATS.forEach(function(c){$('c-'+c.key).value=rec[c.key]!==undefined?String(rec[c.key]):'';});
   $('f-notes').value=rec.notes||'';
   $('f-othernote').value=rec.otherNote||'';
+}
+function populateForm(){
+  var rec=state.days[curDate]||{},t=todayStr();
+  setFields(rec);
   $('d-label').textContent=dayLabel(curDate);
   $('d-badge').hidden=curDate!==t;
   $('d-input').value=curDate;$('d-input').max=t;
   $('d-next').disabled=curDate>=t;
   lastSaved[curDate]=formJson();
+  if(state.ready){
+    var dr=readDrafts()[curDate];
+    if(dr!==undefined){
+      setFields(dr);
+      if(formJson()===lastSaved[curDate]){clearDraft(curDate);dirty=false;}
+      else{dirty=true;setStatus('draft');}
+    }else{dirty=false;if($('save-status').dataset.kind==='draft')setStatus('idle');}
+  }
   renderStrip();
 }
+/* Nothing is sent to the Sheet until Submit. Typing only keeps a draft on this phone. */
+var DKEY='qet-drafts';
+function readDrafts(){try{var o=JSON.parse(localStorage.getItem(DKEY)||'{}');return o&&typeof o==='object'?o:{};}catch(e){return {};}}
+function writeDrafts(o){try{localStorage.setItem(DKEY,JSON.stringify(o));}catch(e){}}
+function saveDraft(date){if(!state.ready||state.readOnly||!dirty)return;var d=readDrafts();d[date]=readForm();writeDrafts(d);}
+function clearDraft(date){var d=readDrafts();if(d[date]!==undefined){delete d[date];writeDrafts(d);}}
 function onEdit(){
   if(!state.ready||state.readOnly)return;
-  dirty=true;renderStrip();setStatus('saving');
-  clearTimeout(saveTimer);saveTimer=setTimeout(flushSave,700);
+  dirty=true;renderStrip();saveDraft(curDate);setStatus('draft');
 }
 function persistDay(date,rec){
   if(db){var ref=db.doc('days/'+date);return rec?ref.set(rec):ref.delete();}
@@ -546,14 +567,14 @@ function flushSave(){
   if(!dirty||!state.ready)return Promise.resolve();
   dirty=false;
   var date=curDate,rec=readForm(),empty=Object.keys(rec).length===0,json=JSON.stringify(empty?null:rec);
-  if(lastSaved[date]===json){setStatus('saved');return Promise.resolve();}
+  if(lastSaved[date]===json){clearDraft(date);setStatus('saved');return Promise.resolve();}
   if(empty)delete state.days[date];else state.days[date]=rec;
   renderCurrent();
   return enqueue('days/'+date,function(){return persistDay(date,empty?null:rec);}).then(function(){
-    lastSaved[date]=json;if(!dirty)setStatus('saved');
+    lastSaved[date]=json;clearDraft(date);if(!dirty)setStatus('saved');
   },function(e){dirty=true;setStatus('error',errMsg(e));});
 }
-function gotoDate(d){return flushSave().then(function(){curDate=d;populateForm();});}
+function gotoDate(d){saveDraft(curDate);curDate=d;populateForm();return Promise.resolve();}
 function shiftDay(delta){var p=fromYmd(curDate);return ymd(new Date(p.getFullYear(),p.getMonth(),p.getDate()+delta));}
 function sanitize(el,dec){
   var v=asciiDigits(el.value);
@@ -729,7 +750,7 @@ function renderCurrent(){
 }
 function showTab(name){
   var leaving=tab;
-  if(leaving==='today'&&name!=='today')flushSave();
+  if(leaving==='today'&&name!=='today')saveDraft(curDate);
   if(name==='settings'&&tab!=='settings')prevTab=tab;
   tab=name;
   ['today','history','summary','setup','settings'].forEach(function(t){$('p-'+t).hidden=t!==name;});
@@ -996,7 +1017,7 @@ function init(){
     b.dataset.arm='0';b.textContent='Clear this day';
     if(!state.ready||state.readOnly)return;
     $('f-eggs').value='';CATS.forEach(function(c){$('c-'+c.key).value='';});$('f-notes').value='';$('f-othernote').value='';
-    $('f-price').value=String(state.settings.price);dirty=true;flushSave();renderStrip();
+    $('f-price').value=String(state.settings.price);dirty=true;flushSave();renderStrip();toast('Day cleared');
   });
 
   Array.prototype.forEach.call(document.querySelectorAll('.tabs button'),function(b){b.addEventListener('click',function(){showTab(b.dataset.tab);});});
@@ -1019,8 +1040,8 @@ function init(){
   $('st-price').addEventListener('input',function(){sanitize(this,true);});
   $('st-price').addEventListener('change',saveSettings);
 
-  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')flushSave();});
-  window.addEventListener('pagehide',function(){flushSave();});
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')saveDraft(curDate);});
+  window.addEventListener('pagehide',function(){saveDraft(curDate);});
 
   var start='today';try{var t=localStorage.getItem('qet-tab');if(t&&/^(today|history|summary|setup)$/.test(t))start=t;}catch(e){}
   populateForm();showTab(start);
