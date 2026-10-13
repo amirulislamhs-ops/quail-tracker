@@ -83,6 +83,9 @@ fieldset:disabled{opacity:.55}
 .datebar button{height:48px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center}
 .datebar button:disabled{opacity:.35}
 .date-pick{position:relative;height:48px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:flex;align-items:center;justify-content:center;gap:8px;font:700 16px var(--font-display);padding-inline:8px;text-align:center}
+.date-pick .cal{width:20px;height:20px;flex:none}
+.jump{margin-top:-2px;flex-wrap:nowrap}
+.jump .chip{flex:1 1 0;padding:0 4px;font-size:13px;white-space:nowrap}
 .date-pick input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
 .badge{font:700 11px var(--font-display);letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);padding:3px 8px;border-radius:999px}
 .strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
@@ -206,9 +209,10 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
   <section id="p-today" class="panel">
     <div class="datebar">
       <button id="d-prev" type="button" aria-label="Previous day"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <label class="date-pick"><span id="d-label"></span><span id="d-badge" class="badge" hidden>Today</span><input id="d-input" type="date" aria-label="Pick a date"></label>
+      <label class="date-pick" id="d-pick"><svg class="ic cal" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg><span id="d-label"></span><span id="d-badge" class="badge" hidden>Today</span><input id="d-input" type="date" aria-label="Pick a date"></label>
       <button id="d-next" type="button" aria-label="Next day"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
+    <div class="chips jump" id="d-jump" aria-label="Jump to a date"><button class="chip" type="button" data-ago="d1">Yesterday</button><button class="chip" type="button" data-ago="d7">1 wk ago</button><button class="chip" type="button" data-ago="m1">1 mo ago</button><button class="chip" type="button" data-ago="m2">2 mo ago</button></div>
 
     <div class="strip" aria-live="polite">
       <div><span class="k">Earned</span><span class="v" id="s-earn">Tk 0</span></div>
@@ -959,6 +963,19 @@ function init(){
   $('price-reset').addEventListener('click',function(){$('f-price').value=String(state.settings.price);onEdit();});
   $('d-prev').addEventListener('click',function(){gotoDate(shiftDay(-1));});
   $('d-next').addEventListener('click',function(){var n=shiftDay(1);if(n<=todayStr())gotoDate(n);});
+  $('d-pick').addEventListener('click',function(e){
+    var inp=$('d-input');
+    if(e.target===inp&&inp.showPicker===undefined)return;
+    try{if(inp.showPicker){e.preventDefault();inp.showPicker();}}catch(err){}
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-ago]'),function(b){
+    b.addEventListener('click',function(){
+      var t=fromYmd(todayStr()),k=b.dataset.ago,n=Number(k.slice(1));
+      if(k[0]==='d')t.setDate(t.getDate()-n);
+      else{var day=t.getDate();t.setDate(1);t.setMonth(t.getMonth()-n);var last=new Date(t.getFullYear(),t.getMonth()+1,0).getDate();t.setDate(Math.min(day,last));}
+      gotoDate(ymd(t));
+    });
+  });
   $('d-input').addEventListener('change',function(){var v=this.value;if(v&&v<=todayStr())gotoDate(v);else populateForm();});
   $('save-btn').addEventListener('click',function(){
     if(!state.ready||state.readOnly)return;
