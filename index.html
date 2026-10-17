@@ -82,6 +82,23 @@ fieldset:disabled{opacity:.55}
 .link{background:none;border:0;padding:6px 0;color:var(--focus);font-weight:600;text-decoration:underline;text-align:left}
 
 /* Today */
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.cal-head b{font:800 17px var(--font-display);text-align:center;flex:1}
+.cal-head button{width:42px;height:42px;border:0;background:none;font-size:22px;color:var(--ink);border-radius:8px}
+.cal-head button:disabled{color:var(--line)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;text-align:center}
+.cal-wk span{font:700 11px var(--font-display);color:var(--muted)}
+.cal-d{height:44px;border:0;background:none;border-radius:8px;font:600 15px var(--font-display);position:relative;color:var(--ink)}
+.cal-d i{position:absolute;left:50%;bottom:5px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--good)}
+.cal-d.sel{background:var(--brand);color:var(--brand-ink)}
+.cal-d.sel i{background:var(--accent)}
+.cal-d:disabled{color:var(--line);cursor:default}
+.cal-foot{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.cal-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--good)}
+.chev2{width:18px;height:18px;transform:rotate(180deg);flex:none}
+#d-label{white-space:nowrap;font-size:14px}
+.date-pick .badge{flex:none}
+
 .datebar{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;gap:8px;align-items:center}
 .datebar button{height:48px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center}
 .datebar button:disabled{opacity:.35}
@@ -148,6 +165,11 @@ th:first-child,td:first-child{text-align:left}
 .setup-head b{display:block;margin-top:4px;font:800 28px/1.1 var(--font-display);overflow-wrap:anywhere}
 .item{display:flex;justify-content:space-between;gap:12px;width:100%;min-height:60px;padding:12px 14px;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left}
 .item:last-child{border-bottom:0}
+.fitem{display:flex;justify-content:space-between;gap:12px;width:100%;min-height:60px;padding:12px 14px;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left}
+.fitem:last-child{border-bottom:0}
+.fitem b{font-weight:600}
+.fitem .amt{font:800 16px var(--font-display);white-space:nowrap}
+.moneyhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .item b{font-weight:600}
 .item .amt{font:800 16px var(--font-display);white-space:nowrap}
 .list{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
@@ -157,8 +179,8 @@ th:first-child,td:first-child{text-align:left}
 
 /* bottom tabs */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
-.tabs .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding-inline:8px}
-.tabs button{min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;color:var(--muted);font:600 12px var(--font-display)}
+.tabs .wrap{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));padding-inline:2px}
+.tabs button{min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;color:var(--muted);font:600 11px var(--font-display)}
 .tabs button[aria-current="page"]{color:var(--ink);box-shadow:inset 0 3px 0 var(--accent)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(132px + env(safe-area-inset-bottom,0px));z-index:20;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;text-align:center}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -168,12 +190,42 @@ th:first-child,td:first-child{text-align:left}
 .btn.save .ic{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .btn.save:disabled{opacity:.55}
 .btn.clear{background:var(--danger-solid);color:var(--danger-ink);border:0}
+
+.mrow{display:flex;flex-direction:column;gap:6px;width:100%;padding:8px 0;border:0;background:transparent;text-align:left;border-radius:6px}
+.mrow .cb-top{align-items:center}
+.mrow .lab{display:flex;align-items:center;gap:6px;font-weight:600}
+.mrow .chev{width:16px;height:16px;flex:none;transition:transform .15s;color:var(--muted)}
+.mrow[aria-expanded="true"] .chev{transform:rotate(90deg)}
+.det{margin:2px 0 6px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface-2)}
+.det-h{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;font:700 12px var(--font-display);letter-spacing:.04em;color:var(--muted);border-bottom:1px solid var(--line)}
+.det-list{max-height:320px;overflow:auto}
+.det-row{display:flex;justify-content:space-between;gap:12px;width:100%;min-height:44px;align-items:center;padding:8px 12px;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left}
+.det-row:last-child{border-bottom:0}
+.det-row b{font:700 14px var(--font-display);white-space:nowrap}
+.det-row .sub{font-size:12px}
+.range-sel{display:flex;align-items:center;gap:10px}
+.range-sel select{max-width:200px;min-height:40px}
+.kind-chips .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.fl-up{color:var(--good)} .fl-down{color:var(--bad)}
+.bird-note{display:flex;flex-direction:column;gap:2px}
 #connect{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;padding:calc(env(safe-area-inset-top) + 16px) 16px 32px}
 #connect[hidden]{display:none}
 a.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
 #connect .inner{max-width:520px;margin:0 auto}
 #connect h1{font:800 24px/1.2 var(--font-display);margin:8px 0 6px}
 .ok-text{color:var(--good)}.err-text{color:var(--bad)}
+.warn{padding:12px 14px;border-radius:10px;background:var(--bad-bg);color:var(--bad);border:1px solid var(--bad);font-weight:600;font-size:14px}
+.bitem{border-bottom:1px solid var(--line)} .bitem:last-child{border-bottom:0} .bitem .fitem{border-bottom:0}
+.bact{padding:0 14px 12px}
+.bar.rev i{background:var(--c-rev)}
+.rem-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.rem-row:last-child{border-bottom:0}
+.rem-main{flex:1;min-width:0;background:none;border:0;padding:0;text-align:left;display:flex;flex-direction:column;gap:2px}
+.rem-main b{font-weight:600}
+.rem-late .sub{color:var(--bad);font-weight:600}
+.btn.small{min-height:40px;padding:0 14px;font-size:14px}
+.bad-text{color:var(--bad);font-weight:600} .good-text{color:var(--good);font-weight:600}
+.sec-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
 </style></head><body>
 
 <section id="connect" hidden>
@@ -214,10 +266,11 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
   <section id="p-today" class="panel">
     <div class="datebar">
       <button id="d-prev" type="button" aria-label="Previous day"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <label class="date-pick" id="d-pick"><svg class="ic cal" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg><span id="d-label"></span><span id="d-badge" class="badge" hidden>Today</span><input id="d-input" type="date" aria-label="Pick a date"></label>
+      <label class="date-pick" id="d-pick" role="button" tabindex="0" aria-expanded="false" aria-label="Open calendar"><svg class="ic cal" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg><span id="d-label"></span><span id="d-badge" class="badge" hidden>Today</span><svg class="ic chev2" id="d-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg><input id="d-input" type="date" hidden></label>
       <button id="d-next" type="button" aria-label="Next day"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
     <div class="chips jump" id="d-jump" aria-label="Jump to a date"><button class="chip" type="button" data-ago="d1">Yesterday</button><button class="chip" type="button" data-ago="d7">1 wk ago</button><button class="chip" type="button" data-ago="m1">1 mo ago</button><button class="chip" type="button" data-ago="m2">2 mo ago</button></div>
+    <div class="card" id="cal" hidden></div>
 
     <div class="strip" aria-live="polite">
       <div><span class="k">Earned</span><span class="v" id="s-earn">Tk 0</span></div>
@@ -225,18 +278,27 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
       <div id="s-net-cell"><span class="k" id="s-net-label">Net</span><span class="v" id="s-net">Tk 0</span></div>
     </div>
 
+    <div class="warn" id="low-alert" role="alert" hidden></div>
+    <div class="card" id="rem-today" hidden></div>
     <fieldset id="today-fields" disabled>
       <div class="card">
         <h2>Eggs sold</h2>
-        <label class="field"><span>Number of eggs</span><input id="f-eggs" class="inp egg-input" inputmode="numeric" autocomplete="off" placeholder="0"></label>
+        <label class="field"><span>Number of eggs sold</span><input id="f-eggs" class="inp egg-input" inputmode="numeric" autocomplete="off" placeholder="0"></label>
         <div class="chips" role="group" aria-label="Add eggs">
+          <button class="chip" type="button" data-add="4" aria-label="Add 4 eggs, one hali">+4</button>
           <button class="chip" type="button" data-add="6">+6</button>
           <button class="chip" type="button" data-add="12">+12</button>
           <button class="chip" type="button" data-add="30">+30</button>
           <button class="chip" type="button" data-add="clear">Clear</button>
         </div>
         <p class="sub" id="dozen-note"></p>
-        <label class="field"><span>Price per dozen (Tk)</span><input id="f-price" class="inp num-r" inputmode="decimal" autocomplete="off"></label>
+        <div class="grid2">
+          <label class="field"><span>Eggs collected (optional)</span><input id="f-collected" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="0"></label>
+          <label class="field"><span>Cracked or broken</span><input id="f-cracked" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="0"></label>
+        </div>
+        <p class="sub" id="egg-balance"></p>
+        <div class="bird-note"><span class="sub" id="bird-note"></span><button class="link" type="button" data-go="flock">Birds changed? Update the flock</button></div>
+        <label class="field"><span id="f-price-label">Price per dozen (Tk)</span><input id="f-price" class="inp num-r" inputmode="decimal" autocomplete="off"></label>
         <button id="price-reset" class="link" type="button" hidden></button>
       </div>
 
@@ -267,6 +329,116 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 
   <section id="p-summary" class="panel" hidden>
     <div id="sum-body" class="panel"></div>
+  </section>
+
+  <section id="p-flock" class="panel" hidden>
+    <div class="card">
+      <div class="setup-head">
+        <div><span class="label-caps">Birds now</span><b id="fl-now">0</b></div>
+        <button id="fl-add" class="btn" type="button">Record change</button>
+      </div>
+      <p class="sub" id="fl-sex"></p>
+      <p class="sub" id="fl-stats"></p>
+    </div>
+    <div class="warn" id="fl-alert" role="alert" hidden></div>
+    <form id="fl-form" class="card" hidden novalidate>
+      <h2 id="fl-form-title">Record a change</h2>
+      <div class="chips kind-chips" id="fl-kinds" role="group" aria-label="What changed">
+        <button class="chip" type="button" data-kind="added" aria-pressed="true">Birds added</button>
+        <button class="chip" type="button" data-kind="died" aria-pressed="false">Birds died</button>
+        <button class="chip" type="button" data-kind="sold" aria-pressed="false">Birds sold</button>
+      </div>
+      <div class="grid2">
+        <label class="field"><span>Females (hens)</span><input id="fl-female" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="0"></label>
+        <label class="field"><span>Males (cocks)</span><input id="fl-male" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="0"></label>
+      </div>
+      <div class="grid2">
+        <label class="field"><span>Sex not recorded</span><input id="fl-count" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="0"></label>
+        <label class="field"><span>Date</span><input id="fl-date" class="inp" type="date"></label>
+      </div>
+      <p class="sub">Enter females and males, or put everything in “Sex not recorded” if you do not know.</p>
+      <label class="field"><span>Note (optional)</span><input id="fl-note" class="inp" maxlength="120" autocomplete="off" placeholder="For example: sickness, bought from market"></label>
+      <p class="sub" id="fl-after"></p>
+      <p class="err" id="fl-err" role="alert" hidden></p>
+      <div class="btn-row">
+        <button id="fl-save" class="btn" type="submit">Save change</button>
+        <button id="fl-cancel" class="btn ghost" type="button">Cancel</button>
+        <button id="fl-del" class="btn ghost danger" type="button" hidden>Delete</button>
+      </div>
+    </form>
+    <div class="card" id="fl-lay-card" hidden>
+      <h2>Eggs collected, last 30 days</h2>
+      <div id="fl-chart"></div>
+      <dl id="fl-lay"></dl>
+      <p class="sub">Laying rate is eggs collected divided by birds that day. Good quail flocks often lay at 70 to 90 percent.</p>
+    </div>
+    <div class="card" id="fl-cost-card" hidden><h2>Feed and cost per egg</h2><dl id="fl-cost"></dl></div>
+    <div id="fl-list" class="panel"></div>
+
+    <div class="card"><div class="sec-head"><h2>Hatching batches</h2><button id="b-add" class="btn small" type="button">Add batch</button></div>
+      <p class="sub">Eggs set, expected hatch day (about 17 days for quail), how many hatched and how many chicks survived.</p></div>
+    <form id="b-form" class="card" hidden novalidate>
+      <h2 id="b-form-title">Add a batch</h2>
+      <div class="grid2">
+        <label class="field"><span>Date eggs were set</span><input id="b-date" class="inp" type="date"></label>
+        <label class="field"><span>Eggs set</span><input id="b-set" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="0"></label>
+      </div>
+      <div class="grid2">
+        <label class="field"><span>Chicks hatched</span><input id="b-hatched" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="after hatching"></label>
+        <label class="field"><span>Chicks survived</span><input id="b-surv" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="later"></label>
+      </div>
+      <label class="field"><span>Note (optional)</span><input id="b-note" class="inp" maxlength="120" autocomplete="off" placeholder="For example: incubator 1"></label>
+      <p class="err" id="b-err" role="alert" hidden></p>
+      <div class="btn-row"><button id="b-save" class="btn" type="submit">Save batch</button><button id="b-cancel" class="btn ghost" type="button">Cancel</button><button id="b-del" class="btn ghost danger" type="button" hidden>Delete</button></div>
+    </form>
+    <div id="b-list"></div>
+
+    <div class="card"><div class="sec-head"><h2>Vaccination and cleaning reminders</h2><button id="r-add" class="btn small" type="button">Add reminder</button></div>
+      <p class="sub">Pick the day. The reminder shows on the Today tab when it is due.</p></div>
+    <form id="r-form" class="card" hidden novalidate>
+      <h2 id="r-form-title">Add a reminder</h2>
+      <label class="field"><span>What to do</span><input id="r-title" class="inp" list="r-sugg" maxlength="80" autocomplete="off" placeholder="For example: Vaccination"></label>
+      <datalist id="r-sugg"><option value="Vaccination"></option><option value="Deworming"></option><option value="Clean the cages"></option><option value="Change bedding"></option><option value="Disinfect the shed"></option><option value="Clean water drinkers"></option></datalist>
+      <div class="grid2">
+        <label class="field"><span>Type</span><select id="r-type" class="inp"><option value="vaccine">Vaccination</option><option value="clean">Cleaning</option><option value="other">Other</option></select></label>
+        <label class="field"><span>Due date</span><input id="r-due" class="inp" type="date"></label>
+      </div>
+      <label class="field"><span>Repeat</span><select id="r-repeat" class="inp"><option value="0">Does not repeat</option><option value="1">Every day</option><option value="3">Every 3 days</option><option value="7">Every week</option><option value="14">Every 2 weeks</option><option value="30">Every month</option><option value="60">Every 2 months</option><option value="90">Every 3 months</option></select></label>
+      <p class="err" id="r-err" role="alert" hidden></p>
+      <div class="btn-row"><button id="r-save" class="btn" type="submit">Save reminder</button><button id="r-cancel" class="btn ghost" type="button">Cancel</button><button id="r-del" class="btn ghost danger" type="button" hidden>Delete</button></div>
+    </form>
+    <div id="r-list"></div>
+  </section>
+
+  <section id="p-sales" class="panel" hidden>
+    <div class="card">
+      <div class="setup-head">
+        <div><span class="label-caps">Buyers owe you</span><b id="sl-owed">Tk 0</b></div>
+        <button id="sl-add" class="btn" type="button">Add sale</button>
+      </div>
+      <p class="sub">Record who bought and who still owes you. Profit on the Today tab still comes from “Eggs sold” there. This tab tracks buyers and payments.</p>
+    </div>
+    <form id="sl-form" class="card" hidden novalidate>
+      <h2 id="sl-form-title">Add a sale</h2>
+      <label class="field"><span>Buyer</span><input id="sl-buyer" class="inp" list="sl-buyers" autocomplete="off" maxlength="80" placeholder="Name or shop"></label>
+      <datalist id="sl-buyers"></datalist>
+      <div class="grid2">
+        <label class="field"><span>Date</span><input id="sl-date" class="inp" type="date"></label>
+        <label class="field"><span>Eggs bought</span><input id="sl-eggs" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="0"></label>
+      </div>
+      <div class="grid2">
+        <label class="field"><span>Amount (Tk)</span><input id="sl-amount" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"></label>
+        <label class="field"><span>Paid so far (Tk)</span><input id="sl-paid" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"></label>
+      </div>
+      <div class="chips"><button class="chip" type="button" id="sl-full">Paid in full</button><button class="chip" type="button" id="sl-none">Not paid yet</button></div>
+      <p class="sub" id="sl-hint"></p>
+      <label class="field"><span>Note (optional)</span><input id="sl-note" class="inp" maxlength="120" autocomplete="off"></label>
+      <p class="err" id="sl-err" role="alert" hidden></p>
+      <div class="btn-row"><button id="sl-save" class="btn" type="submit">Save sale</button><button id="sl-cancel" class="btn ghost" type="button">Cancel</button><button id="sl-del" class="btn ghost danger" type="button" hidden>Delete</button></div>
+    </form>
+    <div class="card" id="sl-compare" hidden></div>
+    <div class="card" id="sl-owe" hidden></div>
+    <div id="sl-list" class="panel"></div>
   </section>
 
   <section id="p-setup" class="panel" hidden>
@@ -308,8 +480,11 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
     <div class="card">
       <h2>Business</h2>
       <label class="field"><span>Business name (optional)</span><input id="st-business" class="inp" maxlength="60" autocomplete="off"></label>
-      <label class="field"><span>Price per dozen eggs (Tk)</span><input id="st-price" class="inp num-r" inputmode="decimal" autocomplete="off"></label>
+      <label class="field"><span>I sell eggs by the</span><select id="st-unit" class="inp"><option value="dozen">Dozen (12 eggs)</option><option value="hali">Hali (4 eggs)</option></select></label>
+      <label class="field"><span id="st-price-label">Price per dozen eggs (Tk)</span><input id="st-price" class="inp num-r" inputmode="decimal" autocomplete="off"></label>
       <p class="sub">New days start with this price. Days you already saved keep the price they were saved with.</p>
+      <label class="field"><span>Low-laying alert: warn me below this laying rate (%)</span><input id="st-low" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="for example 60"></label>
+      <p class="sub">Laying rate is eggs collected divided by hens. A sudden drop can be an early sign of sickness or heat. Leave empty to turn the alert off.</p>
     </div>
     <div class="card" id="backup-card" hidden>
       <h2>Google Sheet and sync</h2>
@@ -331,6 +506,8 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
     <button type="button" data-tab="today" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M9 15h6"/></svg>Today</button>
     <button type="button" data-tab="history"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>History</button>
     <button type="button" data-tab="summary"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M12 20V5M19 20v-7"/></svg>Summary</button>
+    <button type="button" data-tab="flock"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="13" r="6.5"/><circle cx="13.2" cy="11.4" r=".7" fill="currentColor"/><path d="M17.5 12l3 1.2-3 1.2M9 19.5V22M13 19.5V22M7 7.5C7 5 9 3.5 11 4.5"/></svg>Birds</button>
+    <button type="button" data-tab="sales"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M16 6.5a3 3 0 0 1 0 5.5M18 14.8c1.8.7 3 2.3 3 5.2"/></svg>Buyers</button>
     <button type="button" data-tab="setup"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8l8-4 8 4v8l-8 4-8-4V8z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg>Setup</button>
   </div>
 </nav>
@@ -375,7 +552,7 @@ function dayCalc(rec,defPrice){
   var price=(rec.price===null||rec.price===undefined)?num(defPrice):num(rec.price);
   var revenue=eggs*price/12, cost=0;
   CATS.forEach(function(c){cost+=num(rec[c.key]);});
-  return {eggs:eggs,revenue:revenue,cost:cost,net:revenue-cost};
+  return {eggs:eggs,revenue:revenue,cost:cost,net:revenue-cost,collected:num(rec.collected),cracked:num(rec.cracked)};
 }
 function monthKey(id){return id.slice(0,7);}
 function monthRange(a,b){
@@ -384,14 +561,62 @@ function monthRange(a,b){
   return out;
 }
 function setupTotal(items){var t=0;Object.keys(items).forEach(function(k){t+=num(items[k].qty)*num(items[k].unitCost);});return t;}
-function summarize(days,setupItems,defPrice){
-  var ids=Object.keys(days).sort(), months={}, cats={}, eggs=0, revenue=0, cost=0;
+var HALI=4;
+function flockDelta(e){var c=Math.floor(num(e&&e.count));return (e&&e.kind==='added')?c:-c;}
+function birdsOn(flock,date){var t=0;Object.keys(flock||{}).forEach(function(k){var e=flock[k];if(e&&e.date&&e.date<=date)t+=flockDelta(e);});return Math.max(0,t);}
+function flockTimeline(flock){
+  var arr=Object.keys(flock||{}).map(function(k){return {id:k,e:flock[k]};}).filter(function(x){return x.e&&x.e.date;});
+  arr.sort(function(a,b){return a.e.date<b.e.date?-1:a.e.date>b.e.date?1:num(a.e.ts)-num(b.e.ts);});
+  var run=0;arr.forEach(function(x){run+=flockDelta(x.e);x.after=Math.max(0,run);});
+  return arr;
+}
+function flockTotals(flock){
+  var t={added:0,died:0,sold:0};
+  Object.keys(flock||{}).forEach(function(k){var e=flock[k];if(!e)return;var c=Math.floor(num(e.count));if(e.kind==='added')t.added+=c;else if(e.kind==='died')t.died+=c;else if(e.kind==='sold')t.sold+=c;});
+  return t;
+}
+function layRate(collected,birds){return(birds>0&&collected>0)?collected/birds*100:null;}
+function addDays(date,n){var p=date.split('-').map(Number),d=new Date(p[0],p[1]-1,p[2]+n);return d.getFullYear()+'-'+(d.getMonth()<9?'0':'')+(d.getMonth()+1)+'-'+(d.getDate()<10?'0':'')+d.getDate();}
+function layStats(days,flock,endDate,n){
+  var collected=0,birdDays=0,counted=0;
+  for(var i=0;i<n;i++){var d=addDays(endDate,-i),r=days[d];
+    if(r&&num(r.collected)>0){var b=layBirds(flock,d);if(b>0){collected+=num(r.collected);birdDays+=b;counted++;}}}
+  return {collected:collected,days:counted,rate:birdDays>0?collected/birdDays*100:null};
+}
+function moneyBreakdown(days,setupItems,range){
+  var rows=[],total=0;
+  CATS.forEach(function(c){
+    var items=[],v=0;
+    Object.keys(days).sort().reverse().forEach(function(id){
+      if(range!=='all'&&monthKey(id)!==range)return;
+      var a=num(days[id][c.key]);if(a>0){v+=a;items.push({kind:'day',date:id,amount:a,note:c.key==='other'?(days[id].otherNote||''):''});}
+    });
+    if(v>0){rows.push({key:c.key,label:c.label,v:v,items:items});total+=v;}
+  });
+  rows.sort(function(a,b){return b.v-a.v;});
+  var sitems=[],sv=0;
+  Object.keys(setupItems||{}).forEach(function(id){
+    var r=setupItems[id],a=num(r.qty)*num(r.unitCost);
+    if(!(a>0))return;
+    if(range!=='all'&&!(r.date&&monthKey(r.date)===range))return;
+    sv+=a;sitems.push({kind:'setup',id:id,date:r.date||'',amount:a,note:r.name||'Item',sub:num(r.qty)+' × '+num(r.unitCost)});
+  });
+  sitems.sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:0;});
+  if(sv>0){rows.push({key:'__setup',label:'Setup costs (one-time)',v:sv,items:sitems});total+=sv;}
+  rows.sort(function(a,b){return b.v-a.v;});
+  return {rows:rows,total:total};
+}
+function summarize(days,setupItems,defPrice,flock){
+  var ids=Object.keys(days).sort(), months={}, cats={}, eggs=0, revenue=0, cost=0, collected=0, cracked=0, collBirdDays=0, feedSum=0, feedBD=0, costSum=0, costBD=0;
   CATS.forEach(function(c){cats[c.key]=0;});
   ids.forEach(function(id){
     var r=days[id], c=dayCalc(r,defPrice), mk=monthKey(id);
     if(!months[mk])months[mk]={eggs:0,revenue:0,cost:0,net:0};
     var m=months[mk]; m.eggs+=c.eggs; m.revenue+=c.revenue; m.cost+=c.cost; m.net+=c.net;
-    eggs+=c.eggs; revenue+=c.revenue; cost+=c.cost;
+    eggs+=c.eggs; revenue+=c.revenue; cost+=c.cost; cracked+=c.cracked;
+    if(c.collected>0){var bd=layBirds(flock||{},id);if(bd>0){collected+=c.collected;collBirdDays+=bd;}}
+    var tb=birdsOn(flock||{},id);
+    if(tb>0){if(num(r.feed)>0){feedSum+=num(r.feed);feedBD+=tb;}if(c.cost>0){costSum+=c.cost;costBD+=tb;}}
     CATS.forEach(function(k){cats[k.key]+=num(r[k.key]);});
   });
   var setup=setupTotal(setupItems), monthKeys=[], cum=0, payback=null;
@@ -403,8 +628,9 @@ function summarize(days,setupItems,defPrice){
       if(payback===null&&setup>0&&cum>=setup)payback=k;
     });
   }
-  return {days:ids.length,eggs:eggs,revenue:revenue,cost:cost,profit:revenue-cost,setup:setup,afterSetup:revenue-cost-setup,
-    avgPriceDozen:eggs?revenue/eggs*12:0,costPerDozen:eggs?cost/eggs*12:0,months:months,monthKeys:monthKeys,cats:cats,payback:payback};
+  return {collected:collected,cracked:cracked,layRate:collBirdDays>0?collected/collBirdDays*100:null,days:ids.length,eggs:eggs,revenue:revenue,cost:cost,profit:revenue-cost,setup:setup,afterSetup:revenue-cost-setup,
+    avgPriceDozen:eggs?revenue/eggs*12:0,costPerDozen:eggs?cost/eggs*12:0,months:months,monthKeys:monthKeys,cats:cats,payback:payback,
+    feedPerBirdDay:feedBD?feedSum/feedBD:null,costPerBirdDay:costBD?costSum/costBD:null,costPerEgg:eggs?cost/eggs:null,costPerEggAll:eggs?(cost+setup)/eggs:null};
 }
 function niceTicks(max){
   if(!(max>0))return {top:1,step:1,ticks:[0,1]};
@@ -420,6 +646,7 @@ function fmtNum(n){return nfMoney.format(r2(n));}
 function fmtTk(n){return 'Tk '+fmtNum(n);}
 function fmtNet(n){var r=r2(n);if(r>0)return '+'+fmtTk(r);if(r<0)return '−'+fmtTk(-r);return fmtTk(0);}
 function fmtDoz(eggs){return nfDoz.format(eggs/12);}
+function fmtHali(eggs){return nfDoz.format(eggs/HALI);}
 function compact(n){
   if(n>=10000000)return r2(n/10000000)+'Cr';
   if(n>=100000)return r2(n/100000)+'L';
@@ -429,13 +656,18 @@ function compact(n){
 function csvCell(v){var s=(v===null||v===undefined)?'':String(v);return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
 function toCsv(rows){return rows.map(function(r){return r.map(csvCell).join(',');}).join('\r\n');}
 function dailyRows(days,defPrice){
-  var head=['Date','Eggs sold','Price per dozen (Tk)','Revenue (Tk)'].concat(CATS.map(function(c){return c.label+' (Tk)';}),['Total cost (Tk)','Net profit (Tk)','Notes','Other cost description']);
+  var head=['Date','Eggs sold','Price per dozen (Tk)','Revenue (Tk)'].concat(CATS.map(function(c){return c.label+' (Tk)';}),['Total cost (Tk)','Net profit (Tk)','Notes','Other cost description','Eggs collected','Cracked eggs']);
   var rows=[head];
   Object.keys(days).sort().forEach(function(id){
     var r=days[id],c=dayCalc(r,defPrice);
     rows.push([id,r.eggs===undefined?'':r.eggs,r.price===undefined?defPrice:r.price,r2(c.revenue)].concat(
-      CATS.map(function(k){return r[k.key]===undefined?'':r[k.key];}),[r2(c.cost),r2(c.net),r.notes||'',r.otherNote||'']));
+      CATS.map(function(k){return r[k.key]===undefined?'':r[k.key];}),[r2(c.cost),r2(c.net),r.notes||'',r.otherNote||'',r.collected===undefined?'':r.collected,r.cracked===undefined?'':r.cracked]));
   });
+  return rows;
+}
+function flockRows(flock){
+  var rows=[['Date','Change','Birds','Females','Males','Birds after','Note']];
+  flockTimeline(flock).forEach(function(x){rows.push([x.e.date,({added:'Added',died:'Died',sold:'Sold'})[x.e.kind]||x.e.kind,x.e.count,x.e.female||'',x.e.male||'',x.after,x.e.note||'']);});
   return rows;
 }
 function setupRows(items){
@@ -444,6 +676,55 @@ function setupRows(items){
     rows.push([i.name,i.cat,i.qty,i.unitCost,r2(num(i.qty)*num(i.unitCost)),i.date||'',i.notes||'']);
   });
   return rows;
+}
+/* ---- v3 logic: sexes, price unit, buyers, alerts, feed, batches, reminders ---- */
+function unitOf(st){return(st&&st.priceUnit==='hali')?'hali':'dozen';}
+function toUnitPrice(perDozen,unit){return unit==='hali'?perDozen/3:perDozen;}
+function fromUnitPrice(p,unit){return unit==='hali'?p*3:p;}
+function sexCounts(flock,date){
+  var m=0,f=0,u=0;
+  Object.keys(flock||{}).forEach(function(k){var e=flock[k];if(!e||!e.date||e.date>date)return;
+    var sg=e.kind==='added'?1:-1,mm=Math.floor(num(e.male)),ff=Math.floor(num(e.female)),c=Math.floor(num(e.count));
+    if(mm+ff>c)c=mm+ff;
+    m+=sg*mm;f+=sg*ff;u+=sg*(c-mm-ff);});
+  return {male:Math.max(0,m),female:Math.max(0,f),unsexed:Math.max(0,u)};
+}
+function layBirds(flock,date){return Math.max(0,birdsOn(flock,date)-sexCounts(flock,date).male);}
+function saleOwed(s){return Math.max(0,r2(num(s&&s.amount)-num(s&&s.paid)));}
+function owedTotal(sales){var t=0;Object.keys(sales||{}).forEach(function(k){t+=saleOwed(sales[k]);});return r2(t);}
+function inRange(date,range){return range==='all'||!!(date&&String(date).slice(0,7)===range);}
+function buyerStats(sales,range){
+  var m={};
+  Object.keys(sales||{}).forEach(function(id){var s=sales[id];if(!s||!inRange(s.date,range))return;
+    var nm=String(s.buyer||'Unknown').trim()||'Unknown',key=nm.toLowerCase(),o=m[key]||(m[key]={name:nm,eggs:0,amount:0,paid:0,owed:0,orders:0,last:''});
+    o.eggs+=num(s.eggs);o.amount+=num(s.amount);o.paid+=num(s.paid);o.owed+=saleOwed(s);o.orders++;if(s.date>o.last)o.last=s.date;});
+  return Object.keys(m).map(function(k){return m[k];});
+}
+function lowAlert(days,flock,settings,date,liveCollected){
+  var th=num(settings&&settings.lowRate);if(!(th>0))return null;
+  var rate=null,basis='day';
+  if(liveCollected>0)rate=layRate(liveCollected,layBirds(flock,date));
+  if(rate===null){var st=layStats(days,flock,date,3);rate=st.rate;basis='3days';}
+  if(rate===null)return null;
+  return rate<th?{rate:rate,threshold:th,basis:basis}:null;
+}
+function daysBetween(a,b){var p=a.split('-').map(Number),q=b.split('-').map(Number);return Math.round((new Date(q[0],q[1]-1,q[2])-new Date(p[0],p[1]-1,p[2]))/86400000);}
+var INCUBATION=17;
+function batchInfo(b,today){
+  var exp=addDays(b.date,INCUBATION),h=(b.hatched===undefined||b.hatched===null)?null:num(b.hatched),sv=(b.survived===undefined||b.survived===null)?null:num(b.survived),set=num(b.eggsSet);
+  return {expected:exp,daysLeft:daysBetween(today,exp),hatchRate:(h!==null&&set>0)?h/set*100:null,survRate:(sv!==null&&h>0)?sv/h*100:null,
+    status:h!==null?'hatched':(today>exp?'overdue':'incubating')};
+}
+function remStatus(r,today){
+  if(r.done)return {state:'done',days:0};
+  var d=daysBetween(today,r.due);
+  return {state:d<0?'overdue':d===0?'today':d<=3?'soon':'later',days:d};
+}
+function remDone(r,today){
+  var n=Object.assign({},r),rep=Math.floor(num(r.repeat));
+  n.lastDone=today;
+  if(rep>0){n.due=addDays(today,rep);n.done=false;}else n.done=true;
+  return n;
 }
 /* ==/LOGIC== */
 
@@ -461,7 +742,9 @@ function monthLabel(k){var p=k.split('-').map(Number);return new Date(p[0],p[1]-
 function monthShort(k){var p=k.split('-').map(Number);return new Date(p[0],p[1]-1,1).toLocaleDateString('en-GB',{month:'short'});}
 function netClass(n){var r=r2(n);return r>0?'good':r<0?'bad':'zero';}
 
-var state={settings:{business:'',price:10},days:{},setup:{},ready:false,mode:'pending',readOnly:false};
+var COLLS=['days','setup','flock','sales','batches','reminders'];
+var DEF_SETTINGS={business:'',price:10,priceUnit:'dozen',lowRate:0};
+var state={settings:Object.assign({},DEF_SETTINGS),days:{},setup:{},flock:{},sales:{},batches:{},reminders:{},ready:false,mode:'pending',readOnly:false};
 var curDate=todayStr(), dirty=false, saveTimer=null, idleTimer=null, toastTimer=null, lastSaved={};
 var db=null, downloads=null, syncInfo={pending:0,error:'',authBad:false,syncing:false,last:0,sheetUrl:''}, installEvt=null, tab='today', prevTab='today', editingSetup=null, delTimer=null, clearTimer=null;
 var LS='quail-egg-tracker-v1';
@@ -469,10 +752,10 @@ var LS='quail-egg-tracker-v1';
 /* ---------- local fallback storage ---------- */
 function loadLocal(){
   try{var raw=localStorage.getItem(LS);if(raw){var o=JSON.parse(raw);
-    state.settings=Object.assign({business:'',price:10},o.settings||{});state.days=o.days||{};state.setup=o.setup||{};}}catch(e){}
+    state.settings=Object.assign({},DEF_SETTINGS,o.settings||{});COLLS.forEach(function(n){state[n]=o[n]||{};});}}catch(e){}
 }
 function saveLocal(){
-  try{localStorage.setItem(LS,JSON.stringify({settings:state.settings,days:state.days,setup:state.setup}));return true;}catch(e){return false;}
+  try{var o={settings:state.settings};COLLS.forEach(function(n){o[n]=state[n];});localStorage.setItem(LS,JSON.stringify(o));return true;}catch(e){return false;}
 }
 
 /* ---------- write queue, one write at a time per document ---------- */
@@ -502,10 +785,20 @@ function toast(msg){
 }
 
 /* ---------- Today form ---------- */
+var priceShown={text:'',val:null};
+function priceFromField(){var raw=$('f-price').value,p=parseField(raw);if(p===null)return null;if(raw===priceShown.text&&priceShown.val!==null)return priceShown.val;return fromUnitPrice(p,unitOf(state.settings));}
+function setPriceField(pv){var txt=String(r2(toUnitPrice(pv,unitOf(state.settings))));$('f-price').value=txt;priceShown={text:txt,val:pv};}
+function setAlert(el,text){el.hidden=!text;el.textContent=text||'';}
+function alertText(date,live){
+  var a=lowAlert(state.days,state.flock,state.settings,date,live);
+  return a?('Low laying: '+Math.round(a.rate)+'% '+(a.basis==='day'?'on this day':'over the last 3 days')+', below your alert level of '+a.threshold+'%. This can be an early sign of sickness, heat or stress. Check water, feed, shed temperature and the birds.'):'';
+}
 function readForm(){
-  var eggs=parseField($('f-eggs').value),price=parseField($('f-price').value),rec={};
+  var eggs=parseField($('f-eggs').value),price=priceFromField(),rec={};
   if(eggs!==null){rec.eggs=Math.floor(eggs);rec.price=price!==null?price:state.settings.price;}
   CATS.forEach(function(c){var v=parseField($('c-'+c.key).value);if(v!==null)rec[c.key]=v;});
+  var col=parseField($('f-collected').value),cr=parseField($('f-cracked').value);
+  if(col!==null)rec.collected=Math.floor(col);if(cr!==null)rec.cracked=Math.floor(cr);
   var notes=$('f-notes').value.trim();if(notes)rec.notes=notes;
   var on=$('f-othernote').value.trim();if(on)rec.otherNote=on;
   return rec;
@@ -517,17 +810,50 @@ function renderStrip(){
   $('s-net').textContent=fmtNet(c.net);
   $('s-net-label').textContent=cls==='good'?'Profit':cls==='bad'?'Loss':'Net';
   $('s-net-cell').className=cls==='zero'?'':cls;
-  var price=rec.price!==undefined?rec.price:(parseField($('f-price').value)!==null?parseField($('f-price').value):state.settings.price);
-  $('dozen-note').textContent=c.eggs?(fmtNum(c.eggs)+' eggs is '+fmtDoz(c.eggs)+' dozen. At '+fmtTk(price)+' per dozen that earns '+fmtTk(c.revenue)+'.'):'Type how many eggs you sold. Prices are per dozen (12 eggs).';
-  var p=parseField($('f-price').value),rb=$('price-reset');
-  if(p!==null&&p!==state.settings.price){rb.hidden=false;rb.textContent='Use the usual price, '+fmtTk(state.settings.price)+' per dozen';}else rb.hidden=true;
+  var unit=unitOf(state.settings),price=rec.price!==undefined?rec.price:state.settings.price;
+  $('f-price-label').textContent='Price per '+unit+' (Tk)';
+  $('dozen-note').textContent=c.eggs?(fmtNum(c.eggs)+' eggs sold is '+fmtDoz(c.eggs)+' dozen, or '+fmtHali(c.eggs)+' hali. At '+fmtTk(toUnitPrice(price,unit))+' per '+unit+' that earns '+fmtTk(c.revenue)+'.'):'Type how many eggs you sold. Price is per '+unit+(unit==='hali'?' (4 eggs).':' (12 eggs). A hali is 4 eggs.');
+  var left=c.collected-c.eggs-c.cracked;
+  $('egg-balance').textContent=c.collected>0?('Collected '+fmtNum(c.collected)+', sold '+fmtNum(c.eggs)+', cracked '+fmtNum(c.cracked)+(left>=0?': '+fmtNum(left)+' left over.':'. Sold and cracked add up to '+fmtNum(-left)+' more than collected.')):'';
+  var birds=birdsOn(state.flock,curDate),lr=layRate(c.collected,layBirds(state.flock,curDate));
+  $('bird-note').textContent=Object.keys(state.flock).length?('Birds on this day: '+fmtNum(birds)+(lr!==null?'. Laying rate '+Math.round(lr)+'%.':'.')):'No birds recorded yet.';
+  var p=priceFromField(),rb=$('price-reset');
+  if(p!==null&&Math.abs(p-state.settings.price)>1e-9){rb.hidden=false;rb.textContent='Use the usual price, '+fmtTk(r2(toUnitPrice(state.settings.price,unit)))+' per '+unit;}else rb.hidden=true;
+  setAlert($('low-alert'),alertText(curDate,c.collected));
+  renderTodayRem();
 }
 function setFields(rec){
   $('f-eggs').value=rec.eggs!==undefined?String(rec.eggs):'';
-  $('f-price').value=String(rec.price!==undefined?rec.price:state.settings.price);
+  setPriceField(rec.price!==undefined?rec.price:state.settings.price);
   CATS.forEach(function(c){$('c-'+c.key).value=rec[c.key]!==undefined?String(rec[c.key]):'';});
   $('f-notes').value=rec.notes||'';
   $('f-othernote').value=rec.otherNote||'';
+  $('f-collected').value=rec.collected!==undefined?String(rec.collected):'';
+  $('f-cracked').value=rec.cracked!==undefined?String(rec.cracked):'';
+}
+var calMonth='',calOpen=false;
+function toggleCal(force){
+  calOpen=force===undefined?!calOpen:force;calMonth=curDate.slice(0,7);
+  $('d-pick').setAttribute('aria-expanded',String(calOpen));$('d-chev').style.transform=calOpen?'none':'rotate(180deg)';
+  renderCal();
+}
+function shiftMonth(k,n){var p=k.split('-').map(Number),d=new Date(p[0],p[1]-1+n,1);return d.getFullYear()+'-'+pad(d.getMonth()+1);}
+function renderCal(){
+  var host=$('cal');host.hidden=!calOpen;if(!calOpen)return;
+  var t=todayStr(),tm=t.slice(0,7),p=calMonth.split('-').map(Number),first=new Date(p[0],p[1]-1,1).getDay(),n=new Date(p[0],p[1],0).getDate();
+  var h='<div class="cal-head"><button type="button" data-cm="-12" aria-label="Back one year">«</button><button type="button" data-cm="-1" aria-label="Previous month">‹</button><b>'+esc(new Date(p[0],p[1]-1,1).toLocaleDateString('en-GB',{month:'long',year:'numeric'}))+'</b><button type="button" data-cm="1" aria-label="Next month"'+(calMonth>=tm?' disabled':'')+'>›</button><button type="button" data-cm="12" aria-label="Forward one year"'+(shiftMonth(calMonth,12)>tm?' disabled':'')+'>»</button></div><div class="cal-grid cal-wk">'+['S','M','T','W','T','F','S'].map(function(x){return '<span>'+x+'</span>';}).join('')+'</div><div class="cal-grid">';
+  for(var i=0;i<first;i++)h+='<span></span>';
+  for(var d=1;d<=n;d++){
+    var id=calMonth+'-'+pad(d),fut=id>t,sel=id===curDate,has=!!state.days[id];
+    h+='<button type="button" class="cal-d'+(sel?' sel':'')+'" data-cd="'+id+'"'+(fut?' disabled':'')+' aria-label="'+esc(dayLabel(id))+'"'+(sel?' aria-pressed="true"':'')+'>'+d+(has?'<i></i>':'')+'</button>';
+  }
+  h+='</div><div class="cal-foot"><span class="sub"><i class="cal-dot"></i> day with saved records</span><button class="link" type="button" data-cm="today">Go to today</button></div>';
+  host.innerHTML=h;
+}
+function onCalClick(e){
+  var m=e.target.closest('[data-cm]'),d=e.target.closest('[data-cd]');
+  if(m){var v=m.dataset.cm;if(v==='today'){gotoDate(todayStr());toggleCal(false);return;}calMonth=shiftMonth(calMonth,Number(v));if(calMonth>todayStr().slice(0,7))calMonth=todayStr().slice(0,7);renderCal();return;}
+  if(d&&!d.disabled){gotoDate(d.dataset.cd);toggleCal(false);}
 }
 function populateForm(){
   var rec=state.days[curDate]||{},t=todayStr();
@@ -591,7 +917,7 @@ function renderHistory(){
   if(!state.ready){host.innerHTML='<p class="sub">Loading your records…</p>';filter.hidden=true;return;}
   var ids=Object.keys(state.days).sort().reverse();
   if(!ids.length){filter.hidden=true;host.innerHTML=emptyBlock('No days saved yet','Enter eggs sold and costs on the Today tab. Every saved day appears here.',['Go to Today','today']);return;}
-  var sum=summarize(state.days,state.setup,state.settings.price);
+  var sum=summarize(state.days,state.setup,state.settings.price,state.flock);
   var months=[];ids.forEach(function(id){var m=monthKey(id);if(months.indexOf(m)<0)months.push(m);});
   var sel=$('h-month'),cur=sel.value||'all';
   sel.innerHTML='<option value="all">All months</option>'+months.map(function(m){return '<option value="'+m+'">'+esc(monthLabel(m))+'</option>';}).join('');
@@ -604,7 +930,8 @@ function renderHistory(){
       html+='<div class="mgroup"><h3><span>'+esc(monthLabel(m))+'</span><span class="'+(netClass(sum.months[m].net)==='good'?'v-good':netClass(sum.months[m].net)==='bad'?'v-bad':'')+'">Net '+esc(fmtNet(sum.months[m].net))+'</span></h3>';}
     var rec=state.days[id],c=dayCalc(rec,state.settings.price);
     html+='<button class="day" type="button" data-date="'+id+'"><span class="d-main"><b>'+esc(shortDay(id))+'</b><span class="sub">'+
-      (c.eggs?esc(fmtNum(c.eggs))+' eggs · '+esc(fmtDoz(c.eggs))+' dozen':'No eggs sold')+'</span>'+
+      (c.eggs?esc(fmtNum(c.eggs))+' eggs · '+esc(fmtDoz(c.eggs))+' dozen · '+esc(fmtHali(c.eggs))+' hali':'No eggs sold')+'</span>'+
+      ((c.collected||c.cracked)?'<span class="sub">'+(c.collected?'Collected '+esc(fmtNum(c.collected)):'')+(c.collected&&c.cracked?' · ':'')+(c.cracked?'Cracked '+esc(fmtNum(c.cracked)):'')+'</span>':'')+
       (rec.otherNote?'<span class="sub note-line">Other: '+esc(rec.otherNote)+'</span>':'')+(rec.notes?'<span class="sub note-line">'+esc(rec.notes)+'</span>':'')+'</span><span class="d-side"><b class="net '+netClass(c.net)+'">'+esc(fmtNet(c.net))+
       '</b><span class="sub">Earned '+esc(fmtTk(c.revenue))+' · Spent '+esc(fmtTk(c.cost))+'</span></span></button>';
   });
@@ -633,30 +960,47 @@ function chartSvg(sum){
 function renderSummary(){
   var host=$('sum-body');
   if(!state.ready){host.innerHTML='<p class="sub">Loading your records…</p>';return;}
-  var sum=summarize(state.days,state.setup,state.settings.price);
+  var sum=summarize(state.days,state.setup,state.settings.price,state.flock);
   if(!sum.days&&!sum.setup){host.innerHTML=emptyBlock('Nothing to total yet','Save a day on the Today tab or add setup costs. Profit, cost per dozen and payback show up here.',['Go to Today','today']);return;}
   var cls=netClass(sum.afterSetup);
   var payback=sum.payback?monthLabel(sum.payback):(sum.setup===0?'Add setup costs first':'Not yet');
   var html='<div class="card hero"><span class="label-caps">Profit after paying back setup cost</span><b class="'+(cls==='good'?'v-good':cls==='bad'?'v-bad':'')+'">'+esc(fmtNet(sum.afterSetup))+
     '</b><span class="sub">Operating profit '+esc(fmtNet(sum.profit))+' minus setup cost '+esc(fmtTk(sum.setup))+'</span></div>';
   html+='<div class="card"><h2>Totals</h2><dl>'+
-    kv('Eggs sold',fmtNum(sum.eggs)+' ('+fmtDoz(sum.eggs)+' dozen)')+kv('Days saved',fmtNum(sum.days))+kv('Egg revenue',fmtTk(sum.revenue))+kv('Running costs',fmtTk(sum.cost))+
-    kv('Average price per dozen',fmtTk(sum.avgPriceDozen))+kv('Running cost per dozen',fmtTk(sum.costPerDozen))+kv('Setup cost earned back by',payback)+'</dl></div>';
+    kv('Eggs sold',fmtNum(sum.eggs)+' ('+fmtDoz(sum.eggs)+' dozen · '+fmtHali(sum.eggs)+' hali)')+(sum.collected>0?kv('Eggs collected',fmtNum(sum.collected)):'')+(sum.cracked>0?kv('Cracked or broken',fmtNum(sum.cracked)+' ('+r2(sum.cracked/(sum.eggs+sum.cracked)*100)+'% of sold + cracked)'):'')+(sum.layRate!==null?kv('Average laying rate',Math.round(sum.layRate)+'%'):'')+(Object.keys(state.flock).length?kv('Birds now',fmtNum(birdsOn(state.flock,todayStr()))):'')+kv('Days saved',fmtNum(sum.days))+(owedTotal(state.sales)>0?kv('Unpaid by buyers',fmtTk(owedTotal(state.sales))):'')+kv('Egg revenue',fmtTk(sum.revenue))+kv('Running costs',fmtTk(sum.cost))+
+    kv('Average price per dozen',fmtTk(sum.avgPriceDozen))+kv('Running cost per dozen',fmtTk(sum.costPerDozen))+costKvs(sum)+kv('Setup cost earned back by',payback)+'</dl></div>';
+  html=html+moneyCard(sum);
   if(sum.days){
     html+='<div class="card"><h2>Revenue and costs by month</h2>'+chartSvg(sum)+'<div class="legend"><span><i style="background:var(--c-rev)"></i>Egg revenue</span><span><i style="background:var(--c-cost)"></i>Running costs</span></div></div>';
-    var rows=CATS.map(function(c){return {label:c.label,v:sum.cats[c.key]};}).filter(function(r){return r.v>0;}).sort(function(a,b){return b.v-a.v;});
-    if(rows.length){
-      html+='<div class="card"><h2>Where the money goes</h2><ul class="cb">'+rows.map(function(r){
-        var pct=Math.round(r.v/sum.cost*100);
-        return '<li><div class="cb-top"><span>'+esc(r.label)+'</span><b>'+esc(fmtTk(r.v))+'</b><span class="pct">'+pct+'%</span></div><div class="bar"><i style="width:'+pct+'%"></i></div></li>';
-      }).join('')+'</ul></div>';
-    }
     html+='<div class="card"><h2>Month by month</h2><div class="scroll"><table><thead><tr><th>Month</th><th>Eggs</th><th>Earned</th><th>Spent</th><th>Net</th></tr></thead><tbody>'+
       sum.monthKeys.slice().reverse().map(function(k){var m=sum.months[k],c=netClass(m.net);
         return '<tr><td>'+esc(monthLabel(k))+'</td><td>'+esc(fmtNum(m.eggs))+'</td><td>'+esc(fmtTk(m.revenue))+'</td><td>'+esc(fmtTk(m.cost))+'</td><td class="'+(c==='good'?'v-good':c==='bad'?'v-bad':'')+'"><b>'+esc(fmtNet(m.net))+'</b></td></tr>';
       }).join('')+'</tbody></table></div></div>';
   }
   host.innerHTML=html;
+}
+var moneyRange='all',openMoney={};
+function moneyCard(sum){
+  var ms={};sum.monthKeys.forEach(function(k){ms[k]=1;});
+  Object.keys(state.setup).forEach(function(id){var d=state.setup[id].date;if(d)ms[monthKey(d)]=1;});
+  var months=Object.keys(ms).sort().reverse();
+  if(moneyRange!=='all'&&months.indexOf(moneyRange)<0)moneyRange='all';
+  var mb=moneyBreakdown(state.days,state.setup,moneyRange);
+  var opts='<option value="all">All time</option>'+months.map(function(m){return '<option value="'+m+'"'+(m===moneyRange?' selected':'')+'>'+esc(monthLabel(m))+'</option>';}).join('');
+  var h='<div class="card"><div class="moneyhead"><h2>Where the money goes</h2><select id="mo-range" class="inp" style="max-width:150px;min-height:40px" aria-label="Period">'+opts+'</select></div>';
+  if(!mb.rows.length||!(mb.total>0))return h+'<p class="sub">Nothing spent in this period.</p></div>';
+  h+='<ul class="cb">'+mb.rows.map(function(r){
+    var pct=Math.round(r.v/mb.total*100),open=!!openMoney[r.key];
+    var det='';
+    if(open){
+      det='<div class="det"><div class="det-h"><span>'+r.items.length+(r.items.length===1?' entry':' entries')+'</span><span>'+esc(fmtTk(r.v))+'</span></div><div class="det-list">'+r.items.map(function(it){
+        if(it.kind==='setup')return '<button class="det-row" type="button" data-ds="'+esc(it.id)+'"><span class="d-main"><span>'+esc(it.note)+'</span><span class="sub">'+esc(it.sub)+(it.date?' · '+esc(dayLabel(it.date)):' · no date')+'</span></span><b>'+esc(fmtTk(it.amount))+'</b></button>';
+        return '<button class="det-row" type="button" data-dd="'+it.date+'"><span class="d-main"><span>'+esc(dayLabel(it.date))+'</span>'+(it.note?'<span class="sub">'+esc(it.note)+'</span>':'')+'</span><b>'+esc(fmtTk(it.amount))+'</b></button>';
+      }).join('')+'</div></div>';
+    }
+    return '<li><button class="mrow" type="button" data-mrow="'+esc(r.key)+'" aria-expanded="'+open+'"><div class="cb-top"><span class="lab"><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'+esc(r.label)+'</span><b>'+esc(fmtTk(r.v))+'</b><span class="pct">'+pct+'%</span></div><div class="bar"><i style="width:'+Math.max(2,pct)+'%"></i></div></button>'+det+'</li>';
+  }).join('')+'</ul><p class="sub">Tap a row to see the dates and amounts. Percentages are of everything spent, running costs plus one-time setup.</p></div>';
+  return h;
 }
 function kv(k,v){return '<div class="kv"><dt>'+esc(k)+'</dt><dd>'+esc(v)+'</dd></div>';}
 
@@ -719,20 +1063,333 @@ function deleteSetup(){
   p.then(function(){delete state.setup[id];closeSetupForm();renderSetup();toast('Item deleted');},function(e){$('s-err').textContent=errMsg(e);$('s-err').hidden=false;});
 }
 
+/* ---------- Birds ---------- */
+/* generic save/delete that work with the phone-first store or local-only mode */
+function localWrite(fn){fn();return saveLocal()?Promise.resolve():Promise.reject({code:'local',message:'This browser blocked saving on this phone.'});}
+function putDoc(coll,rec,id){
+  var ref=null;
+  if(db){ref=id?db.doc(coll+'/'+id):db.collection(coll).doc();id=ref.id;}
+  else if(!id)id=coll.charAt(0)+'_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  var p=db?enqueue(coll+'/'+id,function(){return ref.set(rec);}):localWrite(function(){state[coll][id]=rec;});
+  return p.then(function(){state[coll][id]=rec;return id;});
+}
+function delDoc(coll,id){
+  var p=db?enqueue(coll+'/'+id,function(){return db.doc(coll+'/'+id).delete();}):localWrite(function(){delete state[coll][id];});
+  return p.then(function(){delete state[coll][id];});
+}
+function armDelete(btn){
+  if(btn.textContent!=='Delete')return true;
+  btn.textContent='Tap again to delete';setTimeout(function(){btn.textContent='Delete';},4000);return false;
+}
+function showErr(id,m){var e=$(id);e.textContent=m;e.hidden=false;}
+function validDate(d){return /^\d{4}-\d{2}-\d{2}$/.test(d);}
+
+var flKind='added',editingFlock=null;
+var FL_LABEL={added:'added',died:'died',sold:'sold'};
+function flockChartSvg(dates){
+  var vals=dates.map(function(d){var r=state.days[d];return r?num(r.collected):0;}),max=Math.max.apply(null,vals.concat([1]));
+  var nt=niceTicks(max),W=340,H=150,L=40,R=6,T=10,B=24,pw=W-L-R,ph=H-T-B,g=pw/dates.length,bw=Math.max(3,g*0.64),s='';
+  nt.ticks.forEach(function(t){var y=T+ph-(t/nt.top)*ph;s+='<line class="grid" x1="'+L+'" x2="'+(W-R)+'" y1="'+y.toFixed(1)+'" y2="'+y.toFixed(1)+'"/><text class="ax" x="'+(L-6)+'" y="'+(y+3).toFixed(1)+'" text-anchor="end">'+compact(t)+'</text>';});
+  dates.forEach(function(d,i){
+    var cx=L+g*i+g/2,v=vals[i],h=(v/nt.top)*ph,b=birdsOn(state.flock,d),lr=layRate(v,layBirds(state.flock,d));
+    if(v>0)s+='<rect class="bar-rev" x="'+(cx-bw/2).toFixed(1)+'" y="'+(T+ph-h).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h.toFixed(1)+'" rx="2"><title>'+esc(shortDay(d)+': '+fmtNum(v)+' eggs'+(b?', '+fmtNum(b)+' birds':'')+(lr!==null?', '+Math.round(lr)+'% laying':''))+'</title></rect>';
+    if(i===0||i%7===6)s+='<text class="ax" x="'+cx.toFixed(1)+'" y="'+(H-6)+'" text-anchor="middle">'+Number(d.slice(8))+' '+esc(monthShort(d.slice(0,7)))+'</text>';
+  });
+  return '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Eggs collected each day for the last 30 days">'+s+'</svg>';
+}
+function sexLine(){
+  var c=sexCounts(state.flock,todayStr()),p=[];
+  if(c.female)p.push('Females '+fmtNum(c.female));if(c.male)p.push('Males '+fmtNum(c.male));if(c.unsexed)p.push('Sex not recorded '+fmtNum(c.unsexed));
+  return p.join(' · ');
+}
+function costKvs(sum){
+  var h='';
+  if(sum.feedPerBirdDay!==null)h+=kv('Feed cost per bird per day',fmtTk(sum.feedPerBirdDay));
+  if(sum.costPerBirdDay!==null)h+=kv('Running cost per bird per day',fmtTk(sum.costPerBirdDay));
+  if(sum.costPerEgg!==null)h+=kv('Running cost per egg',fmtTk(sum.costPerEgg));
+  if(sum.costPerEggAll!==null&&sum.setup>0)h+=kv('Cost per egg including setup',fmtTk(sum.costPerEggAll));
+  return h;
+}
+function renderFlock(){
+  var list=$('fl-list'),t=flockTotals(state.flock),now=birdsOn(state.flock,todayStr());
+  $('fl-now').textContent=fmtNum(now);
+  $('fl-sex').textContent=sexLine();
+  $('fl-stats').textContent=(t.added||t.died||t.sold)?('Added '+fmtNum(t.added)+' · Died '+fmtNum(t.died)+' · Sold '+fmtNum(t.sold)+(t.added>0&&t.died>0?' · Deaths so far '+r2(t.died/t.added*100)+'% of birds added':'')):'Add the birds you have now, then record every time birds are added, die or are sold.';
+  if(!state.ready){list.innerHTML='<p class="sub">Loading your records…</p>';$('fl-lay-card').hidden=true;return;}
+  setAlert($('fl-alert'),alertText(todayStr(),0));
+  var ck=costKvs(summarize(state.days,state.setup,state.settings.price,state.flock));
+  $('fl-cost-card').hidden=!ck;$('fl-cost').innerHTML=ck;
+  renderBatches();renderRems();
+  var dates=[];for(var i=29;i>=0;i--)dates.push(addDays(todayStr(),-i));
+  var s30=layStats(state.days,state.flock,todayStr(),30),s7=layStats(state.days,state.flock,todayStr(),7);
+  var any=dates.some(function(d){return state.days[d]&&num(state.days[d].collected)>0;});
+  $('fl-lay-card').hidden=!any;
+  if(any){
+    $('fl-chart').innerHTML=flockChartSvg(dates);
+    $('fl-lay').innerHTML=kv('Laying rate, last 7 days',s7.rate!==null?Math.round(s7.rate)+'%':'Need birds and eggs collected')+kv('Laying rate, last 30 days',s30.rate!==null?Math.round(s30.rate)+'%':'Need birds and eggs collected')+kv('Eggs collected, last 30 days',fmtNum(dates.reduce(function(a,d){return a+(state.days[d]?num(state.days[d].collected):0);},0)));
+  }
+  var tl=flockTimeline(state.flock).reverse();
+  if(!tl.length){list.innerHTML=emptyBlock('No bird changes yet','Tap Record change, choose Birds added, and enter how many birds you have now. After that, record each time birds are added, die from sickness or are sold.',null);return;}
+  list.innerHTML='<div class="list">'+tl.map(function(x){var e=x.e,up=e.kind==='added',sx=[];
+    if(num(e.female))sx.push(fmtNum(num(e.female))+' female');if(num(e.male))sx.push(fmtNum(num(e.male))+' male');
+    return '<button class="fitem" type="button" data-fid="'+esc(x.id)+'"><span><b>'+esc(dayLabel(e.date))+'</b><span class="sub">'+(sx.length?esc(sx.join(', '))+' · ':'')+(e.note?esc(e.note)+' · ':'')+esc(fmtNum(x.after))+' birds after</span></span><span class="amt '+(up?'fl-up':'fl-down')+'">'+(up?'+':'−')+esc(fmtNum(num(e.count)))+' '+FL_LABEL[e.kind]+'</span></button>';}).join('')+'</div>';
+}
+function setFlKind(k){flKind=k;Array.prototype.forEach.call(document.querySelectorAll('#fl-kinds [data-kind]'),function(b){b.setAttribute('aria-pressed',String(b.dataset.kind===k));});updateFlAfter();}
+function flBase(date){var o={};Object.keys(state.flock).forEach(function(id){if(id!==editingFlock)o[id]=state.flock[id];});return birdsOn(o,date);}
+function flInputs(){
+  var f=Math.floor(parseField($('fl-female').value)||0),m=Math.floor(parseField($('fl-male').value)||0),u=Math.floor(parseField($('fl-count').value)||0);
+  return {f:f,m:m,u:u,total:f+m+u};
+}
+function updateFlAfter(){
+  var n=flInputs(),d=$('fl-date').value||todayStr();
+  if(!n.total){$('fl-after').textContent='';return;}
+  var before=flBase(d),after=before+(flKind==='added'?1:-1)*n.total;
+  $('fl-after').textContent='Birds on '+dayLabel(d)+' before: '+fmtNum(before)+'. After this change: '+fmtNum(Math.max(0,after))+'.';
+}
+function openFlockForm(id){
+  editingFlock=id||null;var e=id?(state.flock[id]||{}):{};
+  $('fl-form-title').textContent=id?'Edit bird change':'Record a change';
+  var f=Math.floor(num(e.female)),m=Math.floor(num(e.male)),u=e.count!==undefined?Math.max(0,Math.floor(num(e.count))-f-m):0;
+  $('fl-female').value=f?String(f):'';$('fl-male').value=m?String(m):'';$('fl-count').value=u?String(u):'';
+  $('fl-date').value=e.date||todayStr();$('fl-date').max=todayStr();
+  $('fl-note').value=e.note||'';
+  $('fl-err').hidden=true;$('fl-del').hidden=!id;$('fl-del').textContent='Delete';$('fl-save').disabled=false;
+  $('fl-form').hidden=false;setFlKind(e.kind||(Object.keys(state.flock).length?'died':'added'));
+  $('fl-form').scrollIntoView({block:'nearest'});$('fl-female').focus();
+}
+function closeFlockForm(){$('fl-form').hidden=true;editingFlock=null;}
+function saveFlock(ev){
+  ev.preventDefault();
+  var n=flInputs(),d=$('fl-date').value;
+  function bad(m){showErr('fl-err',m);}
+  if(n.total<1)return bad('Enter how many birds, at least 1.');
+  if(!validDate(d))return bad('Pick a date.');
+  if(d>todayStr())return bad('The date cannot be in the future.');
+  if(flKind!=='added'){var have=flBase(d);if(n.total>have)return bad('You only had '+fmtNum(have)+' birds on that date. Add your birds first, or check the date.');}
+  $('fl-err').hidden=true;
+  var old=editingFlock?state.flock[editingFlock]:null,rec={date:d,kind:flKind,count:n.total,ts:old&&old.ts!==undefined?old.ts:Date.now()};
+  if(n.f)rec.female=n.f;if(n.m)rec.male=n.m;
+  var note=$('fl-note').value.trim();if(note)rec.note=note;
+  $('fl-save').disabled=true;
+  putDoc('flock',rec,editingFlock).then(function(){closeFlockForm();renderFlock();renderStrip();toast('Saved');},function(e){$('fl-save').disabled=false;bad(errMsg(e));});
+}
+function deleteFlock(){
+  if(!armDelete($('fl-del')))return;
+  var id=editingFlock;if(!id)return;
+  delDoc('flock',id).then(function(){closeFlockForm();renderFlock();renderStrip();toast('Deleted');},function(e){showErr('fl-err',errMsg(e));});
+}
+
+/* ---------- Batches (hatching) ---------- */
+var editingBatch=null;
+function renderBatches(){
+  var host=$('b-list'),ids=Object.keys(state.batches).sort(function(a,b){return state.batches[a].date<state.batches[b].date?1:-1;});
+  if(!ids.length){host.innerHTML='';return;}
+  var t=todayStr();
+  host.innerHTML='<div class="list">'+ids.map(function(id){
+    var b=state.batches[id],i=batchInfo(b,t),line;
+    if(i.status==='hatched')line=fmtNum(num(b.hatched))+' hatched'+(i.hatchRate!==null?' ('+Math.round(i.hatchRate)+'% of eggs set)':'')+(b.survived!==undefined?' · '+fmtNum(num(b.survived))+' survived'+(i.survRate!==null?' ('+Math.round(i.survRate)+'% of hatched)':''):' · survivors not entered yet');
+    else line=i.status==='overdue'?'Hatch day has passed ('+dayLabel(i.expected)+'). Tap to enter how many hatched.':'Expected hatch '+dayLabel(i.expected)+' ('+(i.daysLeft===0?'today':'in '+i.daysLeft+(i.daysLeft===1?' day':' days'))+')';
+    var canAdd=b.survived!==undefined&&num(b.survived)>0&&!b.added;
+    return '<div class="bitem"><button class="fitem" type="button" data-bid="'+esc(id)+'"><span><b>Set '+esc(dayLabel(b.date))+' · '+esc(fmtNum(num(b.eggsSet)))+' eggs</b><span class="sub">'+esc(line)+(b.note?' · '+esc(b.note):'')+(b.added?' · added to your birds':'')+'</span></span></button>'+
+      (canAdd?'<div class="bact"><button class="btn ghost small" type="button" data-bflock="'+esc(id)+'">Add '+esc(fmtNum(num(b.survived)))+' survivors to my birds</button></div>':'')+'</div>';
+  }).join('')+'</div>';
+}
+function openBatchForm(id){
+  editingBatch=id||null;var b=id?(state.batches[id]||{}):{};
+  $('b-form-title').textContent=id?'Edit batch':'Add a batch';
+  $('b-date').value=b.date||todayStr();
+  $('b-set').value=b.eggsSet!==undefined?String(b.eggsSet):'';
+  $('b-hatched').value=b.hatched!==undefined?String(b.hatched):'';
+  $('b-surv').value=b.survived!==undefined?String(b.survived):'';
+  $('b-note').value=b.note||'';
+  $('b-err').hidden=true;$('b-del').hidden=!id;$('b-del').textContent='Delete';$('b-save').disabled=false;
+  $('b-form').hidden=false;$('b-form').scrollIntoView({block:'nearest'});$('b-set').focus();
+}
+function closeBatchForm(){$('b-form').hidden=true;editingBatch=null;}
+function saveBatch(ev){
+  ev.preventDefault();
+  var d=$('b-date').value,set=parseField($('b-set').value),h=parseField($('b-hatched').value),sv=parseField($('b-surv').value);
+  function bad(m){showErr('b-err',m);}
+  if(!validDate(d))return bad('Pick the date the eggs were set.');
+  if(set===null||Math.floor(set)<1)return bad('Enter how many eggs you set.');
+  if(h!==null&&Math.floor(h)>Math.floor(set))return bad('Chicks hatched cannot be more than eggs set.');
+  if(sv!==null&&Math.floor(sv)>(h===null?0:Math.floor(h)))return bad('Chicks survived cannot be more than chicks hatched. Enter hatched first.');
+  var old=editingBatch?state.batches[editingBatch]:null,rec={date:d,eggsSet:Math.floor(set),ts:old&&old.ts!==undefined?old.ts:Date.now()};
+  if(h!==null)rec.hatched=Math.floor(h);if(sv!==null)rec.survived=Math.floor(sv);
+  var nt=$('b-note').value.trim();if(nt)rec.note=nt;
+  if(old&&old.added)rec.added=true;
+  $('b-save').disabled=true;
+  putDoc('batches',rec,editingBatch).then(function(){closeBatchForm();renderBatches();toast('Batch saved');},function(e){$('b-save').disabled=false;bad(errMsg(e));});
+}
+function deleteBatch(){
+  if(!armDelete($('b-del')))return;
+  var id=editingBatch;if(!id)return;
+  delDoc('batches',id).then(function(){closeBatchForm();renderBatches();toast('Batch deleted');},function(e){showErr('b-err',errMsg(e));});
+}
+function addSurvivors(id){
+  var b=state.batches[id];if(!b||b.added)return;
+  var n=Math.floor(num(b.survived));if(n<1)return;
+  putDoc('flock',{date:todayStr(),kind:'added',count:n,note:'Chicks from batch set '+b.date,ts:Date.now()}).then(function(){
+    return putDoc('batches',Object.assign({},b,{added:true}),id);
+  }).then(function(){renderFlock();renderStrip();toast(n+' birds added to your flock');},function(e){toast(errMsg(e));});
+}
+
+/* ---------- Reminders ---------- */
+var editingRem=null;
+function remText(x){
+  var st=x.s;
+  if(st.state==='overdue')return 'Overdue by '+(-st.days)+(st.days===-1?' day':' days');
+  if(st.state==='today')return 'Due today';
+  return 'Due '+shortDay(x.r.due)+' (in '+st.days+(st.days===1?' day':' days')+')';
+}
+function remRow(x,showType){
+  var late=x.s.state==='overdue'||x.s.state==='today';
+  return '<div class="rem-row'+(late?' rem-late':'')+'"><button class="rem-main" type="button" data-rid="'+esc(x.id)+'"><b>'+esc(x.r.title)+'</b><span class="sub">'+esc(remText(x))+(showType?' · '+esc(x.r.type==='vaccine'?'Vaccination':x.r.type==='clean'?'Cleaning':'Other'):'')+(num(x.r.repeat)>0?' · repeats every '+num(x.r.repeat)+(num(x.r.repeat)===1?' day':' days'):'')+'</span></button><button class="btn small" type="button" data-rdone="'+esc(x.id)+'">Done</button></div>';
+}
+function remItems(){
+  var t=todayStr();
+  return Object.keys(state.reminders).map(function(id){var r=state.reminders[id];return {id:id,r:r,s:remStatus(r,t)};}).sort(function(a,b){return a.r.due<b.r.due?-1:a.r.due>b.r.due?1:0;});
+}
+function renderTodayRem(){
+  var host=$('rem-today');if(!host)return;
+  var due=remItems().filter(function(x){return x.s.state==='overdue'||x.s.state==='today'||x.s.state==='soon';});
+  host.hidden=!due.length;
+  if(due.length)host.innerHTML='<h2>Reminders</h2>'+due.map(function(x){return remRow(x,true);}).join('');
+}
+function renderRems(){
+  var host=$('r-list'),items=remItems();
+  if(!items.length){host.innerHTML='';return;}
+  var act=items.filter(function(x){return x.s.state!=='done';}),done=items.filter(function(x){return x.s.state==='done';});
+  host.innerHTML='<div class="card">'+act.map(function(x){return remRow(x,true);}).join('')+
+    done.map(function(x){return '<div class="rem-row"><button class="rem-main" type="button" data-rid="'+esc(x.id)+'"><b>'+esc(x.r.title)+'</b><span class="sub">Finished'+(x.r.lastDone?' on '+esc(shortDay(x.r.lastDone)):'')+'</span></button></div>';}).join('')+'</div>';
+}
+function openRemForm(id){
+  editingRem=id||null;var r=id?(state.reminders[id]||{}):{};
+  $('r-form-title').textContent=id?'Edit reminder':'Add a reminder';
+  $('r-title').value=r.title||'';$('r-type').value=r.type||'vaccine';$('r-due').value=r.due||todayStr();$('r-repeat').value=String(num(r.repeat)||0);
+  if($('r-repeat').value!==String(num(r.repeat)||0)){var o=document.createElement('option');o.value=String(num(r.repeat));o.textContent='Every '+num(r.repeat)+' days';$('r-repeat').appendChild(o);$('r-repeat').value=o.value;}
+  $('r-err').hidden=true;$('r-del').hidden=!id;$('r-del').textContent='Delete';$('r-save').disabled=false;
+  $('r-form').hidden=false;$('r-form').scrollIntoView({block:'nearest'});$('r-title').focus();
+}
+function closeRemForm(){$('r-form').hidden=true;editingRem=null;}
+function saveRem(ev){
+  ev.preventDefault();
+  var title=$('r-title').value.trim(),due=$('r-due').value;
+  function bad(m){showErr('r-err',m);}
+  if(!title)return bad('Enter what to do, for example Vaccination.');
+  if(!validDate(due))return bad('Pick the due date.');
+  var old=editingRem?state.reminders[editingRem]:null;
+  var rec={title:title,type:$('r-type').value,due:due,repeat:Math.floor(num($('r-repeat').value)),ts:old&&old.ts!==undefined?old.ts:Date.now()};
+  if(old&&old.lastDone)rec.lastDone=old.lastDone;
+  $('r-save').disabled=true;
+  putDoc('reminders',rec,editingRem).then(function(){closeRemForm();renderRems();renderTodayRem();toast('Reminder saved');},function(e){$('r-save').disabled=false;bad(errMsg(e));});
+}
+function deleteRem(){
+  if(!armDelete($('r-del')))return;
+  var id=editingRem;if(!id)return;
+  delDoc('reminders',id).then(function(){closeRemForm();renderRems();renderTodayRem();toast('Reminder deleted');},function(e){showErr('r-err',errMsg(e));});
+}
+function doneRem(id){
+  var r=state.reminders[id];if(!r)return;
+  var n=remDone(r,todayStr());
+  putDoc('reminders',n,id).then(function(){renderRems();renderTodayRem();toast(n.done?'Marked done':'Done. Next one is '+shortDay(n.due));},function(e){toast(errMsg(e));});
+}
+
+/* ---------- Buyers and sales ---------- */
+var editingSale=null,slAmtTouched=false,slPaidTouched=false,slRange='all',slMetric='eggs',slUnpaid=false;
+function renderSales(){
+  $('sl-owed').textContent=fmtTk(owedTotal(state.sales));
+  var all=Object.keys(state.sales).map(function(id){return {id:id,s:state.sales[id]};});
+  var names={};all.forEach(function(x){var n=String(x.s.buyer||'').trim();if(n)names[n.toLowerCase()]=n;});
+  $('sl-buyers').innerHTML=Object.keys(names).map(function(k){return '<option value="'+esc(names[k])+'"></option>';}).join('');
+  var cmp=$('sl-compare'),owe=$('sl-owe'),list=$('sl-list');
+  if(!state.ready){list.innerHTML='<p class="sub">Loading your records…</p>';return;}
+  if(!all.length){cmp.hidden=true;owe.hidden=true;list.innerHTML=emptyBlock('No sales recorded yet','Tap Add sale to record who bought eggs, how much they paid and what they still owe.',null);return;}
+  var ms={};all.forEach(function(x){if(x.s.date)ms[x.s.date.slice(0,7)]=1;});
+  var months=Object.keys(ms).sort().reverse();if(slRange!=='all'&&months.indexOf(slRange)<0)slRange='all';
+  var bs=buyerStats(state.sales,slRange).sort(function(a,b){return slMetric==='eggs'?b.eggs-a.eggs:b.amount-a.amount;});
+  var val=function(b){return slMetric==='eggs'?b.eggs:b.amount;},tot=bs.reduce(function(a,b){return a+val(b);},0),top=bs.length?val(bs[0]):0;
+  var h='<div class="moneyhead"><h2>Who buys the most</h2><select id="sl-range" class="inp" style="max-width:150px;min-height:40px" aria-label="Period"><option value="all">All time</option>'+months.map(function(m){return '<option value="'+m+'"'+(m===slRange?' selected':'')+'>'+esc(monthLabel(m))+'</option>';}).join('')+'</select></div>'+
+    '<div class="chips kind-chips" role="group" aria-label="Compare by"><button class="chip" type="button" data-metric="eggs" aria-pressed="'+(slMetric==='eggs')+'">By eggs</button><button class="chip" type="button" data-metric="amount" aria-pressed="'+(slMetric==='amount')+'">By Tk</button></div>';
+  h+='<ul class="cb">'+bs.slice(0,8).map(function(b){
+    var w=top>0?Math.max(2,Math.round(val(b)/top*100)):2,pct=tot>0?Math.round(val(b)/tot*100):0;
+    return '<li><div class="cb-top"><span class="lab"><b>'+esc(b.name)+'</b></span><b>'+esc(slMetric==='eggs'?fmtNum(b.eggs)+' eggs':fmtTk(b.amount))+'</b><span class="pct">'+pct+'%</span></div><div class="bar rev"><i style="width:'+w+'%"></i></div><span class="sub">'+esc(slMetric==='eggs'?fmtTk(b.amount):fmtNum(b.eggs)+' eggs')+' · '+b.orders+(b.orders===1?' order':' orders')+(b.owed>0?' · ':'')+(b.owed>0?'<span class="bad-text">owes '+esc(fmtTk(b.owed))+'</span>':'')+'</span></li>';
+  }).join('')+'</ul>'+(bs.length>8?'<p class="sub">Showing the top 8 of '+bs.length+' buyers.</p>':'');
+  cmp.hidden=false;cmp.innerHTML=h;
+  var debtors=buyerStats(state.sales,'all').filter(function(b){return b.owed>0;}).sort(function(a,b){return b.owed-a.owed;});
+  owe.hidden=!debtors.length;
+  if(debtors.length)owe.innerHTML='<h2>Who still owes you</h2>'+debtors.map(function(b){return '<div class="kv"><dt>'+esc(b.name)+'</dt><dd class="bad-text">'+esc(fmtTk(b.owed))+'</dd></div>';}).join('');
+  var rows=all.filter(function(x){return !slUnpaid||saleOwed(x.s)>0;}).sort(function(a,b){return a.s.date<b.s.date?1:a.s.date>b.s.date?-1:num(b.s.ts)-num(a.s.ts);});
+  list.innerHTML='<div class="chips kind-chips"><button class="chip" type="button" id="sl-filter" aria-pressed="'+slUnpaid+'">Show unpaid only</button></div>'+
+    (rows.length?'<div class="list">'+rows.map(function(x){var s=x.s,ow=saleOwed(s);
+      return '<button class="fitem" type="button" data-sid="'+esc(x.id)+'"><span><b>'+esc(s.buyer||'Unknown')+'</b><span class="sub">'+esc(dayLabel(s.date))+' · '+esc(fmtNum(num(s.eggs)))+' eggs · '+esc(fmtTk(num(s.amount)))+(s.note?' · '+esc(s.note):'')+'</span></span><span class="amt '+(ow>0?'bad-text':'good-text')+'">'+(ow>0?'Owes '+esc(fmtTk(ow)):'Paid')+'</span></button>';}).join('')+'</div>':'<p class="sub">No unpaid sales. Everyone has paid.</p>');
+}
+function slUpdateAuto(){
+  var e=parseField($('sl-eggs').value),unit=unitOf(state.settings);
+  if(!slAmtTouched&&e!==null)$('sl-amount').value=String(r2(Math.floor(e)*state.settings.price/12));
+  if(!slPaidTouched&&!editingSale)$('sl-paid').value=$('sl-amount').value;
+  $('sl-hint').textContent=e!==null?('Amount is filled in at your usual price of '+fmtTk(r2(toUnitPrice(state.settings.price,unit)))+' per '+unit+'. Change it if the price was different.'):'';
+}
+function openSaleForm(id){
+  editingSale=id||null;var s=id?(state.sales[id]||{}):{};
+  slAmtTouched=!!id;slPaidTouched=!!id;
+  $('sl-form-title').textContent=id?'Edit sale':'Add a sale';
+  $('sl-buyer').value=s.buyer||'';$('sl-date').value=s.date||todayStr();$('sl-date').max=todayStr();
+  $('sl-eggs').value=s.eggs!==undefined?String(s.eggs):'';$('sl-amount').value=s.amount!==undefined?String(s.amount):'';$('sl-paid').value=s.paid!==undefined?String(s.paid):'';
+  $('sl-note').value=s.note||'';$('sl-hint').textContent='';
+  $('sl-err').hidden=true;$('sl-del').hidden=!id;$('sl-del').textContent='Delete';$('sl-save').disabled=false;
+  $('sl-form').hidden=false;$('sl-form').scrollIntoView({block:'nearest'});$('sl-buyer').focus();
+}
+function closeSaleForm(){$('sl-form').hidden=true;editingSale=null;}
+function saveSale(ev){
+  ev.preventDefault();
+  var buyer=$('sl-buyer').value.trim(),d=$('sl-date').value,e=parseField($('sl-eggs').value),a=parseField($('sl-amount').value),p=parseField($('sl-paid').value);
+  function bad(m){showErr('sl-err',m);}
+  if(!buyer)return bad('Enter who bought the eggs.');
+  if(!validDate(d))return bad('Pick a date.');
+  if(e===null||Math.floor(e)<1)return bad('Enter how many eggs, at least 1.');
+  if(a===null)return bad('Enter the amount in Tk.');
+  if(p===null)p=0;
+  if(p>a)return bad('Paid cannot be more than the amount.');
+  var old=editingSale?state.sales[editingSale]:null,rec={date:d,buyer:buyer,eggs:Math.floor(e),amount:r2(a),paid:r2(p),ts:old&&old.ts!==undefined?old.ts:Date.now()};
+  var nt=$('sl-note').value.trim();if(nt)rec.note=nt;
+  $('sl-save').disabled=true;
+  putDoc('sales',rec,editingSale).then(function(){closeSaleForm();renderSales();toast('Sale saved');},function(er){$('sl-save').disabled=false;bad(errMsg(er));});
+}
+function deleteSale(){
+  if(!armDelete($('sl-del')))return;
+  var id=editingSale;if(!id)return;
+  delDoc('sales',id).then(function(){closeSaleForm();renderSales();toast('Sale deleted');},function(e){showErr('sl-err',errMsg(e));});
+}
+
 /* ---------- Settings ---------- */
 function renderSettings(){
+  var unit=unitOf(state.settings);
   if(document.activeElement!==$('st-business'))$('st-business').value=state.settings.business||'';
-  if(document.activeElement!==$('st-price'))$('st-price').value=String(state.settings.price);
+  $('st-unit').value=unit;
+  $('st-price-label').textContent='Price per '+unit+' of eggs (Tk)';
+  if(document.activeElement!==$('st-price'))$('st-price').value=String(r2(toUnitPrice(state.settings.price,unit)));
+  if(document.activeElement!==$('st-low'))$('st-low').value=num(state.settings.lowRate)>0?String(num(state.settings.lowRate)):'';
   renderSync();
   $('storage-line').textContent=state.mode==='db'?'Records are saved on this phone first, then uploaded to your Google Sheet.':'Records are saved on this phone only.';
 }
-function saveSettings(){
-  var p=parseField($('st-price').value);
-  if(p===null){$('st-price').value=String(state.settings.price);toast('Enter a price in Tk');return;}
-  var next={business:$('st-business').value.trim(),price:p};
+function persistSettings(next,msg){
   state.settings=next;
-  var w=db?enqueue('settings/main',function(){return db.doc('settings/main').set(next);}):(saveLocal()?Promise.resolve():Promise.reject({code:'local',message:'This browser blocked saving on this phone.'}));
-  w.then(function(){toast('Settings saved');updateSub();if(!dirty)populateForm();},function(e){toast(errMsg(e));});
+  var w=db?enqueue('settings/main',function(){return db.doc('settings/main').set(next);}):localWrite(function(){});
+  return w.then(function(){toast(msg||'Settings saved');updateSub();renderSettings();if(!dirty)populateForm();else renderStrip();},function(e){toast(errMsg(e));});
+}
+function saveSettings(ev){
+  var unit=unitOf(state.settings),p=parseField($('st-price').value),next=Object.assign({},state.settings);
+  var kind=ev&&ev.target&&ev.target.id;
+  next.business=$('st-business').value.trim();
+  if(kind==='st-unit'){next.priceUnit=$('st-unit').value==='hali'?'hali':'dozen';}
+  else{
+    if(p===null){renderSettings();toast('Enter a price in Tk');return;}
+    var shown=String(r2(toUnitPrice(state.settings.price,unit)));
+    next.price=($('st-price').value===shown)?state.settings.price:fromUnitPrice(p,unit);
+  }
+  var low=parseField($('st-low').value);next.lowRate=(low!==null&&low>0)?Math.min(100,Math.floor(low)):0;
+  persistSettings(next);
 }
 function exportFile(kind){
   if(!downloads)return;
@@ -742,18 +1399,18 @@ function exportFile(kind){
 }
 
 /* ---------- tabs ---------- */
-var SUBS={today:'Eggs sold and costs, in Tk',history:'Every saved day',summary:'Profit, costs and payback',setup:'One-time costs',settings:'Settings and backup'};
+var SUBS={today:'Eggs sold and costs, in Tk',history:'Every saved day',summary:'Profit, costs and payback',flock:'Birds, hatching and reminders',sales:'Buyers and unpaid orders',setup:'One-time costs',settings:'Settings and backup'};
 function updateSub(){var b=state.settings.business;$('sub').textContent=(b?b+' · ':'')+SUBS[tab];}
 function renderCurrent(){
   if(tab==='today')renderStrip();else if(tab==='history')renderHistory();else if(tab==='summary')renderSummary();
-  else if(tab==='setup')renderSetup();else if(tab==='settings')renderSettings();
+  else if(tab==='flock')renderFlock();else if(tab==='sales')renderSales();else if(tab==='setup')renderSetup();else if(tab==='settings')renderSettings();
 }
 function showTab(name){
   var leaving=tab;
   if(leaving==='today'&&name!=='today')saveDraft(curDate);
   if(name==='settings'&&tab!=='settings')prevTab=tab;
   tab=name;
-  ['today','history','summary','setup','settings'].forEach(function(t){$('p-'+t).hidden=t!==name;});
+  ['today','history','summary','flock','sales','setup','settings'].forEach(function(t){$('p-'+t).hidden=t!==name;});
   Array.prototype.forEach.call(document.querySelectorAll('.tabs button'),function(b){
     if(b.dataset.tab===name)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');
   });
@@ -762,9 +1419,11 @@ function showTab(name){
 }
 
 /* ---------- data loading ---------- */
-var got={settings:false,days:false,setup:false};
+var got={settings:false};COLLS.forEach(function(n){got[n]=false;});
+function allGot(){return got.settings&&COLLS.every(function(n){return got[n];});}
+function markAllGot(){got.settings=true;COLLS.forEach(function(n){got[n]=true;});}
 function checkReady(){
-  if(state.ready||!(got.settings&&got.days&&got.setup))return;
+  if(state.ready||!allGot())return;
   state.ready=true;applyReadOnly();setStatus('idle');populateForm();renderCurrent();
 }
 function markRemote(){
@@ -776,15 +1435,12 @@ function markRemote(){
 function subscribeAll(){
   function fail(e){setStatus('error',errMsg(e));}
   db.doc('settings/main').onSnapshot(function(s){
-    state.settings=Object.assign({business:'',price:10},s.exists?s.data():{});
+    state.settings=Object.assign({},DEF_SETTINGS,s.exists?s.data():{});
     got.settings=true;updateSub();markRemote();
   },fail);
-  db.collection('days').onSnapshot(function(q){
-    var m={};q.docs.forEach(function(d){m[d.id]=d.data();});state.days=m;got.days=true;markRemote();
-  },fail);
-  db.collection('setup').onSnapshot(function(q){
-    var m={};q.docs.forEach(function(d){m[d.id]=d.data();});state.setup=m;got.setup=true;markRemote();
-  },fail);
+  COLLS.forEach(function(n){db.collection(n).onSnapshot(function(q){
+    var m={};q.docs.forEach(function(d){m[d.id]=d.data();});state[n]=m;got[n]=true;markRemote();
+  },fail);});
 }
 /* ---------- phone-first store: saves on the phone, then uploads to the Google Sheet ---------- */
 var CFG_KEY='qet2-config', CACHE_KEY='qet2-cache', Q_KEY='qet2-queue', URL_KEY='qet2-sheeturl', SYNC_KEY='qet2-lastsync';
@@ -806,9 +1462,9 @@ function sheetCall(cfg,req){
 
 function makeSheetDb(cfg,onStatus){
   var cache=lsGet(CACHE_KEY)||{},queue=lsGet(Q_KEY)||[];
-  ['settings','days','setup'].forEach(function(n){if(!cache[n]||typeof cache[n]!=='object')cache[n]={};});
+  ['settings'].concat(COLLS).forEach(function(n){if(!cache[n]||typeof cache[n]!=='object')cache[n]={};});
   var hadCache=lsGet(CACHE_KEY)!==null;
-  var last={settings:'',days:'',setup:''},ls={settings:[],days:[],setup:[]};
+  var last={settings:''},ls={settings:[]};COLLS.forEach(function(n){last[n]='';ls[n]=[];});
   var running=null,inflight=null,first=true,errText='',authBad=false,lastSync=lsGet(SYNC_KEY)||0,sheetUrl=lsGet(URL_KEY)||'',POLL=window.__POLL_MS||20000;
   function persist(){return lsSet(CACHE_KEY,cache)&&lsSet(Q_KEY,queue);}
   function status(){onStatus({pending:queue.length,error:errText,authBad:authBad,syncing:!!running,last:lastSync,sheetUrl:sheetUrl});}
@@ -818,9 +1474,9 @@ function makeSheetDb(cfg,onStatus){
     var j=JSON.stringify(cache[n]);if(!force&&j===last[n])return;last[n]=j;
     ls[n].forEach(function(f){f(n==='settings'?docSnap():colSnap(n));});
   }
-  function emitAll(force){['settings','days','setup'].forEach(function(n){emit(n,force);});first=false;}
+  function emitAll(force){['settings'].concat(COLLS).forEach(function(n){emit(n,force);});first=false;}
   function apply(r){
-    cache.settings=r.settings||{};cache.days=r.days||{};cache.setup=r.setup||{};
+    cache.settings=r.settings||{};COLLS.forEach(function(n){cache[n]=r[n]||{};});
     if(r.sheetUrl){sheetUrl=r.sheetUrl;lsSet(URL_KEY,sheetUrl);}
     lastSync=Date.now();lsSet(SYNC_KEY,lastSync);persist();emitAll(first);
   }
@@ -942,7 +1598,7 @@ function wireConnect(){
   $('cn-cancel').addEventListener('click',hideConnect);
   $('cn-local').addEventListener('click',function(){
     lsSet(CFG_KEY,{local:true});hideConnect();
-    if(!db){state.mode='local';loadLocal();got.settings=got.days=got.setup=true;checkReady();updateBanner();renderCurrent();}
+    if(!db){state.mode='local';loadLocal();markAllGot();checkReady();updateBanner();renderCurrent();}
   });
   $('sync-now').addEventListener('click',function(){if(db){db.sync();toast('Syncing…');}});
   $('conn-change').addEventListener('click',function(){showConnect(null,true);});
@@ -951,7 +1607,7 @@ function startStore(){
   wireConnect();
   var cfg=lsGet(CFG_KEY),h=readHash();
   if(h){showConnect(h,false);}
-  else if(cfg&&cfg.local){state.mode='local';loadLocal();got.settings=got.days=got.setup=true;checkReady();updateBanner();}
+  else if(cfg&&cfg.local){state.mode='local';loadLocal();markAllGot();checkReady();updateBanner();}
   else if(cfg&&cfg.url){startSheet(cfg);}
   else showConnect(null,false);
   window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();installEvt=e;$('install-card').hidden=false;});
@@ -973,6 +1629,8 @@ function init(){
   $('f-eggs').addEventListener('input',function(){sanitize(this,false);onEdit();});
   $('f-price').addEventListener('input',function(){sanitize(this,true);onEdit();});
   CATS.forEach(function(c){$('c-'+c.key).addEventListener('input',function(){sanitize(this,true);onEdit();});});
+  $('f-collected').addEventListener('input',function(){sanitize(this,false);onEdit();});
+  $('f-cracked').addEventListener('input',function(){sanitize(this,false);onEdit();});
   $('f-notes').addEventListener('input',onEdit);
   $('f-othernote').addEventListener('input',onEdit);
   Array.prototype.forEach.call(document.querySelectorAll('[data-add]'),function(b){
@@ -981,14 +1639,11 @@ function init(){
       $('f-eggs').value=a==='clear'?'':String(cur+Number(a));onEdit();
     });
   });
-  $('price-reset').addEventListener('click',function(){$('f-price').value=String(state.settings.price);onEdit();});
+  $('price-reset').addEventListener('click',function(){setPriceField(state.settings.price);onEdit();});
   $('d-prev').addEventListener('click',function(){gotoDate(shiftDay(-1));});
   $('d-next').addEventListener('click',function(){var n=shiftDay(1);if(n<=todayStr())gotoDate(n);});
-  $('d-pick').addEventListener('click',function(e){
-    var inp=$('d-input');
-    if(e.target===inp&&inp.showPicker===undefined)return;
-    try{if(inp.showPicker){e.preventDefault();inp.showPicker();}}catch(err){}
-  });
+  $('d-pick').addEventListener('click',function(e){e.preventDefault();toggleCal();});
+  $('cal').addEventListener('click',onCalClick);
   Array.prototype.forEach.call(document.querySelectorAll('[data-ago]'),function(b){
     b.addEventListener('click',function(){
       var t=fromYmd(todayStr()),k=b.dataset.ago,n=Number(k.slice(1));
@@ -1016,8 +1671,8 @@ function init(){
       clearTimer=setTimeout(function(){b.dataset.arm='0';b.textContent='Clear this day';},4000);return;}
     b.dataset.arm='0';b.textContent='Clear this day';
     if(!state.ready||state.readOnly)return;
-    $('f-eggs').value='';CATS.forEach(function(c){$('c-'+c.key).value='';});$('f-notes').value='';$('f-othernote').value='';
-    $('f-price').value=String(state.settings.price);dirty=true;flushSave();renderStrip();toast('Day cleared');
+    $('f-eggs').value='';CATS.forEach(function(c){$('c-'+c.key).value='';});$('f-notes').value='';$('f-othernote').value='';$('f-collected').value='';$('f-cracked').value='';
+    setPriceField(state.settings.price);dirty=true;flushSave();renderStrip();toast('Day cleared');
   });
 
   Array.prototype.forEach.call(document.querySelectorAll('.tabs button'),function(b){b.addEventListener('click',function(){showTab(b.dataset.tab);});});
@@ -1026,10 +1681,41 @@ function init(){
     var go=e.target.closest&&e.target.closest('[data-go]');if(go){showTab(go.dataset.go);return;}
     var day=e.target.closest&&e.target.closest('.day');
     if(day){var d=day.dataset.date;showTab('today');gotoDate(d);return;}
+    var mr=e.target.closest&&e.target.closest('[data-mrow]');if(mr){var k=mr.dataset.mrow;openMoney[k]=!openMoney[k];renderSummary();return;}
+    var dd=e.target.closest&&e.target.closest('[data-dd]');if(dd){showTab('today');gotoDate(dd.dataset.dd);return;}
+    var ds=e.target.closest&&e.target.closest('[data-ds]');if(ds){showTab('setup');openSetupForm(ds.dataset.ds);return;}
+    var sid=e.target.closest&&e.target.closest('[data-sid]');if(sid){openSaleForm(sid.dataset.sid);return;}
+    var bid=e.target.closest&&e.target.closest('[data-bid]');if(bid){openBatchForm(bid.dataset.bid);return;}
+    var bfl=e.target.closest&&e.target.closest('[data-bflock]');if(bfl){addSurvivors(bfl.dataset.bflock);return;}
+    var rdn=e.target.closest&&e.target.closest('[data-rdone]');if(rdn){doneRem(rdn.dataset.rdone);return;}
+    var rid=e.target.closest&&e.target.closest('[data-rid]');if(rid){showTab('flock');openRemForm(rid.dataset.rid);return;}
+    var mt=e.target.closest&&e.target.closest('[data-metric]');if(mt){slMetric=mt.dataset.metric;renderSales();return;}
+    if(e.target.id==='sl-filter'){slUnpaid=!slUnpaid;renderSales();return;}
+    var fi=e.target.closest&&e.target.closest('[data-fid]');if(fi){openFlockForm(fi.dataset.fid);return;}
     var it=e.target.closest&&e.target.closest('.item');if(it){openSetupForm(it.dataset.id);return;}
     var sg=e.target.closest&&e.target.closest('[data-sg]');if(sg){var s=SUGGEST[Number(sg.dataset.sg)];openSetupForm(null,{name:s[0],cat:s[1]});}
   });
   $('h-month').addEventListener('change',renderHistory);
+  document.addEventListener('change',function(e){if(e.target&&e.target.id==='mo-range'){moneyRange=e.target.value;openMoney={};renderSummary();}if(e.target&&e.target.id==='sl-range'){slRange=e.target.value;renderSales();}});
+  $('fl-add').addEventListener('click',function(){openFlockForm(null);});
+  $('fl-form').addEventListener('submit',saveFlock);
+  $('fl-cancel').addEventListener('click',closeFlockForm);
+  $('fl-del').addEventListener('click',deleteFlock);
+  $('fl-kinds').addEventListener('click',function(e){var b=e.target.closest('[data-kind]');if(b)setFlKind(b.dataset.kind);});
+  ['fl-count','fl-female','fl-male'].forEach(function(id){$(id).addEventListener('input',function(){sanitize(this,false);updateFlAfter();});});
+  $('b-add').addEventListener('click',function(){openBatchForm(null);});
+  $('b-form').addEventListener('submit',saveBatch);$('b-cancel').addEventListener('click',closeBatchForm);$('b-del').addEventListener('click',deleteBatch);
+  ['b-set','b-hatched','b-surv'].forEach(function(id){$(id).addEventListener('input',function(){sanitize(this,false);});});
+  $('r-add').addEventListener('click',function(){openRemForm(null);});
+  $('r-form').addEventListener('submit',saveRem);$('r-cancel').addEventListener('click',closeRemForm);$('r-del').addEventListener('click',deleteRem);
+  $('sl-add').addEventListener('click',function(){openSaleForm(null);});
+  $('sl-form').addEventListener('submit',saveSale);$('sl-cancel').addEventListener('click',closeSaleForm);$('sl-del').addEventListener('click',deleteSale);
+  $('sl-eggs').addEventListener('input',function(){sanitize(this,false);slUpdateAuto();});
+  $('sl-amount').addEventListener('input',function(){sanitize(this,true);slAmtTouched=true;slUpdateAuto();});
+  $('sl-paid').addEventListener('input',function(){sanitize(this,true);slPaidTouched=true;});
+  $('sl-full').addEventListener('click',function(){$('sl-paid').value=$('sl-amount').value;slPaidTouched=true;});
+  $('sl-none').addEventListener('click',function(){$('sl-paid').value='0';slPaidTouched=true;});
+  $('fl-date').addEventListener('change',updateFlAfter);
   $('su-add').addEventListener('click',function(){openSetupForm(null);});
   $('s-form').addEventListener('submit',saveSetup);
   $('s-cancel').addEventListener('click',closeSetupForm);
@@ -1039,11 +1725,14 @@ function init(){
   $('st-business').addEventListener('change',saveSettings);
   $('st-price').addEventListener('input',function(){sanitize(this,true);});
   $('st-price').addEventListener('change',saveSettings);
+  $('st-unit').addEventListener('change',saveSettings);
+  $('st-low').addEventListener('input',function(){sanitize(this,false);});
+  $('st-low').addEventListener('change',saveSettings);
 
   document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')saveDraft(curDate);});
   window.addEventListener('pagehide',function(){saveDraft(curDate);});
 
-  var start='today';try{var t=localStorage.getItem('qet-tab');if(t&&/^(today|history|summary|setup)$/.test(t))start=t;}catch(e){}
+  var start='today';try{var t=localStorage.getItem('qet-tab');if(t&&/^(today|history|summary|flock|sales|setup)$/.test(t))start=t;}catch(e){}
   populateForm();showTab(start);
   startStore();
 }
