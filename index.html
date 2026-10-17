@@ -81,6 +81,17 @@ fieldset:disabled{opacity:.55}
 .chip:active{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .link{background:none;border:0;padding:6px 0;color:var(--focus);font-weight:600;text-decoration:underline;text-align:left}
 
+/* themes */
+:root[data-theme="sage"]{--bg:#E8EFE6;--surface:#F6FAF4;--surface-2:#EAF1E7;--ink:#1D2B21;--muted:#566A5B;--line:#CBD8C8;--brand:#3E5C46;--brand-ink:#EEF4EA;--focus:#2F6B3F;--c-cost:#4A6652;--submit:#2F6B3F;--submit-ink:#fff;--good:#1F7A45;--good-bg:#DDEFE3;--bad:#B3302A;--bad-bg:#FBE4E1;color-scheme:light}
+:root[data-theme="blue"]{--bg:#E8EEF6;--surface:#F7FAFE;--surface-2:#EBF0F8;--ink:#17233A;--muted:#52627C;--line:#CBD5E4;--brand:#2F4A73;--brand-ink:#EAF1FB;--focus:#2A5DA8;--c-cost:#44587A;--submit:#2A5DA8;--submit-ink:#fff;--good:#1B7A4B;--good-bg:#DCEFE5;--bad:#B3302A;--bad-bg:#FBE4E1;color-scheme:light}
+:root[data-theme="cream"]{--bg:#F5EEDF;--surface:#FFFBF1;--surface-2:#F6EEDD;--ink:#2E2418;--muted:#6B5C48;--line:#E0D3BA;--brand:#5B452D;--brand-ink:#F8EEDC;--focus:#8A5A00;--c-cost:#6B5A46;--submit:#6B4E2E;--submit-ink:#fff;--good:#2F7A3F;--good-bg:#E4EFD9;--bad:#B3302A;--bad-bg:#FBE4E1;color-scheme:light}
+/* lock screen */
+#lock{position:fixed;inset:0;z-index:100;background:var(--bg);overflow:auto;padding:calc(env(safe-area-inset-top) + 24px) 20px 32px}
+#lock .inner{max-width:360px;margin:8vh auto 0;display:flex;flex-direction:column;gap:14px;text-align:center}
+#lock h1{font:800 24px var(--font-display)}
+#lock .pin-in{text-align:center;font:800 28px var(--font-display);letter-spacing:.4em}
+.code-box{padding:12px;border:1px dashed var(--focus);border-radius:8px;font:800 20px var(--font-display);letter-spacing:.08em;text-align:center;user-select:all}
+.tabs button{padding-inline:0}
 /* Today */
 .cal-head{display:flex;align-items:center;justify-content:space-between;gap:4px}
 .cal-head b{font:800 17px var(--font-display);text-align:center;flex:1}
@@ -228,6 +239,23 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 .sec-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
 </style></head><body>
 
+<section id="lock" hidden>
+  <div class="inner">
+    <svg class="egg" viewBox="0 0 24 24" aria-hidden="true" style="margin:0 auto;width:48px;height:48px"><path class="shell" style="fill:var(--brand)" d="M12 2C7.6 2 4 9 4 14a8 8 0 0 0 16 0C20 9 16.4 2 12 2z"/></svg>
+    <h1>Quail Egg Tracker</h1>
+    <form id="lk-form" class="panel" novalidate>
+      <label class="field"><span>Enter your PIN</span><input id="lk-pin" class="inp pin-in" type="password" inputmode="numeric" autocomplete="off" maxlength="6"></label>
+      <p class="err" id="lk-err" role="alert" hidden></p>
+      <button id="lk-go" class="btn" type="submit">Unlock</button>
+    </form>
+    <button id="lk-forgot" class="link" type="button" style="text-align:center">Forgot PIN?</button>
+    <form id="lk-rec" class="panel" hidden novalidate>
+      <label class="field"><span>Recovery code (or your Google Sheet passcode)</span><input id="lk-code" class="inp" autocomplete="off" autocapitalize="characters" spellcheck="false"></label>
+      <p class="err" id="lk-rerr" role="alert" hidden></p>
+      <button class="btn ghost" type="submit">Reset PIN</button>
+    </form>
+  </div>
+</section>
 <section id="connect" hidden>
   <div class="inner">
     <h1>Connect your Google Sheet</h1>
@@ -280,26 +308,20 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 
     <div class="warn" id="low-alert" role="alert" hidden></div>
     <div class="card" id="rem-today" hidden></div>
+    <div class="card" id="sales-card">
+      <div class="sec-head"><h2>Egg sales</h2><button id="td-add-sale" class="btn small" type="button">Add sale</button></div>
+      <div id="sale-slot-today"></div>
+      <div id="td-sales"></div>
+    </div>
     <fieldset id="today-fields" disabled>
       <div class="card">
-        <h2>Eggs sold</h2>
-        <label class="field"><span>Number of eggs sold</span><input id="f-eggs" class="inp egg-input" inputmode="numeric" autocomplete="off" placeholder="0"></label>
-        <div class="chips" role="group" aria-label="Add eggs">
-          <button class="chip" type="button" data-add="4" aria-label="Add 4 eggs, one hali">+4</button>
-          <button class="chip" type="button" data-add="6">+6</button>
-          <button class="chip" type="button" data-add="12">+12</button>
-          <button class="chip" type="button" data-add="30">+30</button>
-          <button class="chip" type="button" data-add="clear">Clear</button>
-        </div>
-        <p class="sub" id="dozen-note"></p>
+        <h2>Egg count</h2>
         <div class="grid2">
           <label class="field"><span>Eggs collected (optional)</span><input id="f-collected" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="0"></label>
           <label class="field"><span>Cracked or broken</span><input id="f-cracked" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="0"></label>
         </div>
         <p class="sub" id="egg-balance"></p>
         <div class="bird-note"><span class="sub" id="bird-note"></span><button class="link" type="button" data-go="flock">Birds changed? Update the flock</button></div>
-        <label class="field"><span id="f-price-label">Price per dozen (Tk)</span><input id="f-price" class="inp num-r" inputmode="decimal" autocomplete="off"></label>
-        <button id="price-reset" class="link" type="button" hidden></button>
       </div>
 
       <div class="card">
@@ -416,29 +438,31 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
         <div><span class="label-caps">Buyers owe you</span><b id="sl-owed">Tk 0</b></div>
         <button id="sl-add" class="btn" type="button">Add sale</button>
       </div>
-      <p class="sub">Record who bought and who still owes you. Profit on the Today tab still comes from “Eggs sold” there. This tab tracks buyers and payments.</p>
+      <p class="sub">Sales you add on Today appear here automatically, and the other way round. Edit or delete a sale in either place and both stay in step.</p>
     </div>
+    <div id="sale-slot-buyers">
     <form id="sl-form" class="card" hidden novalidate>
       <h2 id="sl-form-title">Add a sale</h2>
-      <label class="field"><span>Buyer</span><input id="sl-buyer" class="inp" list="sl-buyers" autocomplete="off" maxlength="80" placeholder="Name or shop"></label>
+      <label class="field"><span>Buyer</span><input id="sl-buyer" class="inp" list="sl-buyers" autocomplete="off" maxlength="80" placeholder="Name or shop (blank = Walk-in)"></label>
       <datalist id="sl-buyers"></datalist>
+      <div class="chips" id="sl-recent" aria-label="Recent buyers"></div>
       <div class="grid2">
         <label class="field"><span>Date</span><input id="sl-date" class="inp" type="date"></label>
         <label class="field"><span>Eggs bought</span><input id="sl-eggs" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="0"></label>
       </div>
-      <div class="grid2">
-        <label class="field"><span>Amount (Tk)</span><input id="sl-amount" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"></label>
-        <label class="field"><span>Paid so far (Tk)</span><input id="sl-paid" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"></label>
-      </div>
-      <div class="chips"><button class="chip" type="button" id="sl-full">Paid in full</button><button class="chip" type="button" id="sl-none">Not paid yet</button></div>
+      <div class="chips" role="group" aria-label="Add eggs"><button class="chip" type="button" data-sadd="4">+4 (1 hali)</button><button class="chip" type="button" data-sadd="12">+12</button><button class="chip" type="button" data-sadd="30">+30</button></div>
+      <label class="field"><span>Total price (Tk)</span><input id="sl-amount" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"></label>
       <p class="sub" id="sl-hint"></p>
+      <div class="chips kind-chips" id="sl-st" role="group" aria-label="Payment"><button class="chip" type="button" data-st="full" aria-pressed="true">Fully paid</button><button class="chip" type="button" data-st="part" aria-pressed="false">Part paid</button><button class="chip" type="button" data-st="none" aria-pressed="false">Not paid yet</button></div>
+      <label class="field" id="sl-paid-wrap" hidden><span>Amount paid (Tk)</span><input id="sl-paid" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"></label>
+      <p class="sub" id="sl-bal"></p>
       <label class="field"><span>Note (optional)</span><input id="sl-note" class="inp" maxlength="120" autocomplete="off"></label>
       <p class="err" id="sl-err" role="alert" hidden></p>
       <div class="btn-row"><button id="sl-save" class="btn" type="submit">Save sale</button><button id="sl-cancel" class="btn ghost" type="button">Cancel</button><button id="sl-del" class="btn ghost danger" type="button" hidden>Delete</button></div>
     </form>
+    </div>
     <div class="card" id="sl-compare" hidden></div>
-    <div class="card" id="sl-owe" hidden></div>
-    <div id="sl-list" class="panel"></div>
+    <div id="by-list" class="panel"></div>
   </section>
 
   <section id="p-setup" class="panel" hidden>
@@ -486,6 +510,25 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
       <label class="field"><span>Low-laying alert: warn me below this laying rate (%)</span><input id="st-low" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="for example 60"></label>
       <p class="sub">Laying rate is eggs collected divided by hens. A sudden drop can be an early sign of sickness or heat. Leave empty to turn the alert off.</p>
     </div>
+    <div class="card"><h2>Look</h2><div class="chips kind-chips" id="th-chips" role="group" aria-label="Theme"></div></div>
+    <div class="card" id="pin-card">
+      <h2>PIN lock</h2>
+      <p class="sub" id="pin-state"></p>
+      <div class="btn-row" id="pin-btns"></div>
+      <form id="pin-form" class="panel" hidden novalidate>
+        <label class="field" id="pf-cur-w"><span>Current PIN</span><input id="pf-cur" class="inp" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></label>
+        <label class="field" id="pf-new-w"><span>New PIN (4 to 6 digits)</span><input id="pf-new" class="inp" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></label>
+        <label class="field" id="pf-cnf-w"><span>Confirm new PIN</span><input id="pf-cnf" class="inp" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></label>
+        <p class="err" id="pf-err" role="alert" hidden></p>
+        <div class="btn-row"><button id="pf-ok" class="btn" type="submit">Save</button><button id="pf-cancel" class="btn ghost" type="button">Cancel</button></div>
+      </form>
+      <div id="pin-code-box" hidden class="panel">
+        <p class="sub">Your recovery code. Write it down now. It is shown only once. If you forget your PIN, this code resets it.</p>
+        <div class="code-box" id="pin-code"></div>
+        <button id="pin-code-ok" class="btn" type="button">I have saved it</button>
+      </div>
+      <p class="sub">The PIN locks the app on this phone. It does not encrypt what the browser stores, and it does not lock your Google Sheet.</p>
+    </div>
     <div class="card" id="backup-card" hidden>
       <h2>Google Sheet and sync</h2>
       <p class="sub" id="sync-line"></p>
@@ -504,11 +547,11 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 <nav class="tabs" aria-label="Sections">
   <div class="wrap">
     <button type="button" data-tab="today" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M9 15h6"/></svg>Today</button>
+    <button type="button" data-tab="sales"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M16 6.5a3 3 0 0 1 0 5.5M18 14.8c1.8.7 3 2.3 3 5.2"/></svg>Buyers</button>
+    <button type="button" data-tab="flock"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="13" r="6.5"/><circle cx="13.2" cy="11.4" r=".7" fill="currentColor"/><path d="M17.5 12l3 1.2-3 1.2M9 19.5V22M13 19.5V22M7 7.5C7 5 9 3.5 11 4.5"/></svg>Birds</button>
+    <button type="button" data-tab="setup"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8l8-4 8 4v8l-8 4-8-4V8z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg>Setup</button>
     <button type="button" data-tab="history"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>History</button>
     <button type="button" data-tab="summary"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M12 20V5M19 20v-7"/></svg>Summary</button>
-    <button type="button" data-tab="flock"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="13" r="6.5"/><circle cx="13.2" cy="11.4" r=".7" fill="currentColor"/><path d="M17.5 12l3 1.2-3 1.2M9 19.5V22M13 19.5V22M7 7.5C7 5 9 3.5 11 4.5"/></svg>Birds</button>
-    <button type="button" data-tab="sales"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M16 6.5a3 3 0 0 1 0 5.5M18 14.8c1.8.7 3 2.3 3 5.2"/></svg>Buyers</button>
-    <button type="button" data-tab="setup"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8l8-4 8 4v8l-8 4-8-4V8z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg>Setup</button>
   </div>
 </nav>
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
@@ -547,10 +590,11 @@ var BN_DIGITS='০১২৩৪৫৬৭৮৯';
 function asciiDigits(s){return String(s).replace(/[০-৯]/g,function(ch){return String(BN_DIGITS.indexOf(ch));});}
 function num(v){if(v===null||v===undefined||v==='')return 0;var n=Number(v);return isFinite(n)?n:0;}
 function parseField(s){var t=asciiDigits(s).replace(/[,\s]/g,'');if(t===''||t==='.')return null;var n=Number(t);return(isFinite(n)&&n>=0)?n:null;}
-function dayCalc(rec,defPrice){
+function dayCalc(rec,defPrice,sd){
   var eggs=num(rec.eggs);
   var price=(rec.price===null||rec.price===undefined)?num(defPrice):num(rec.price);
   var revenue=eggs*price/12, cost=0;
+  if(sd){eggs+=num(sd.eggs);revenue+=num(sd.amount);}
   CATS.forEach(function(c){cost+=num(rec[c.key]);});
   return {eggs:eggs,revenue:revenue,cost:cost,net:revenue-cost,collected:num(rec.collected),cracked:num(rec.cracked)};
 }
@@ -606,11 +650,13 @@ function moneyBreakdown(days,setupItems,range){
   rows.sort(function(a,b){return b.v-a.v;});
   return {rows:rows,total:total};
 }
-function summarize(days,setupItems,defPrice,flock){
-  var ids=Object.keys(days).sort(), months={}, cats={}, eggs=0, revenue=0, cost=0, collected=0, cracked=0, collBirdDays=0, feedSum=0, feedBD=0, costSum=0, costBD=0;
+function summarize(days,setupItems,defPrice,flock,sales){
+  var agg=salesByDay(sales);days=mergedDays(days,sales);
+  var ids=Object.keys(days).sort(), months={}, cats={}, eggs=0, revenue=0, cost=0, collected=0, cracked=0, collBirdDays=0, feedSum=0, feedBD=0, costSum=0, costBD=0, activeDays=0, best={id:'',rev:0};
   CATS.forEach(function(c){cats[c.key]=0;});
   ids.forEach(function(id){
-    var r=days[id], c=dayCalc(r,defPrice), mk=monthKey(id);
+    var r=days[id], c=dayCalc(r,defPrice,agg[id]), mk=monthKey(id);
+    if(c.eggs>0)activeDays++;if(c.revenue>best.rev)best={id:id,rev:c.revenue};
     if(!months[mk])months[mk]={eggs:0,revenue:0,cost:0,net:0};
     var m=months[mk]; m.eggs+=c.eggs; m.revenue+=c.revenue; m.cost+=c.cost; m.net+=c.net;
     eggs+=c.eggs; revenue+=c.revenue; cost+=c.cost; cracked+=c.cracked;
@@ -628,7 +674,9 @@ function summarize(days,setupItems,defPrice,flock){
       if(payback===null&&setup>0&&cum>=setup)payback=k;
     });
   }
-  return {collected:collected,cracked:cracked,layRate:collBirdDays>0?collected/collBirdDays*100:null,days:ids.length,eggs:eggs,revenue:revenue,cost:cost,profit:revenue-cost,setup:setup,afterSetup:revenue-cost-setup,
+  var bsx=buyerStats(sales||{},'all');
+  return {activeDays:activeDays,best:best,received:revenue-owedTotal(sales),margin:revenue>0?(revenue-cost)/revenue*100:null,buyers:bsx.length,repeatBuyers:bsx.filter(function(b){return b.orders>1;}).length,
+    collected:collected,cracked:cracked,layRate:collBirdDays>0?collected/collBirdDays*100:null,days:ids.length,eggs:eggs,revenue:revenue,cost:cost,profit:revenue-cost,setup:setup,afterSetup:revenue-cost-setup,
     avgPriceDozen:eggs?revenue/eggs*12:0,costPerDozen:eggs?cost/eggs*12:0,months:months,monthKeys:monthKeys,cats:cats,payback:payback,
     feedPerBirdDay:feedBD?feedSum/feedBD:null,costPerBirdDay:costBD?costSum/costBD:null,costPerEgg:eggs?cost/eggs:null,costPerEggAll:eggs?(cost+setup)/eggs:null};
 }
@@ -696,7 +744,7 @@ function inRange(date,range){return range==='all'||!!(date&&String(date).slice(0
 function buyerStats(sales,range){
   var m={};
   Object.keys(sales||{}).forEach(function(id){var s=sales[id];if(!s||!inRange(s.date,range))return;
-    var nm=String(s.buyer||'Unknown').trim()||'Unknown',key=nm.toLowerCase(),o=m[key]||(m[key]={name:nm,eggs:0,amount:0,paid:0,owed:0,orders:0,last:''});
+    var nm=buyerName(s.buyer),key=buyerKey(nm),o=m[key]||(m[key]={key:key,name:nm,eggs:0,amount:0,paid:0,owed:0,orders:0,last:''});
     o.eggs+=num(s.eggs);o.amount+=num(s.amount);o.paid+=num(s.paid);o.owed+=saleOwed(s);o.orders++;if(s.date>o.last)o.last=s.date;});
   return Object.keys(m).map(function(k){return m[k];});
 }
@@ -725,6 +773,25 @@ function remDone(r,today){
   n.lastDone=today;
   if(rep>0){n.due=addDays(today,rep);n.done=false;}else n.done=true;
   return n;
+}
+function buyerName(v){return String(v||'').replace(/\s+/g,' ').trim()||'Walk-in';}
+function buyerKey(v){return buyerName(v).toLowerCase();}
+function salesByDay(sales){
+  var o={};Object.keys(sales||{}).forEach(function(k){var s=sales[k];if(!s||!s.date)return;var d=o[s.date]||(o[s.date]={eggs:0,amount:0});d.eggs+=num(s.eggs);d.amount+=num(s.amount);});
+  return o;
+}
+function mergedDays(days,sales){
+  var o=Object.assign({},days);
+  Object.keys(sales||{}).forEach(function(k){var d=sales[k]&&sales[k].date;if(d&&!o[d])o[d]={};});
+  return o;
+}
+/* pay off a buyer's oldest unpaid sales first */
+function fifoPay(sales,key,amount){
+  var rows=Object.keys(sales||{}).filter(function(id){var s=sales[id];return s&&buyerKey(s.buyer)===key&&saleOwed(s)>0;})
+    .map(function(id){return {id:id,s:sales[id]};}).sort(function(a,b){return a.s.date<b.s.date?-1:a.s.date>b.s.date?1:num(a.s.ts)-num(b.s.ts);});
+  var left=r2(amount),ups=[];
+  rows.forEach(function(x){if(left<=0)return;var pay=Math.min(left,saleOwed(x.s));ups.push({id:x.id,paid:r2(num(x.s.paid)+pay)});left=r2(left-pay);});
+  return {updates:ups,unapplied:left};
 }
 /* ==/LOGIC== */
 
@@ -785,17 +852,16 @@ function toast(msg){
 }
 
 /* ---------- Today form ---------- */
-var priceShown={text:'',val:null};
-function priceFromField(){var raw=$('f-price').value,p=parseField(raw);if(p===null)return null;if(raw===priceShown.text&&priceShown.val!==null)return priceShown.val;return fromUnitPrice(p,unitOf(state.settings));}
-function setPriceField(pv){var txt=String(r2(toUnitPrice(pv,unitOf(state.settings))));$('f-price').value=txt;priceShown={text:txt,val:pv};}
 function setAlert(el,text){el.hidden=!text;el.textContent=text||'';}
 function alertText(date,live){
   var a=lowAlert(state.days,state.flock,state.settings,date,live);
   return a?('Low laying: '+Math.round(a.rate)+'% '+(a.basis==='day'?'on this day':'over the last 3 days')+', below your alert level of '+a.threshold+'%. This can be an early sign of sickness, heat or stress. Check water, feed, shed temperature and the birds.'):'';
 }
+function S(){return summarize(state.days,state.setup,state.settings.price,state.flock,state.sales);}
+function dayAgg(date){return salesByDay(state.sales)[date]||{eggs:0,amount:0};}
 function readForm(){
-  var eggs=parseField($('f-eggs').value),price=priceFromField(),rec={};
-  if(eggs!==null){rec.eggs=Math.floor(eggs);rec.price=price!==null?price:state.settings.price;}
+  var rec={},old=state.days[curDate]||{};
+  if(old.eggs!==undefined){rec.eggs=old.eggs;if(old.price!==undefined)rec.price=old.price;}   /* earlier entries made before buyers existed are kept */
   CATS.forEach(function(c){var v=parseField($('c-'+c.key).value);if(v!==null)rec[c.key]=v;});
   var col=parseField($('f-collected').value),cr=parseField($('f-cracked').value);
   if(col!==null)rec.collected=Math.floor(col);if(cr!==null)rec.cracked=Math.floor(cr);
@@ -805,26 +871,19 @@ function readForm(){
 }
 function formJson(){var r=readForm();return JSON.stringify(Object.keys(r).length?r:null);}
 function renderStrip(){
-  var rec=readForm(),c=dayCalc(rec,state.settings.price),cls=netClass(c.net);
+  var rec=readForm(),c=dayCalc(rec,state.settings.price,dayAgg(curDate)),cls=netClass(c.net);
   $('s-earn').textContent=fmtTk(c.revenue);$('s-spent').textContent=fmtTk(c.cost);$('f-total').textContent=fmtTk(c.cost);
   $('s-net').textContent=fmtNet(c.net);
   $('s-net-label').textContent=cls==='good'?'Profit':cls==='bad'?'Loss':'Net';
   $('s-net-cell').className=cls==='zero'?'':cls;
-  var unit=unitOf(state.settings),price=rec.price!==undefined?rec.price:state.settings.price;
-  $('f-price-label').textContent='Price per '+unit+' (Tk)';
-  $('dozen-note').textContent=c.eggs?(fmtNum(c.eggs)+' eggs sold is '+fmtDoz(c.eggs)+' dozen, or '+fmtHali(c.eggs)+' hali. At '+fmtTk(toUnitPrice(price,unit))+' per '+unit+' that earns '+fmtTk(c.revenue)+'.'):'Type how many eggs you sold. Price is per '+unit+(unit==='hali'?' (4 eggs).':' (12 eggs). A hali is 4 eggs.');
   var left=c.collected-c.eggs-c.cracked;
   $('egg-balance').textContent=c.collected>0?('Collected '+fmtNum(c.collected)+', sold '+fmtNum(c.eggs)+', cracked '+fmtNum(c.cracked)+(left>=0?': '+fmtNum(left)+' left over.':'. Sold and cracked add up to '+fmtNum(-left)+' more than collected.')):'';
   var birds=birdsOn(state.flock,curDate),lr=layRate(c.collected,layBirds(state.flock,curDate));
   $('bird-note').textContent=Object.keys(state.flock).length?('Birds on this day: '+fmtNum(birds)+(lr!==null?'. Laying rate '+Math.round(lr)+'%.':'.')):'No birds recorded yet.';
-  var p=priceFromField(),rb=$('price-reset');
-  if(p!==null&&Math.abs(p-state.settings.price)>1e-9){rb.hidden=false;rb.textContent='Use the usual price, '+fmtTk(r2(toUnitPrice(state.settings.price,unit)))+' per '+unit;}else rb.hidden=true;
   setAlert($('low-alert'),alertText(curDate,c.collected));
-  renderTodayRem();
+  renderTodayRem();renderTodaySales();
 }
 function setFields(rec){
-  $('f-eggs').value=rec.eggs!==undefined?String(rec.eggs):'';
-  setPriceField(rec.price!==undefined?rec.price:state.settings.price);
   CATS.forEach(function(c){$('c-'+c.key).value=rec[c.key]!==undefined?String(rec[c.key]):'';});
   $('f-notes').value=rec.notes||'';
   $('f-othernote').value=rec.otherNote||'';
@@ -840,11 +899,11 @@ function toggleCal(force){
 function shiftMonth(k,n){var p=k.split('-').map(Number),d=new Date(p[0],p[1]-1+n,1);return d.getFullYear()+'-'+pad(d.getMonth()+1);}
 function renderCal(){
   var host=$('cal');host.hidden=!calOpen;if(!calOpen)return;
-  var t=todayStr(),tm=t.slice(0,7),p=calMonth.split('-').map(Number),first=new Date(p[0],p[1]-1,1).getDay(),n=new Date(p[0],p[1],0).getDate();
+  var sd=salesByDay(state.sales),t=todayStr(),tm=t.slice(0,7),p=calMonth.split('-').map(Number),first=new Date(p[0],p[1]-1,1).getDay(),n=new Date(p[0],p[1],0).getDate();
   var h='<div class="cal-head"><button type="button" data-cm="-12" aria-label="Back one year">«</button><button type="button" data-cm="-1" aria-label="Previous month">‹</button><b>'+esc(new Date(p[0],p[1]-1,1).toLocaleDateString('en-GB',{month:'long',year:'numeric'}))+'</b><button type="button" data-cm="1" aria-label="Next month"'+(calMonth>=tm?' disabled':'')+'>›</button><button type="button" data-cm="12" aria-label="Forward one year"'+(shiftMonth(calMonth,12)>tm?' disabled':'')+'>»</button></div><div class="cal-grid cal-wk">'+['S','M','T','W','T','F','S'].map(function(x){return '<span>'+x+'</span>';}).join('')+'</div><div class="cal-grid">';
   for(var i=0;i<first;i++)h+='<span></span>';
   for(var d=1;d<=n;d++){
-    var id=calMonth+'-'+pad(d),fut=id>t,sel=id===curDate,has=!!state.days[id];
+    var id=calMonth+'-'+pad(d),fut=id>t,sel=id===curDate,has=!!state.days[id]||!!sd[id];
     h+='<button type="button" class="cal-d'+(sel?' sel':'')+'" data-cd="'+id+'"'+(fut?' disabled':'')+' aria-label="'+esc(dayLabel(id))+'"'+(sel?' aria-pressed="true"':'')+'>'+d+(has?'<i></i>':'')+'</button>';
   }
   h+='</div><div class="cal-foot"><span class="sub"><i class="cal-dot"></i> day with saved records</span><button class="link" type="button" data-cm="today">Go to today</button></div>';
@@ -915,9 +974,9 @@ function emptyBlock(title,body,btn){
 function renderHistory(){
   var host=$('h-list'),filter=$('h-filter');
   if(!state.ready){host.innerHTML='<p class="sub">Loading your records…</p>';filter.hidden=true;return;}
-  var ids=Object.keys(state.days).sort().reverse();
+  var md=mergedDays(state.days,state.sales),agg=salesByDay(state.sales),ids=Object.keys(md).sort().reverse();
   if(!ids.length){filter.hidden=true;host.innerHTML=emptyBlock('No days saved yet','Enter eggs sold and costs on the Today tab. Every saved day appears here.',['Go to Today','today']);return;}
-  var sum=summarize(state.days,state.setup,state.settings.price,state.flock);
+  var sum=S();
   var months=[];ids.forEach(function(id){var m=monthKey(id);if(months.indexOf(m)<0)months.push(m);});
   var sel=$('h-month'),cur=sel.value||'all';
   sel.innerHTML='<option value="all">All months</option>'+months.map(function(m){return '<option value="'+m+'">'+esc(monthLabel(m))+'</option>';}).join('');
@@ -928,7 +987,7 @@ function renderHistory(){
     var m=monthKey(id);if(sel.value!=='all'&&sel.value!==m)return;
     if(m!==open){if(open)html+='</div>';open=m;
       html+='<div class="mgroup"><h3><span>'+esc(monthLabel(m))+'</span><span class="'+(netClass(sum.months[m].net)==='good'?'v-good':netClass(sum.months[m].net)==='bad'?'v-bad':'')+'">Net '+esc(fmtNet(sum.months[m].net))+'</span></h3>';}
-    var rec=state.days[id],c=dayCalc(rec,state.settings.price);
+    var rec=md[id],c=dayCalc(rec,state.settings.price,agg[id]);
     html+='<button class="day" type="button" data-date="'+id+'"><span class="d-main"><b>'+esc(shortDay(id))+'</b><span class="sub">'+
       (c.eggs?esc(fmtNum(c.eggs))+' eggs · '+esc(fmtDoz(c.eggs))+' dozen · '+esc(fmtHali(c.eggs))+' hali':'No eggs sold')+'</span>'+
       ((c.collected||c.cracked)?'<span class="sub">'+(c.collected?'Collected '+esc(fmtNum(c.collected)):'')+(c.collected&&c.cracked?' · ':'')+(c.cracked?'Cracked '+esc(fmtNum(c.cracked)):'')+'</span>':'')+
@@ -960,7 +1019,7 @@ function chartSvg(sum){
 function renderSummary(){
   var host=$('sum-body');
   if(!state.ready){host.innerHTML='<p class="sub">Loading your records…</p>';return;}
-  var sum=summarize(state.days,state.setup,state.settings.price,state.flock);
+  var sum=S();
   if(!sum.days&&!sum.setup){host.innerHTML=emptyBlock('Nothing to total yet','Save a day on the Today tab or add setup costs. Profit, cost per dozen and payback show up here.',['Go to Today','today']);return;}
   var cls=netClass(sum.afterSetup);
   var payback=sum.payback?monthLabel(sum.payback):(sum.setup===0?'Add setup costs first':'Not yet');
@@ -969,6 +1028,11 @@ function renderSummary(){
   html+='<div class="card"><h2>Totals</h2><dl>'+
     kv('Eggs sold',fmtNum(sum.eggs)+' ('+fmtDoz(sum.eggs)+' dozen · '+fmtHali(sum.eggs)+' hali)')+(sum.collected>0?kv('Eggs collected',fmtNum(sum.collected)):'')+(sum.cracked>0?kv('Cracked or broken',fmtNum(sum.cracked)+' ('+r2(sum.cracked/(sum.eggs+sum.cracked)*100)+'% of sold + cracked)'):'')+(sum.layRate!==null?kv('Average laying rate',Math.round(sum.layRate)+'%'):'')+(Object.keys(state.flock).length?kv('Birds now',fmtNum(birdsOn(state.flock,todayStr()))):'')+kv('Days saved',fmtNum(sum.days))+(owedTotal(state.sales)>0?kv('Unpaid by buyers',fmtTk(owedTotal(state.sales))):'')+kv('Egg revenue',fmtTk(sum.revenue))+kv('Running costs',fmtTk(sum.cost))+
     kv('Average price per dozen',fmtTk(sum.avgPriceDozen))+kv('Running cost per dozen',fmtTk(sum.costPerDozen))+costKvs(sum)+kv('Setup cost earned back by',payback)+'</dl></div>';
+  if(sum.activeDays){
+    html+='<div class="card"><h2>Business at a glance</h2><dl>'+(sum.margin!==null?kv('Profit margin',r2(sum.margin)+'% of sales'):'')+kv('Average eggs sold per selling day',fmtNum(sum.eggs/sum.activeDays))+kv('Average profit per selling day',fmtNet(sum.profit/sum.activeDays))+
+      (sum.best.id?kv('Best sales day',shortDay(sum.best.id)+' · '+fmtTk(sum.best.rev)):'')+(sum.revenue>0?kv('Cash received',fmtTk(sum.received)+' ('+Math.round(sum.received/sum.revenue*100)+'% of sales)'):'')+
+      (sum.buyers?kv('Buyers',sum.buyers+(sum.repeatBuyers?' ('+sum.repeatBuyers+' bought more than once)':'')):'')+'</dl></div>';
+  }
   html=html+moneyCard(sum);
   if(sum.days){
     html+='<div class="card"><h2>Revenue and costs by month</h2>'+chartSvg(sum)+'<div class="legend"><span><i style="background:var(--c-rev)"></i>Egg revenue</span><span><i style="background:var(--c-cost)"></i>Running costs</span></div></div>';
@@ -1027,7 +1091,7 @@ function openSetupForm(id,prefill){
   $('s-cat').value=r.cat||SETUP_CATS[0];
   $('s-qty').value=r.qty!==undefined?String(r.qty):'';
   $('s-unit').value=r.unitCost!==undefined?String(r.unitCost):'';
-  $('s-date').value=r.date||'';$('s-notes').value=r.notes||'';
+  $('s-date').value=r.date||'';$('s-date').max=todayStr();$('s-notes').value=r.notes||'';
   $('s-err').hidden=true;$('s-del').hidden=!id;$('s-del').textContent='Delete';$('s-save').disabled=false;
   $('s-form').hidden=false;updateSetupTotal();
   $('s-form').scrollIntoView({block:'nearest'});
@@ -1043,6 +1107,7 @@ function saveSetup(ev){
   var name=$('s-name').value.trim(),q=parseField($('s-qty').value),u=parseField($('s-unit').value),err=$('s-err');
   if(!name){err.textContent='Enter the item name.';err.hidden=false;return;}
   if(u===null){err.textContent='Enter the cost of one item in Tk.';err.hidden=false;return;}
+  if($('s-date').value>todayStr()){err.textContent='The date bought cannot be in the future.';err.hidden=false;return;}
   err.hidden=true;
   var old=editingSetup?state.setup[editingSetup]:null;
   var rec={name:name,cat:$('s-cat').value,qty:q===null?1:Math.max(1,Math.floor(q)),unitCost:u,ts:old&&old.ts!==undefined?old.ts:Date.now()};
@@ -1117,7 +1182,7 @@ function renderFlock(){
   $('fl-stats').textContent=(t.added||t.died||t.sold)?('Added '+fmtNum(t.added)+' · Died '+fmtNum(t.died)+' · Sold '+fmtNum(t.sold)+(t.added>0&&t.died>0?' · Deaths so far '+r2(t.died/t.added*100)+'% of birds added':'')):'Add the birds you have now, then record every time birds are added, die or are sold.';
   if(!state.ready){list.innerHTML='<p class="sub">Loading your records…</p>';$('fl-lay-card').hidden=true;return;}
   setAlert($('fl-alert'),alertText(todayStr(),0));
-  var ck=costKvs(summarize(state.days,state.setup,state.settings.price,state.flock));
+  var ck=costKvs(S());
   $('fl-cost-card').hidden=!ck;$('fl-cost').innerHTML=ck;
   renderBatches();renderRems();
   var dates=[];for(var i=29;i>=0;i--)dates.push(addDays(todayStr(),-i));
@@ -1197,7 +1262,7 @@ function renderBatches(){
 function openBatchForm(id){
   editingBatch=id||null;var b=id?(state.batches[id]||{}):{};
   $('b-form-title').textContent=id?'Edit batch':'Add a batch';
-  $('b-date').value=b.date||todayStr();
+  $('b-date').value=b.date||todayStr();$('b-date').max=todayStr();
   $('b-set').value=b.eggsSet!==undefined?String(b.eggsSet):'';
   $('b-hatched').value=b.hatched!==undefined?String(b.hatched):'';
   $('b-surv').value=b.survived!==undefined?String(b.survived):'';
@@ -1211,6 +1276,7 @@ function saveBatch(ev){
   var d=$('b-date').value,set=parseField($('b-set').value),h=parseField($('b-hatched').value),sv=parseField($('b-surv').value);
   function bad(m){showErr('b-err',m);}
   if(!validDate(d))return bad('Pick the date the eggs were set.');
+  if(d>todayStr())return bad('The date cannot be in the future.');
   if(set===null||Math.floor(set)<1)return bad('Enter how many eggs you set.');
   if(h!==null&&Math.floor(h)>Math.floor(set))return bad('Chicks hatched cannot be more than eggs set.');
   if(sv!==null&&Math.floor(sv)>(h===null?0:Math.floor(h)))return bad('Chicks survived cannot be more than chicks hatched. Enter hatched first.');
@@ -1295,16 +1361,109 @@ function doneRem(id){
   putDoc('reminders',n,id).then(function(){renderRems();renderTodayRem();toast(n.done?'Marked done':'Done. Next one is '+shortDay(n.due));},function(e){toast(errMsg(e));});
 }
 
-/* ---------- Buyers and sales ---------- */
-var editingSale=null,slAmtTouched=false,slPaidTouched=false,slRange='all',slMetric='eggs',slUnpaid=false;
+/* ---------- Sales: one list feeds Today, Buyers, History and Summary ---------- */
+var editingSale=null,slAmtTouched=false,slStatus='full',savingSale=false,slRange='all',slMetric='eggs',openBuyers={};
+function saleStatus(s){var o=saleOwed(s);return o<=0?'paid':num(s.paid)>0?'part':'unpaid';}
+function statusPill(s){var k=saleStatus(s);return '<span class="'+(k==='paid'?'good-text':'bad-text')+'">'+(k==='paid'?'Paid':(k==='part'?'Owes ':'Unpaid ')+esc(fmtTk(saleOwed(s))))+'</span>';}
+function saleRow(id,s,showDate){
+  return '<button class="fitem" type="button" data-sid="'+esc(id)+'"><span><b>'+esc(s.buyer)+'</b><span class="sub">'+(showDate?esc(shortDay(s.date))+' · ':'')+esc(fmtNum(num(s.eggs)))+' eggs · '+esc(fmtTk(num(s.amount)))+(saleStatus(s)==='part'?' · paid '+esc(fmtTk(num(s.paid))):'')+(s.note?' · '+esc(s.note):'')+'</span></span><span class="amt">'+statusPill(s)+'</span></button>';
+}
+function daySales(date){
+  return Object.keys(state.sales).filter(function(k){return state.sales[k].date===date;}).map(function(k){return {id:k,s:state.sales[k]};}).sort(function(a,b){return num(a.s.ts)-num(b.s.ts);});
+}
+function renderTodaySales(){
+  var host=$('td-sales');if(!host)return;
+  var rows=daySales(curDate),old=state.days[curDate]||{},leg=num(old.eggs)>0,h='',eggs=0,bill=0,paid=0;
+  rows.forEach(function(x){eggs+=num(x.s.eggs);bill+=num(x.s.amount);paid+=Math.min(num(x.s.paid),num(x.s.amount));});
+  if(rows.length)h+='<div class="list">'+rows.map(function(x){return saleRow(x.id,x.s,false);}).join('')+'</div><dl>'+kv('Eggs sold',fmtNum(eggs)+' ('+fmtDoz(eggs)+' dozen · '+fmtHali(eggs)+' hali)')+kv('Billed',fmtTk(bill))+kv('Received',fmtTk(paid))+kv('Outstanding',fmtTk(bill-paid))+'</dl>';
+  else if(!leg)h+='<p class="sub">No sales on this day yet. Tap Add sale for each buyer. Several sales per day are fine, even to the same buyer.</p>';
+  if(leg){var lp=old.price===undefined?state.settings.price:old.price;
+    h+='<div class="rem-row"><span class="rem-main"><b>Earlier entry, no buyer</b><span class="sub">'+esc(fmtNum(num(old.eggs)))+' eggs · '+esc(fmtTk(num(old.eggs)*num(lp)/12))+' (saved before buyers were added)</span></span><button class="btn small ghost" type="button" data-convert="1">Give it a buyer</button></div>';}
+  host.innerHTML=h;
+}
+function convertLegacy(){
+  var old=state.days[curDate];if(!old||!(num(old.eggs)>0))return;
+  var amt=r2(num(old.eggs)*num(old.price===undefined?state.settings.price:old.price)/12);
+  openSaleForm(null,'today',curDate,{eggs:num(old.eggs),amount:amt,legacy:true});
+}
+function canonBuyer(v){var k=buyerKey(v),hit=null;Object.keys(state.sales).forEach(function(id){if(!hit&&buyerKey(state.sales[id].buyer)===k)hit=state.sales[id].buyer;});return hit||buyerName(v);}
+function setSlStatus(k){
+  slStatus=k;Array.prototype.forEach.call(document.querySelectorAll('#sl-st [data-st]'),function(b){b.setAttribute('aria-pressed',String(b.dataset.st===k));});
+  $('sl-paid-wrap').hidden=k!=='part';slBalance();
+}
+function slBalance(){
+  var a=parseField($('sl-amount').value),p=slStatus==='full'?a:slStatus==='none'?0:parseField($('sl-paid').value);
+  $('sl-bal').textContent=a===null?'':('Paid '+fmtTk(p||0)+' · Balance owed '+fmtTk(Math.max(0,a-(p||0))));
+}
+function slUpdateAuto(){
+  var e=parseField($('sl-eggs').value),unit=unitOf(state.settings);
+  if(!slAmtTouched&&e!==null)$('sl-amount').value=String(r2(Math.floor(e)*state.settings.price/12));
+  $('sl-hint').textContent=e!==null?('Price filled in at your usual '+fmtTk(r2(toUnitPrice(state.settings.price,unit)))+' per '+unit+'. Change it if this sale was different.'):'';
+  slBalance();
+}
+function renderRecent(){
+  var seen={},list=[];Object.keys(state.sales).map(function(id){return state.sales[id];}).sort(function(a,b){return num(b.ts)-num(a.ts);}).forEach(function(s){var k=buyerKey(s.buyer);if(!seen[k]&&list.length<6){seen[k]=1;list.push(buyerName(s.buyer));}});
+  if(!seen['walk-in'])list.push('Walk-in');
+  $('sl-recent').innerHTML=list.map(function(n){return '<button class="chip" type="button" data-rb="'+esc(n)+'">'+esc(n)+'</button>';}).join('');
+}
+function openSaleForm(id,host,prefDate,pre){
+  editingSale=id||null;var s=id?(state.sales[id]||{}):(pre||{});
+  $(host==='today'?'sale-slot-today':'sale-slot-buyers').appendChild($('sl-form'));
+  slAmtTouched=!!id||!!(pre&&pre.amount);
+  $('sl-form-title').textContent=id?'Edit sale':'Add a sale';
+  $('sl-buyer').value=s.buyer||'';$('sl-date').value=s.date||prefDate||todayStr();$('sl-date').max=todayStr();
+  $('sl-eggs').value=s.eggs!==undefined?String(s.eggs):'';$('sl-amount').value=s.amount!==undefined?String(s.amount):'';
+  $('sl-paid').value=id&&num(s.paid)>0?String(s.paid):'';$('sl-note').value=s.note||'';
+  $('sl-err').hidden=true;$('sl-del').hidden=!id;$('sl-del').textContent='Delete';$('sl-save').disabled=false;
+  renderRecent();setSlStatus(id?({paid:'full',part:'part',unpaid:'none'})[saleStatus(s)]:'full');slUpdateAuto();
+  $('sl-form').hidden=false;$('sl-form').scrollIntoView({block:'nearest'});$('sl-buyer').focus();
+  $('sl-form').dataset.legacy=pre&&pre.legacy?'1':'';
+}
+function closeSaleForm(){$('sl-form').hidden=true;editingSale=null;}
+function afterSaleChange(){renderSales();renderStrip();}
+function saveSale(ev){
+  ev.preventDefault();if(savingSale)return;
+  var d=$('sl-date').value,e=parseField($('sl-eggs').value),a=parseField($('sl-amount').value);
+  function bad(m){showErr('sl-err',m);}
+  if(!validDate(d))return bad('Pick a date.');
+  if(d>todayStr())return bad('The date cannot be in the future.');
+  if(e===null||Math.floor(e)<1)return bad('Enter how many eggs, at least 1.');
+  if(a===null)return bad('Enter the total price in Tk.');
+  var p=slStatus==='full'?a:slStatus==='none'?0:parseField($('sl-paid').value);
+  if(p===null)p=0;
+  if(slStatus==='part'&&p>=a&&a>0)return bad('Amount paid is the full price. Choose Fully paid, or enter less.');
+  if(p>a)return bad('Amount paid cannot be more than the price.');
+  var old=editingSale?state.sales[editingSale]:null,rec={date:d,buyer:canonBuyer($('sl-buyer').value),eggs:Math.floor(e),amount:r2(a),paid:r2(p),ts:old&&old.ts!==undefined?old.ts:Date.now()};
+  var nt=$('sl-note').value.trim();if(nt)rec.note=nt;
+  var legacy=$('sl-form').dataset.legacy==='1',cd=curDate;
+  savingSale=true;$('sl-save').disabled=true;
+  putDoc('sales',rec,editingSale).then(function(){
+    if(!legacy)return;
+    var o=Object.assign({},state.days[cd]||{});delete o.eggs;delete o.price;
+    return Object.keys(o).length?putDoc('days',o,cd):delDoc('days',cd);
+  }).then(function(){savingSale=false;closeSaleForm();if(legacy)lastSaved[cd]=formJson();afterSaleChange();toast('Sale saved');},function(er){savingSale=false;$('sl-save').disabled=false;bad(errMsg(er));});
+}
+function deleteSale(){
+  if(!armDelete($('sl-del')))return;
+  var id=editingSale;if(!id)return;
+  delDoc('sales',id).then(function(){closeSaleForm();afterSaleChange();toast('Sale deleted');},function(e){showErr('sl-err',errMsg(e));});
+}
+function payBuyer(key,amount){
+  var r=fifoPay(state.sales,key,amount);
+  if(!(amount>0))return toast('Enter the amount received.');
+  if(r.unapplied>0)return toast('That is more than the '+fmtTk(owedForKey(key))+' this buyer owes.');
+  r.updates.reduce(function(p,u){return p.then(function(){return putDoc('sales',Object.assign({},state.sales[u.id],{paid:u.paid}),u.id);});},Promise.resolve())
+    .then(function(){afterSaleChange();toast('Payment recorded');},function(e){toast(errMsg(e));});
+}
+function owedForKey(key){var t=0;Object.keys(state.sales).forEach(function(id){if(buyerKey(state.sales[id].buyer)===key)t+=saleOwed(state.sales[id]);});return r2(t);}
 function renderSales(){
   $('sl-owed').textContent=fmtTk(owedTotal(state.sales));
   var all=Object.keys(state.sales).map(function(id){return {id:id,s:state.sales[id]};});
-  var names={};all.forEach(function(x){var n=String(x.s.buyer||'').trim();if(n)names[n.toLowerCase()]=n;});
+  var names={};all.forEach(function(x){var n=buyerName(x.s.buyer);names[buyerKey(n)]=n;});
   $('sl-buyers').innerHTML=Object.keys(names).map(function(k){return '<option value="'+esc(names[k])+'"></option>';}).join('');
-  var cmp=$('sl-compare'),owe=$('sl-owe'),list=$('sl-list');
+  var cmp=$('sl-compare'),list=$('by-list');
   if(!state.ready){list.innerHTML='<p class="sub">Loading your records…</p>';return;}
-  if(!all.length){cmp.hidden=true;owe.hidden=true;list.innerHTML=emptyBlock('No sales recorded yet','Tap Add sale to record who bought eggs, how much they paid and what they still owe.',null);return;}
+  if(!all.length){cmp.hidden=true;list.innerHTML=emptyBlock('No sales recorded yet','Add a sale here or on the Today tab. Each buyer then gets a page with their purchases, payments and balance.',null);return;}
   var ms={};all.forEach(function(x){if(x.s.date)ms[x.s.date.slice(0,7)]=1;});
   var months=Object.keys(ms).sort().reverse();if(slRange!=='all'&&months.indexOf(slRange)<0)slRange='all';
   var bs=buyerStats(state.sales,slRange).sort(function(a,b){return slMetric==='eggs'?b.eggs-a.eggs:b.amount-a.amount;});
@@ -1313,53 +1472,117 @@ function renderSales(){
     '<div class="chips kind-chips" role="group" aria-label="Compare by"><button class="chip" type="button" data-metric="eggs" aria-pressed="'+(slMetric==='eggs')+'">By eggs</button><button class="chip" type="button" data-metric="amount" aria-pressed="'+(slMetric==='amount')+'">By Tk</button></div>';
   h+='<ul class="cb">'+bs.slice(0,8).map(function(b){
     var w=top>0?Math.max(2,Math.round(val(b)/top*100)):2,pct=tot>0?Math.round(val(b)/tot*100):0;
-    return '<li><div class="cb-top"><span class="lab"><b>'+esc(b.name)+'</b></span><b>'+esc(slMetric==='eggs'?fmtNum(b.eggs)+' eggs':fmtTk(b.amount))+'</b><span class="pct">'+pct+'%</span></div><div class="bar rev"><i style="width:'+w+'%"></i></div><span class="sub">'+esc(slMetric==='eggs'?fmtTk(b.amount):fmtNum(b.eggs)+' eggs')+' · '+b.orders+(b.orders===1?' order':' orders')+(b.owed>0?' · ':'')+(b.owed>0?'<span class="bad-text">owes '+esc(fmtTk(b.owed))+'</span>':'')+'</span></li>';
+    return '<li><div class="cb-top"><span class="lab"><b>'+esc(b.name)+'</b></span><b>'+esc(slMetric==='eggs'?fmtNum(b.eggs)+' eggs':fmtTk(b.amount))+'</b><span class="pct">'+pct+'%</span></div><div class="bar rev"><i style="width:'+w+'%"></i></div></li>';
   }).join('')+'</ul>'+(bs.length>8?'<p class="sub">Showing the top 8 of '+bs.length+' buyers.</p>':'');
   cmp.hidden=false;cmp.innerHTML=h;
-  var debtors=buyerStats(state.sales,'all').filter(function(b){return b.owed>0;}).sort(function(a,b){return b.owed-a.owed;});
-  owe.hidden=!debtors.length;
-  if(debtors.length)owe.innerHTML='<h2>Who still owes you</h2>'+debtors.map(function(b){return '<div class="kv"><dt>'+esc(b.name)+'</dt><dd class="bad-text">'+esc(fmtTk(b.owed))+'</dd></div>';}).join('');
-  var rows=all.filter(function(x){return !slUnpaid||saleOwed(x.s)>0;}).sort(function(a,b){return a.s.date<b.s.date?1:a.s.date>b.s.date?-1:num(b.s.ts)-num(a.s.ts);});
-  list.innerHTML='<div class="chips kind-chips"><button class="chip" type="button" id="sl-filter" aria-pressed="'+slUnpaid+'">Show unpaid only</button></div>'+
-    (rows.length?'<div class="list">'+rows.map(function(x){var s=x.s,ow=saleOwed(s);
-      return '<button class="fitem" type="button" data-sid="'+esc(x.id)+'"><span><b>'+esc(s.buyer||'Unknown')+'</b><span class="sub">'+esc(dayLabel(s.date))+' · '+esc(fmtNum(num(s.eggs)))+' eggs · '+esc(fmtTk(num(s.amount)))+(s.note?' · '+esc(s.note):'')+'</span></span><span class="amt '+(ow>0?'bad-text':'good-text')+'">'+(ow>0?'Owes '+esc(fmtTk(ow)):'Paid')+'</span></button>';}).join('')+'</div>':'<p class="sub">No unpaid sales. Everyone has paid.</p>');
+  var all2=buyerStats(state.sales,'all').sort(function(a,b){return (b.owed-a.owed)||(b.amount-a.amount);});
+  list.innerHTML='<div class="card"><h2>Buyers</h2><ul class="cb">'+all2.map(function(b){
+    var open=!!openBuyers[b.key],det='';
+    if(open){
+      var tx=all.filter(function(x){return buyerKey(x.s.buyer)===b.key;}).sort(function(x,y){return x.s.date<y.s.date?1:x.s.date>y.s.date?-1:num(y.s.ts)-num(x.s.ts);});
+      det='<div class="det"><dl style="padding:4px 12px">'+kv('Total eggs',fmtNum(b.eggs)+' ('+fmtDoz(b.eggs)+' dozen)')+kv('Total cost',fmtTk(b.amount))+kv('Amount paid',fmtTk(b.amount-b.owed))+kv('Outstanding',fmtTk(b.owed))+kv('Transactions',String(b.orders))+'</dl>'+
+        (b.owed>0?'<div class="btn-row" style="padding:0 12px 10px"><input class="inp num-r" style="flex:1;min-width:0" inputmode="decimal" placeholder="Payment received (Tk)" data-payin="'+esc(b.key)+'" aria-label="Payment received"><button class="btn small" type="button" data-payfor="'+esc(b.key)+'">Record payment</button></div>':'')+
+        '<div class="det-list">'+tx.map(function(x){return saleRow(x.id,x.s,true);}).join('')+'</div></div>';
+    }
+    return '<li><button class="mrow" type="button" data-bk="'+esc(b.key)+'" aria-expanded="'+open+'"><div class="cb-top"><span class="lab"><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'+esc(b.name)+'</span><b>'+esc(fmtTk(b.amount))+'</b></div><span class="sub">'+esc(fmtNum(b.eggs))+' eggs · '+b.orders+(b.orders===1?' order':' orders')+(b.owed>0?' · ':'')+(b.owed>0?'<span class="bad-text">owes '+esc(fmtTk(b.owed))+'</span>':' · paid up')+'</span></button>'+det+'</li>';
+  }).join('')+'</ul><p class="sub">Tap a buyer to see every purchase, record a payment, or edit a sale.</p></div>';
 }
-function slUpdateAuto(){
-  var e=parseField($('sl-eggs').value),unit=unitOf(state.settings);
-  if(!slAmtTouched&&e!==null)$('sl-amount').value=String(r2(Math.floor(e)*state.settings.price/12));
-  if(!slPaidTouched&&!editingSale)$('sl-paid').value=$('sl-amount').value;
-  $('sl-hint').textContent=e!==null?('Amount is filled in at your usual price of '+fmtTk(r2(toUnitPrice(state.settings.price,unit)))+' per '+unit+'. Change it if the price was different.'):'';
+
+/* ---------- Themes ---------- */
+var THEMES=[['auto','Auto'],['sage','Sage green'],['blue','Soft blue'],['cream','Warm cream'],['light','Light'],['dark','Dark']];
+function currentTheme(){try{return localStorage.getItem('qet-theme')||'auto';}catch(e){return 'auto';}}
+function applyTheme(t){
+  var r=document.documentElement;if(!t||t==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',t);
+  try{localStorage.setItem('qet-theme',t||'auto');}catch(e){}
+  var m=document.querySelector('meta[name=theme-color]');if(m)m.content=getComputedStyle(r).getPropertyValue('--brand').trim()||m.content;
+  var h=$('th-chips');if(h)h.innerHTML=THEMES.map(function(x){return '<button class="chip" type="button" data-theme-set="'+x[0]+'" aria-pressed="'+(x[0]===(t||'auto'))+'">'+x[1]+'</button>';}).join('');
 }
-function openSaleForm(id){
-  editingSale=id||null;var s=id?(state.sales[id]||{}):{};
-  slAmtTouched=!!id;slPaidTouched=!!id;
-  $('sl-form-title').textContent=id?'Edit sale':'Add a sale';
-  $('sl-buyer').value=s.buyer||'';$('sl-date').value=s.date||todayStr();$('sl-date').max=todayStr();
-  $('sl-eggs').value=s.eggs!==undefined?String(s.eggs):'';$('sl-amount').value=s.amount!==undefined?String(s.amount):'';$('sl-paid').value=s.paid!==undefined?String(s.paid):'';
-  $('sl-note').value=s.note||'';$('sl-hint').textContent='';
-  $('sl-err').hidden=true;$('sl-del').hidden=!id;$('sl-del').textContent='Delete';$('sl-save').disabled=false;
-  $('sl-form').hidden=false;$('sl-form').scrollIntoView({block:'nearest'});$('sl-buyer').focus();
+
+/* ---------- PIN lock (privacy lock for this phone) ---------- */
+var PINK='qet-pin',lockFails=0,lockUntil=0,hiddenAt=0,pinMode='';
+function pinGet(){try{return JSON.parse(localStorage.getItem(PINK)||'null');}catch(e){return null;}}
+function pinSet(o){try{if(o)localStorage.setItem(PINK,JSON.stringify(o));else localStorage.removeItem(PINK);return true;}catch(e){return false;}}
+function b64(buf){return btoa(String.fromCharCode.apply(null,new Uint8Array(buf)));}
+function unb64(x){return Uint8Array.from(atob(x),function(c){return c.charCodeAt(0);});}
+function kdf(secret,salt){
+  var enc=new TextEncoder();
+  return crypto.subtle.importKey('raw',enc.encode(secret),'PBKDF2',false,['deriveBits']).then(function(k){return crypto.subtle.deriveBits({name:'PBKDF2',salt:salt,iterations:100000,hash:'SHA-256'},k,256);}).then(b64);
 }
-function closeSaleForm(){$('sl-form').hidden=true;editingSale=null;}
-function saveSale(ev){
-  ev.preventDefault();
-  var buyer=$('sl-buyer').value.trim(),d=$('sl-date').value,e=parseField($('sl-eggs').value),a=parseField($('sl-amount').value),p=parseField($('sl-paid').value);
-  function bad(m){showErr('sl-err',m);}
-  if(!buyer)return bad('Enter who bought the eggs.');
-  if(!validDate(d))return bad('Pick a date.');
-  if(e===null||Math.floor(e)<1)return bad('Enter how many eggs, at least 1.');
-  if(a===null)return bad('Enter the amount in Tk.');
-  if(p===null)p=0;
-  if(p>a)return bad('Paid cannot be more than the amount.');
-  var old=editingSale?state.sales[editingSale]:null,rec={date:d,buyer:buyer,eggs:Math.floor(e),amount:r2(a),paid:r2(p),ts:old&&old.ts!==undefined?old.ts:Date.now()};
-  var nt=$('sl-note').value.trim();if(nt)rec.note=nt;
-  $('sl-save').disabled=true;
-  putDoc('sales',rec,editingSale).then(function(){closeSaleForm();renderSales();toast('Sale saved');},function(er){$('sl-save').disabled=false;bad(errMsg(er));});
+function normCode(c){return String(c||'').toUpperCase().replace(/[^A-Z0-9]/g,'');}
+function newCode(){var A='ABCDEFGHJKMNPQRSTUVWXYZ23456789',a=crypto.getRandomValues(new Uint8Array(12)),o='';for(var i=0;i<12;i++){o+=A[a[i]%A.length];if(i%4===3&&i<11)o+='-';}return o;}
+function hashNew(secret){var salt=crypto.getRandomValues(new Uint8Array(16));return kdf(secret,salt).then(function(h){return {s:b64(salt),h:h};});}
+function verify(secret,rec){return kdf(secret,unb64(rec.s)).then(function(h){return h===rec.h;});}
+function checkPin(pin){var p=pinGet();return p?verify(pin,{s:p.s,h:p.h}):Promise.resolve(false);}
+function checkCode(code){var p=pinGet();return p?verify(normCode(code),{s:p.rs,h:p.rh}):Promise.resolve(false);}
+function weakPin(p){return /^(\d)\1+$/.test(p)||'0123456789'.indexOf(p)>=0||'9876543210'.indexOf(p)>=0;}
+function lockNow(){
+  if(!pinGet()||!window.crypto||!crypto.subtle)return;
+  $('lock').hidden=false;$('lk-pin').value='';$('lk-err').hidden=true;$('lk-rec').hidden=true;
+  setTimeout(function(){$('lk-pin').focus();},50);
 }
-function deleteSale(){
-  if(!armDelete($('sl-del')))return;
-  var id=editingSale;if(!id)return;
-  delDoc('sales',id).then(function(){closeSaleForm();renderSales();toast('Sale deleted');},function(e){showErr('sl-err',errMsg(e));});
+function unlock(){$('lock').hidden=true;}
+function lkErr(id,m){var e=$(id);e.textContent=m;e.hidden=false;}
+function wireLock(){
+  $('lk-form').addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var wait=Math.ceil((lockUntil-Date.now())/1000);if(wait>0)return lkErr('lk-err','Too many tries. Wait '+wait+' seconds.');
+    checkPin($('lk-pin').value).then(function(ok){
+      if(ok){lockFails=0;unlock();return;}
+      lockFails++;$('lk-pin').value='';
+      if(lockFails>=5){lockUntil=Date.now()+30000*Math.pow(2,Math.min(4,lockFails-5));lkErr('lk-err','Wrong PIN. Wait '+Math.round((lockUntil-Date.now())/1000)+' seconds.');}
+      else lkErr('lk-err','Wrong PIN. '+(5-lockFails)+' tries left before a short wait.');
+    });
+  });
+  $('lk-forgot').addEventListener('click',function(){$('lk-rec').hidden=!$('lk-rec').hidden;});
+  $('lk-rec').addEventListener('submit',function(ev){
+    ev.preventDefault();var v=$('lk-code').value.trim(),cfg=lsGet(CFG_KEY);
+    if(!v)return lkErr('lk-rerr','Enter your recovery code.');
+    checkCode(v).then(function(ok){
+      if(!ok&&cfg&&cfg.key&&v===cfg.key)ok=true;
+      if(!ok)return lkErr('lk-rerr','That code was not accepted.');
+      pinSet(null);unlock();renderPin();toast('PIN removed. Set a new one in Settings.');
+    });
+  });
+  document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState==='hidden')hiddenAt=Date.now();
+    else if(pinGet()&&hiddenAt&&Date.now()-hiddenAt>60000)lockNow();
+  });
+}
+function renderPin(){
+  var p=pinGet(),ok=!!(window.crypto&&crypto.subtle);
+  $('pin-state').textContent=!ok?'PIN lock is not available in this browser.':p?'PIN is on. The app locks when you open it and after a minute in the background.':'PIN is off. Anyone who opens the app can see your records.';
+  $('pin-btns').innerHTML=!ok?'':p?'<button class="btn ghost" type="button" data-pin="change">Change PIN</button><button class="btn ghost" type="button" data-pin="code">New recovery code</button><button class="btn ghost danger" type="button" data-pin="remove">Remove PIN</button>':'<button class="btn" type="button" data-pin="set">Set a PIN</button>';
+}
+function openPinForm(mode){
+  pinMode=mode;var f=$('pin-form');f.hidden=false;
+  $('pf-cur-w').hidden=mode==='set';$('pf-new-w').hidden=mode==='remove'||mode==='code';$('pf-cnf-w').hidden=$('pf-new-w').hidden;
+  ['pf-cur','pf-new','pf-cnf'].forEach(function(i){$(i).value='';});$('pf-err').hidden=true;
+  $('pf-ok').textContent=mode==='remove'?'Remove PIN':mode==='code'?'Make new code':'Save PIN';
+  $('pin-btns').hidden=true;(mode==='set'?$('pf-new'):$('pf-cur')).focus();
+}
+function closePinForm(){$('pin-form').hidden=true;$('pin-btns').hidden=false;pinMode='';}
+function showCode(c){$('pin-code').textContent=c;$('pin-code-box').hidden=false;$('pin-form').hidden=true;$('pin-btns').hidden=true;}
+function submitPinForm(ev){
+  ev.preventDefault();var cur=$('pf-cur').value,nw=$('pf-new').value,cf=$('pf-cnf').value;
+  function bad(m){lkErr('pf-err',m);}
+  function needNew(){if(!/^\d{4,6}$/.test(nw))return 'The PIN must be 4 to 6 digits.';if(nw!==cf)return 'The two PINs do not match.';if(weakPin(nw))return 'Choose a less obvious PIN, not 1234 or 0000.';return '';}
+  var p=pinGet();
+  if(pinMode==='set'){var e=needNew();if(e)return bad(e);var code=newCode();
+    Promise.all([hashNew(nw),hashNew(normCode(code))]).then(function(h){if(!pinSet({s:h[0].s,h:h[0].h,rs:h[1].s,rh:h[1].h}))return bad('This browser would not save the PIN.');renderPin();showCode(code);});return;}
+  checkPin(cur).then(function(ok){
+    if(!ok)return bad('The current PIN is not right.');
+    if(pinMode==='remove'){pinSet(null);closePinForm();renderPin();toast('PIN removed');return;}
+    if(pinMode==='change'){var e=needNew();if(e)return bad(e);return hashNew(nw).then(function(h){pinSet(Object.assign({},p,{s:h.s,h:h.h}));closePinForm();renderPin();toast('PIN changed');});}
+    if(pinMode==='code'){var c=newCode();return hashNew(normCode(c)).then(function(h){pinSet(Object.assign({},p,{rs:h.s,rh:h.h}));showCode(c);});}
+  });
+}
+function wirePin(){
+  $('pin-btns').addEventListener('click',function(e){var b=e.target.closest('[data-pin]');if(b)openPinForm(b.dataset.pin);});
+  $('pin-form').addEventListener('submit',submitPinForm);
+  $('pf-cancel').addEventListener('click',closePinForm);
+  $('pin-code-ok').addEventListener('click',function(){$('pin-code-box').hidden=true;$('pin-code').textContent='';$('pin-btns').hidden=false;renderPin();toast('PIN saved');});
+  ['pf-cur','pf-new','pf-cnf','lk-pin'].forEach(function(i){$(i).addEventListener('input',function(){this.value=this.value.replace(/\D/g,'');});});
+  $('th-chips').addEventListener('click',function(e){var b=e.target.closest('[data-theme-set]');if(b)applyTheme(b.dataset.themeSet);});
 }
 
 /* ---------- Settings ---------- */
@@ -1370,7 +1593,7 @@ function renderSettings(){
   $('st-price-label').textContent='Price per '+unit+' of eggs (Tk)';
   if(document.activeElement!==$('st-price'))$('st-price').value=String(r2(toUnitPrice(state.settings.price,unit)));
   if(document.activeElement!==$('st-low'))$('st-low').value=num(state.settings.lowRate)>0?String(num(state.settings.lowRate)):'';
-  renderSync();
+  renderSync();renderPin();
   $('storage-line').textContent=state.mode==='db'?'Records are saved on this phone first, then uploaded to your Google Sheet.':'Records are saved on this phone only.';
 }
 function persistSettings(next,msg){
@@ -1620,26 +1843,18 @@ function startStore(){
 
 /* ---------- wiring ---------- */
 function init(){
+  applyTheme(currentTheme());wireLock();wirePin();lockNow();
   $('cost-grid').innerHTML=CATS.map(function(c){
     return '<label class="field"><span>'+esc(c.label)+'</span><input id="c-'+c.key+'" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"></label>';
   }).join('');
   $('s-cat').innerHTML=SETUP_CATS.map(function(c){return '<option>'+esc(c)+'</option>';}).join('');
   $('s-sugg').innerHTML=SUGGEST.map(function(s){return '<option value="'+esc(s[0])+'"></option>';}).join('');
 
-  $('f-eggs').addEventListener('input',function(){sanitize(this,false);onEdit();});
-  $('f-price').addEventListener('input',function(){sanitize(this,true);onEdit();});
   CATS.forEach(function(c){$('c-'+c.key).addEventListener('input',function(){sanitize(this,true);onEdit();});});
   $('f-collected').addEventListener('input',function(){sanitize(this,false);onEdit();});
   $('f-cracked').addEventListener('input',function(){sanitize(this,false);onEdit();});
   $('f-notes').addEventListener('input',onEdit);
   $('f-othernote').addEventListener('input',onEdit);
-  Array.prototype.forEach.call(document.querySelectorAll('[data-add]'),function(b){
-    b.addEventListener('click',function(){
-      var a=b.dataset.add,cur=parseField($('f-eggs').value)||0;
-      $('f-eggs').value=a==='clear'?'':String(cur+Number(a));onEdit();
-    });
-  });
-  $('price-reset').addEventListener('click',function(){setPriceField(state.settings.price);onEdit();});
   $('d-prev').addEventListener('click',function(){gotoDate(shiftDay(-1));});
   $('d-next').addEventListener('click',function(){var n=shiftDay(1);if(n<=todayStr())gotoDate(n);});
   $('d-pick').addEventListener('click',function(e){e.preventDefault();toggleCal();});
@@ -1671,8 +1886,8 @@ function init(){
       clearTimer=setTimeout(function(){b.dataset.arm='0';b.textContent='Clear this day';},4000);return;}
     b.dataset.arm='0';b.textContent='Clear this day';
     if(!state.ready||state.readOnly)return;
-    $('f-eggs').value='';CATS.forEach(function(c){$('c-'+c.key).value='';});$('f-notes').value='';$('f-othernote').value='';$('f-collected').value='';$('f-cracked').value='';
-    setPriceField(state.settings.price);dirty=true;flushSave();renderStrip();toast('Day cleared');
+    CATS.forEach(function(c){$('c-'+c.key).value='';});$('f-notes').value='';$('f-othernote').value='';$('f-collected').value='';$('f-cracked').value='';
+    dirty=true;flushSave();renderStrip();toast('Costs and counts for this day cleared. Sales are kept.');
   });
 
   Array.prototype.forEach.call(document.querySelectorAll('.tabs button'),function(b){b.addEventListener('click',function(){showTab(b.dataset.tab);});});
@@ -1684,13 +1899,17 @@ function init(){
     var mr=e.target.closest&&e.target.closest('[data-mrow]');if(mr){var k=mr.dataset.mrow;openMoney[k]=!openMoney[k];renderSummary();return;}
     var dd=e.target.closest&&e.target.closest('[data-dd]');if(dd){showTab('today');gotoDate(dd.dataset.dd);return;}
     var ds=e.target.closest&&e.target.closest('[data-ds]');if(ds){showTab('setup');openSetupForm(ds.dataset.ds);return;}
-    var sid=e.target.closest&&e.target.closest('[data-sid]');if(sid){openSaleForm(sid.dataset.sid);return;}
+    var sid=e.target.closest&&e.target.closest('[data-sid]');if(sid){openSaleForm(sid.dataset.sid,tab==='today'?'today':'buyers');return;}
+    var cv=e.target.closest&&e.target.closest('[data-convert]');if(cv){convertLegacy();return;}
+    var bk=e.target.closest&&e.target.closest('[data-bk]');if(bk){var kk=bk.dataset.bk;openBuyers[kk]=!openBuyers[kk];renderSales();return;}
+    var pf=e.target.closest&&e.target.closest('[data-payfor]');if(pf){var inp=Array.prototype.filter.call(document.querySelectorAll('[data-payin]'),function(x){return x.dataset.payin===pf.dataset.payfor;})[0];payBuyer(pf.dataset.payfor,parseField(inp?inp.value:'')||0);return;}
+    var rb=e.target.closest&&e.target.closest('[data-rb]');if(rb){$('sl-buyer').value=rb.dataset.rb;return;}
+    var sa=e.target.closest&&e.target.closest('[data-sadd]');if(sa){var cur=parseField($('sl-eggs').value)||0;$('sl-eggs').value=String(cur+Number(sa.dataset.sadd));slUpdateAuto();return;}
     var bid=e.target.closest&&e.target.closest('[data-bid]');if(bid){openBatchForm(bid.dataset.bid);return;}
     var bfl=e.target.closest&&e.target.closest('[data-bflock]');if(bfl){addSurvivors(bfl.dataset.bflock);return;}
     var rdn=e.target.closest&&e.target.closest('[data-rdone]');if(rdn){doneRem(rdn.dataset.rdone);return;}
     var rid=e.target.closest&&e.target.closest('[data-rid]');if(rid){showTab('flock');openRemForm(rid.dataset.rid);return;}
     var mt=e.target.closest&&e.target.closest('[data-metric]');if(mt){slMetric=mt.dataset.metric;renderSales();return;}
-    if(e.target.id==='sl-filter'){slUnpaid=!slUnpaid;renderSales();return;}
     var fi=e.target.closest&&e.target.closest('[data-fid]');if(fi){openFlockForm(fi.dataset.fid);return;}
     var it=e.target.closest&&e.target.closest('.item');if(it){openSetupForm(it.dataset.id);return;}
     var sg=e.target.closest&&e.target.closest('[data-sg]');if(sg){var s=SUGGEST[Number(sg.dataset.sg)];openSetupForm(null,{name:s[0],cat:s[1]});}
@@ -1708,20 +1927,14 @@ function init(){
   ['b-set','b-hatched','b-surv'].forEach(function(id){$(id).addEventListener('input',function(){sanitize(this,false);});});
   $('r-add').addEventListener('click',function(){openRemForm(null);});
   $('r-form').addEventListener('submit',saveRem);$('r-cancel').addEventListener('click',closeRemForm);$('r-del').addEventListener('click',deleteRem);
-  $('sl-add').addEventListener('click',function(){openSaleForm(null);});
+  $('sl-add').addEventListener('click',function(){openSaleForm(null,'buyers');});
+  $('td-add-sale').addEventListener('click',function(){openSaleForm(null,'today',curDate);});
   $('sl-form').addEventListener('submit',saveSale);$('sl-cancel').addEventListener('click',closeSaleForm);$('sl-del').addEventListener('click',deleteSale);
   $('sl-eggs').addEventListener('input',function(){sanitize(this,false);slUpdateAuto();});
   $('sl-amount').addEventListener('input',function(){sanitize(this,true);slAmtTouched=true;slUpdateAuto();});
-  $('sl-paid').addEventListener('input',function(){sanitize(this,true);slPaidTouched=true;});
-  $('sl-full').addEventListener('click',function(){$('sl-paid').value=$('sl-amount').value;slPaidTouched=true;});
-  $('sl-none').addEventListener('click',function(){$('sl-paid').value='0';slPaidTouched=true;});
-  $('fl-date').addEventListener('change',updateFlAfter);
-  $('su-add').addEventListener('click',function(){openSetupForm(null);});
-  $('s-form').addEventListener('submit',saveSetup);
-  $('s-cancel').addEventListener('click',closeSetupForm);
-  $('s-del').addEventListener('click',deleteSetup);
-  $('s-qty').addEventListener('input',function(){sanitize(this,false);updateSetupTotal();});
-  $('s-unit').addEventListener('input',function(){sanitize(this,true);updateSetupTotal();});
+  $('sl-paid').addEventListener('input',function(){sanitize(this,true);slBalance();});
+  $('sl-st').addEventListener('click',function(e){var b=e.target.closest('[data-st]');if(b)setSlStatus(b.dataset.st);});
+  ['fl-date','sl-date','s-date','b-date'].forEach(function(id){$(id).addEventListener('change',function(){if(this.value>todayStr()){this.value=todayStr();toast('Future dates are not allowed here.');}});});
   $('st-business').addEventListener('change',saveSettings);
   $('st-price').addEventListener('input',function(){sanitize(this,true);});
   $('st-price').addEventListener('change',saveSettings);
