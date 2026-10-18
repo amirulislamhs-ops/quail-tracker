@@ -85,6 +85,8 @@ fieldset:disabled{opacity:.55}
 :root[data-theme="sage"]{--bg:#E8EFE6;--surface:#F6FAF4;--surface-2:#EAF1E7;--ink:#1D2B21;--muted:#566A5B;--line:#CBD8C8;--brand:#3E5C46;--brand-ink:#EEF4EA;--focus:#2F6B3F;--c-cost:#4A6652;--submit:#2F6B3F;--submit-ink:#fff;--good:#1F7A45;--good-bg:#DDEFE3;--bad:#B3302A;--bad-bg:#FBE4E1;color-scheme:light}
 :root[data-theme="blue"]{--bg:#E8EEF6;--surface:#F7FAFE;--surface-2:#EBF0F8;--ink:#17233A;--muted:#52627C;--line:#CBD5E4;--brand:#2F4A73;--brand-ink:#EAF1FB;--focus:#2A5DA8;--c-cost:#44587A;--submit:#2A5DA8;--submit-ink:#fff;--good:#1B7A4B;--good-bg:#DCEFE5;--bad:#B3302A;--bad-bg:#FBE4E1;color-scheme:light}
 :root[data-theme="cream"]{--bg:#F5EEDF;--surface:#FFFBF1;--surface-2:#F6EEDD;--ink:#2E2418;--muted:#6B5C48;--line:#E0D3BA;--brand:#5B452D;--brand-ink:#F8EEDC;--focus:#8A5A00;--c-cost:#6B5A46;--submit:#6B4E2E;--submit-ink:#fff;--good:#2F7A3F;--good-bg:#E4EFD9;--bad:#B3302A;--bad-bg:#FBE4E1;color-scheme:light}
+.sg-bar{overflow-x:auto;flex-wrap:nowrap}.sg-bar .chip{flex:0 0 auto}.sg-off{display:none!important}
+.due-row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line)}.due-row:first-of-type{border-top:0}
 /* lock screen */
 #lock{position:fixed;inset:0;z-index:100;background:var(--bg);overflow:auto;padding:calc(env(safe-area-inset-top) + 24px) 20px 32px}
 #lock .inner{max-width:360px;margin:8vh auto 0;display:flex;flex-direction:column;gap:14px;text-align:center}
@@ -157,6 +159,7 @@ fieldset:disabled{opacity:.55}
 svg.chart{width:100%;height:auto;display:block}
 svg.chart .grid{stroke:var(--line);stroke-width:1}
 svg.chart .ax{fill:var(--muted);font:10px var(--font-body)}
+svg.chart .ln{fill:none;stroke-width:2.2;stroke-linejoin:round} svg.chart .dot{stroke:var(--surface);stroke-width:1.5} svg.chart .l-rev{stroke:var(--c-rev);fill:var(--c-rev)} svg.chart .l-cost{stroke:var(--c-cost);fill:var(--c-cost)} svg.chart .l-net{stroke:var(--good);fill:var(--good)} svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
 svg.chart .bar-rev{fill:var(--c-rev)} svg.chart .bar-cost{fill:var(--c-cost)}
 .legend{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--muted)}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}
@@ -190,7 +193,7 @@ th:first-child,td:first-child{text-align:left}
 
 /* bottom tabs */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
-.tabs .wrap{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));padding-inline:2px}
+.tabs .wrap{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding-inline:2px}
 .tabs button{min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;color:var(--muted);font:600 11px var(--font-display)}
 .tabs button[aria-current="page"]{color:var(--ink);box-shadow:inset 0 3px 0 var(--accent)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(132px + env(safe-area-inset-bottom,0px));z-index:20;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;text-align:center}
@@ -307,7 +310,9 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
     </div>
 
     <div class="warn" id="low-alert" role="alert" hidden></div>
+    <div class="warn" id="save-nudge" role="status" hidden></div>
     <div class="card" id="rem-today" hidden></div>
+    <div class="card" id="due-card" hidden></div>
     <div class="card" id="sales-card">
       <div class="sec-head"><h2>Egg sales</h2><button id="td-add-sale" class="btn small" type="button">Add sale</button></div>
       <div id="sale-slot-today"></div>
@@ -465,7 +470,61 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
     <div id="by-list" class="panel"></div>
   </section>
 
+  
+
+  <section id="p-settings" class="panel" hidden>
+    <div class="chips kind-chips sg-bar" id="sg-bar" role="tablist" aria-label="Settings sections"></div>
+    <div class="card" data-sg="business">
+      <h2>Business</h2>
+      <label class="field"><span>Business name (optional)</span><input id="st-business" class="inp" maxlength="60" autocomplete="off"></label>
+      <label class="field"><span>I sell eggs by the</span><select id="st-unit" class="inp"><option value="dozen">Dozen (12 eggs)</option><option value="hali">Hali (4 eggs)</option></select></label>
+      <label class="field"><span id="st-price-label">Price per dozen eggs (Tk)</span><input id="st-price" class="inp num-r" inputmode="decimal" autocomplete="off"></label>
+      <p class="sub">New days start with this price. Days you already saved keep the price they were saved with.</p>
+      <label class="field"><span>Low-laying alert: warn me below this laying rate (%)</span><input id="st-low" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="for example 60"></label>
+      <p class="sub">Laying rate is eggs collected divided by hens. A sudden drop can be an early sign of sickness or heat. Leave empty to turn the alert off.</p>
+    </div>
+    <div class="card" data-sg="look"><h2>Look</h2><div class="chips kind-chips" id="th-chips" role="group" aria-label="Theme"></div></div>
+    <div class="card" data-sg="alerts" id="alert-card">
+      <h2>Reminders</h2>
+      <label class="field"><span>Daily reminder to save today's records</span><select id="al-on" class="inp"><option value="0">Off</option><option value="1">On</option></select></label>
+      <label class="field"><span>Remind me at</span><input id="al-time" class="inp" type="time" value="20:00"></label>
+      <label class="field"><span>Buyer unpaid reminder: after how many days</span><input id="al-days" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="7"></label>
+      <p class="sub" id="al-note"></p>
+      <button id="al-test" class="btn ghost" type="button">Send a test notification</button>
+    </div>
+    <div class="card" id="pin-card" data-sg="lock">
+      <h2>PIN lock</h2>
+      <p class="sub" id="pin-state"></p>
+      <div class="btn-row" id="pin-btns"></div>
+      <form id="pin-form" class="panel" hidden novalidate>
+        <label class="field" id="pf-cur-w"><span>Current PIN</span><input id="pf-cur" class="inp" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></label>
+        <label class="field" id="pf-new-w"><span>New PIN (4 to 6 digits)</span><input id="pf-new" class="inp" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></label>
+        <label class="field" id="pf-cnf-w"><span>Confirm new PIN</span><input id="pf-cnf" class="inp" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></label>
+        <p class="err" id="pf-err" role="alert" hidden></p>
+        <div class="btn-row"><button id="pf-ok" class="btn" type="submit">Save</button><button id="pf-cancel" class="btn ghost" type="button">Cancel</button></div>
+      </form>
+      <div id="pin-code-box" hidden class="panel">
+        <p class="sub">Your recovery code. Write it down now. It is shown only once. If you forget your PIN, this code resets it.</p>
+        <div class="code-box" id="pin-code"></div>
+        <button id="pin-code-ok" class="btn" type="button">I have saved it</button>
+      </div>
+      <p class="sub">The PIN locks the app on this phone. It does not encrypt what the browser stores, and it does not lock your Google Sheet.</p>
+    </div>
+    <div class="card" id="backup-card" data-sg="sync" hidden>
+      <h2>Google Sheet and sync</h2>
+      <p class="sub" id="sync-line"></p>
+      <div class="btn-row"><button id="sync-now" class="btn ghost" type="button">Sync now</button><a id="sheet-link" class="btn ghost" href="#" target="_blank" rel="noopener" hidden>Open Google Sheet</a><button id="conn-change" class="btn ghost" type="button">Change connection</button></div>
+    </div>
+    <div class="card" id="install-card" data-sg="sync" hidden>
+      <h2>Install</h2>
+      <p class="sub">Add this tracker to your home screen so it opens like an app, even without internet.</p>
+      <div class="btn-row"><button id="install-btn" class="btn" type="button">Install app</button></div>
+    </div>
+    <p class="sub" id="storage-line"></p>
+  </section>
+
   <section id="p-setup" class="panel" hidden>
+    <h2 style="margin:6px 4px 0">Setup costs (one-time)</h2>
     <div class="card">
       <div class="setup-head">
         <div><span class="label-caps">One-time setup total</span><b id="su-total">Tk 0</b></div>
@@ -500,48 +559,6 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
     </div>
   </section>
 
-  <section id="p-settings" class="panel" hidden>
-    <div class="card">
-      <h2>Business</h2>
-      <label class="field"><span>Business name (optional)</span><input id="st-business" class="inp" maxlength="60" autocomplete="off"></label>
-      <label class="field"><span>I sell eggs by the</span><select id="st-unit" class="inp"><option value="dozen">Dozen (12 eggs)</option><option value="hali">Hali (4 eggs)</option></select></label>
-      <label class="field"><span id="st-price-label">Price per dozen eggs (Tk)</span><input id="st-price" class="inp num-r" inputmode="decimal" autocomplete="off"></label>
-      <p class="sub">New days start with this price. Days you already saved keep the price they were saved with.</p>
-      <label class="field"><span>Low-laying alert: warn me below this laying rate (%)</span><input id="st-low" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="for example 60"></label>
-      <p class="sub">Laying rate is eggs collected divided by hens. A sudden drop can be an early sign of sickness or heat. Leave empty to turn the alert off.</p>
-    </div>
-    <div class="card"><h2>Look</h2><div class="chips kind-chips" id="th-chips" role="group" aria-label="Theme"></div></div>
-    <div class="card" id="pin-card">
-      <h2>PIN lock</h2>
-      <p class="sub" id="pin-state"></p>
-      <div class="btn-row" id="pin-btns"></div>
-      <form id="pin-form" class="panel" hidden novalidate>
-        <label class="field" id="pf-cur-w"><span>Current PIN</span><input id="pf-cur" class="inp" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></label>
-        <label class="field" id="pf-new-w"><span>New PIN (4 to 6 digits)</span><input id="pf-new" class="inp" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></label>
-        <label class="field" id="pf-cnf-w"><span>Confirm new PIN</span><input id="pf-cnf" class="inp" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></label>
-        <p class="err" id="pf-err" role="alert" hidden></p>
-        <div class="btn-row"><button id="pf-ok" class="btn" type="submit">Save</button><button id="pf-cancel" class="btn ghost" type="button">Cancel</button></div>
-      </form>
-      <div id="pin-code-box" hidden class="panel">
-        <p class="sub">Your recovery code. Write it down now. It is shown only once. If you forget your PIN, this code resets it.</p>
-        <div class="code-box" id="pin-code"></div>
-        <button id="pin-code-ok" class="btn" type="button">I have saved it</button>
-      </div>
-      <p class="sub">The PIN locks the app on this phone. It does not encrypt what the browser stores, and it does not lock your Google Sheet.</p>
-    </div>
-    <div class="card" id="backup-card" hidden>
-      <h2>Google Sheet and sync</h2>
-      <p class="sub" id="sync-line"></p>
-      <div class="btn-row"><button id="sync-now" class="btn ghost" type="button">Sync now</button><a id="sheet-link" class="btn ghost" href="#" target="_blank" rel="noopener" hidden>Open Google Sheet</a><button id="conn-change" class="btn ghost" type="button">Change connection</button></div>
-    </div>
-    <div class="card" id="install-card" hidden>
-      <h2>Install</h2>
-      <p class="sub">Add this tracker to your home screen so it opens like an app, even without internet.</p>
-      <div class="btn-row"><button id="install-btn" class="btn" type="button">Install app</button></div>
-    </div>
-    <p class="sub" id="storage-line"></p>
-  </section>
-
 </main>
 
 <nav class="tabs" aria-label="Sections">
@@ -549,7 +566,6 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
     <button type="button" data-tab="today" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M9 15h6"/></svg>Today</button>
     <button type="button" data-tab="sales"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M16 6.5a3 3 0 0 1 0 5.5M18 14.8c1.8.7 3 2.3 3 5.2"/></svg>Buyers</button>
     <button type="button" data-tab="flock"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="13" r="6.5"/><circle cx="13.2" cy="11.4" r=".7" fill="currentColor"/><path d="M17.5 12l3 1.2-3 1.2M9 19.5V22M13 19.5V22M7 7.5C7 5 9 3.5 11 4.5"/></svg>Birds</button>
-    <button type="button" data-tab="setup"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8l8-4 8 4v8l-8 4-8-4V8z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg>Setup</button>
     <button type="button" data-tab="history"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>History</button>
     <button type="button" data-tab="summary"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M12 20V5M19 20v-7"/></svg>Summary</button>
   </div>
@@ -793,6 +809,14 @@ function fifoPay(sales,key,amount){
   rows.forEach(function(x){if(left<=0)return;var pay=Math.min(left,saleOwed(x.s));ups.push({id:x.id,paid:r2(num(x.s.paid)+pay)});left=r2(left-pay);});
   return {updates:ups,unapplied:left};
 }
+/* buyers who owe money for at least `days` days (counted from their oldest unpaid sale) */
+function overdueBuyers(sales,today,days){
+  var m={};
+  Object.keys(sales||{}).forEach(function(id){var s=sales[id];if(!s||!s.date||saleOwed(s)<=0)return;
+    var k=buyerKey(s.buyer),o=m[k]||(m[k]={key:k,name:buyerName(s.buyer),owed:0,oldest:s.date});o.owed=r2(o.owed+saleOwed(s));if(s.date<o.oldest)o.oldest=s.date;});
+  return Object.keys(m).map(function(k){var o=m[k];o.age=daysBetween(o.oldest,today);return o;}).filter(function(o){return o.age>=days;}).sort(function(a,b){return b.age-a.age||b.owed-a.owed;});
+}
+function savedOn(days,sales,date){return !!(days&&days[date])||Object.keys(sales||{}).some(function(k){return sales[k]&&sales[k].date===date;});}
 /* ==/LOGIC== */
 
 if(typeof document==='undefined')return;
@@ -881,7 +905,7 @@ function renderStrip(){
   var birds=birdsOn(state.flock,curDate),lr=layRate(c.collected,layBirds(state.flock,curDate));
   $('bird-note').textContent=Object.keys(state.flock).length?('Birds on this day: '+fmtNum(birds)+(lr!==null?'. Laying rate '+Math.round(lr)+'%.':'.')):'No birds recorded yet.';
   setAlert($('low-alert'),alertText(curDate,c.collected));
-  renderTodayRem();renderTodaySales();
+  renderTodayRem();renderTodaySales();renderDue();renderNudge();
 }
 function setFields(rec){
   CATS.forEach(function(c){$('c-'+c.key).value=rec[c.key]!==undefined?String(rec[c.key]):'';});
@@ -1016,6 +1040,28 @@ function chartSvg(sum){
   });
   return '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Monthly egg revenue and running costs in taka, last '+keys.length+' months">'+g+'</svg>';
 }
+function lineSvg(sum){
+  var keys=sum.monthKeys.slice(-12),W=340,H=210,L=46,R=10,T=10,B=34,pw=W-L-R,ph=H-T-B,lo=0,hi=1;
+  keys.forEach(function(k){var m=sum.months[k];[m.revenue,m.cost,m.net].forEach(function(v){hi=Math.max(hi,v);lo=Math.min(lo,v);});});
+  var nt=niceTicks(Math.max(hi,1)),top=nt.top,bot=0;
+  if(lo<0){var st=nt.ticks.length>1?nt.ticks[1]-nt.ticks[0]:top/4;bot=-Math.ceil(-lo/st)*st;}
+  var span=top-bot,Y=function(v){return T+ph-((v-bot)/span)*ph;},X=function(i){return keys.length===1?L+pw/2:L+pw*i/(keys.length-1);},g='';
+  for(var t=bot;t<=top+1e-9;t+=(nt.ticks[1]-nt.ticks[0]||top)){var y=Y(t);g+='<line class="grid" x1="'+L+'" x2="'+(W-R)+'" y1="'+y.toFixed(1)+'" y2="'+y.toFixed(1)+'"/><text class="ax" x="'+(L-6)+'" y="'+(y+3).toFixed(1)+'" text-anchor="end">'+compact(t)+'</text>';}
+  function line(f,cls){
+    var pts=keys.map(function(k,i){return X(i).toFixed(1)+','+Y(sum.months[k][f]).toFixed(1);});
+    return '<polyline class="ln '+cls+'" points="'+pts.join(' ')+'"/>'+keys.map(function(k,i){return '<circle class="dot '+cls+'" cx="'+X(i).toFixed(1)+'" cy="'+Y(sum.months[k][f]).toFixed(1)+'" r="3"/>';}).join('');
+  }
+  g+=line('cost','l-cost')+line('revenue','l-rev')+line('net','l-net');
+  keys.forEach(function(k,i){g+='<text class="ax" x="'+X(i).toFixed(1)+'" y="'+(H-B+14)+'" text-anchor="middle">'+esc(monthShort(k))+'</text>';if(i===0||k.slice(5)==='01')g+='<text class="ax" x="'+X(i).toFixed(1)+'" y="'+(H-B+26)+'" text-anchor="middle">'+k.slice(0,4)+'</text>';});
+  return '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Monthly revenue, expenses and profit in taka">'+g+'</svg>';
+}
+function top10Card(){
+  var bs=buyerStats(state.sales,'all').sort(function(a,b){return b.amount-a.amount||b.eggs-a.eggs;}).slice(0,10);
+  if(!bs.length)return '';
+  var top=bs[0].amount||1;
+  return '<div class="card"><h2>Top '+bs.length+' buyers</h2><ul class="cb">'+bs.map(function(b){var w=Math.max(2,Math.round(b.amount/top*100));
+    return '<li><div class="cb-top"><span class="lab"><b>'+esc(b.name)+'</b></span><b>'+esc(fmtTk(b.amount))+'</b></div><div class="bar rev"><i style="width:'+w+'%"></i></div><span class="sub">'+esc(fmtNum(b.eggs))+' eggs · '+b.orders+(b.orders===1?' order':' orders')+'</span></li>';}).join('')+'</ul></div>';
+}
 function renderSummary(){
   var host=$('sum-body');
   if(!state.ready){host.innerHTML='<p class="sub">Loading your records…</p>';return;}
@@ -1036,6 +1082,8 @@ function renderSummary(){
   html=html+moneyCard(sum);
   if(sum.days){
     html+='<div class="card"><h2>Revenue and costs by month</h2>'+chartSvg(sum)+'<div class="legend"><span><i style="background:var(--c-rev)"></i>Egg revenue</span><span><i style="background:var(--c-cost)"></i>Running costs</span></div></div>';
+    html+='<div class="card"><h2>Revenue, expenses and profit</h2>'+lineSvg(sum)+'<div class="legend"><span><i style="background:var(--c-rev)"></i>Revenue</span><span><i style="background:var(--c-cost)"></i>Expenses</span><span><i style="background:var(--good)"></i>Profit</span></div></div>';
+    html+=top10Card();
     html+='<div class="card"><h2>Month by month</h2><div class="scroll"><table><thead><tr><th>Month</th><th>Eggs</th><th>Earned</th><th>Spent</th><th>Net</th></tr></thead><tbody>'+
       sum.monthKeys.slice().reverse().map(function(k){var m=sum.months[k],c=netClass(m.net);
         return '<tr><td>'+esc(monthLabel(k))+'</td><td>'+esc(fmtNum(m.eggs))+'</td><td>'+esc(fmtTk(m.revenue))+'</td><td>'+esc(fmtTk(m.cost))+'</td><td class="'+(c==='good'?'v-good':c==='bad'?'v-bad':'')+'"><b>'+esc(fmtNet(m.net))+'</b></td></tr>';
@@ -1488,6 +1536,52 @@ function renderSales(){
   }).join('')+'</ul><p class="sub">Tap a buyer to see every purchase, record a payment, or edit a sale.</p></div>';
 }
 
+/* ---------- Reminders ---------- */
+var REMK='qet-rem';
+function remGet(){var o={on:0,time:'20:00',days:7};try{var x=JSON.parse(localStorage.getItem(REMK)||'null');if(x)o=Object.assign(o,x);}catch(e){}o.days=Math.max(1,Math.floor(num(o.days))||7);return o;}
+function remSave(o){try{localStorage.setItem(REMK,JSON.stringify(o));}catch(e){}pushRemState();}
+function pushRemState(){   /* tell the service worker, so it can nudge you even when the app is closed (where the phone allows) */
+  try{if(!window.caches)return;var o=remGet();caches.open('qet-state').then(function(c){return c.put('state.json',new Response(JSON.stringify({on:o.on,time:o.time,saved:savedOn(state.days,state.sales,todayStr())?todayStr():'',today:todayStr()})));});
+    if(navigator.serviceWorker&&navigator.serviceWorker.ready)navigator.serviceWorker.ready.then(function(r){if(r.periodicSync&&o.on)r.periodicSync.register('qet-daily',{minInterval:6*3600*1000}).catch(function(){});});}catch(e){}
+}
+function nowHM(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
+function notify(title,body){
+  try{if(!('Notification' in window)||Notification.permission!=='granted')return false;
+    if(navigator.serviceWorker&&navigator.serviceWorker.ready)navigator.serviceWorker.ready.then(function(r){r.showNotification(title,{body:body,icon:'icon-192.png',tag:'qet-daily'});});else new Notification(title,{body:body});return true;}catch(e){return false;}
+}
+function renderDue(){
+  var r=remGet(),card=$('due-card'),list=overdueBuyers(state.sales,todayStr(),r.days);
+  if(!state.ready||!list.length){card.hidden=true;return;}
+  card.hidden=false;
+  card.innerHTML='<h2>Collect payments</h2><p class="sub">Unpaid for '+r.days+' days or more.</p>'+list.slice(0,6).map(function(o){
+    return '<div class="due-row"><span><b>'+esc(o.name)+'</b><span class="sub">owes '+esc(fmtTk(o.owed))+' · since '+esc(shortDay(o.oldest))+' ('+o.age+' days)</span></span><button class="btn small" type="button" data-due="'+esc(o.key)+'">Open</button></div>';}).join('')+(list.length>6?'<p class="sub">And '+(list.length-6)+' more on the Buyers tab.</p>':'');
+}
+function renderNudge(){
+  var r=remGet(),el=$('save-nudge'),t=todayStr();
+  var show=state.ready&&r.on&&curDate===t&&nowHM()>=r.time&&!savedOn(state.days,state.sales,t)&&!(dirty&&Object.keys(readForm()).length);
+  el.hidden=!show;if(show)el.textContent="You have not saved today's records yet. Add your sales and costs, then tap Submit.";
+  pushRemState();
+  if(show&&!nudged&&document.visibilityState==='visible'){nudged=true;notify('Quail Egg Tracker',"Don't forget to save today's records.");}
+}
+var nudged=false;
+function renderAlertCard(){
+  var r=remGet();$('al-on').value=String(r.on?1:0);$('al-time').value=r.time;$('al-days').value=String(r.days);
+  var ok='Notification' in window,perm=ok?Notification.permission:'none';
+  $('al-note').textContent=!ok?'This browser cannot show notifications. The reminder banner on Today still works while the app is open.':perm==='denied'?'Notifications are blocked for this app. Turn them on in your phone settings for this app, or the browser site settings.':'The banner on Today always shows. Phone notifications arrive when the app is open or recently used. Some phones also let an installed app remind you in the background, but no phone guarantees it.';
+}
+function wireAlerts(){
+  function save(){var o={on:Number($('al-on').value)||0,time:$('al-time').value||'20:00',days:Math.max(1,Math.floor(parseField($('al-days').value)||7))};remSave(o);
+    if(o.on&&'Notification' in window&&Notification.permission==='default')Notification.requestPermission().then(function(){renderAlertCard();});renderDue();renderNudge();}
+  ['al-on','al-time','al-days'].forEach(function(i){$(i).addEventListener('change',save);});
+  $('al-days').addEventListener('input',function(){sanitize(this,false);});
+  $('al-test').addEventListener('click',function(){
+    if(!('Notification' in window))return toast('This browser cannot show notifications.');
+    var go=function(){if(!notify('Quail Egg Tracker','Test: reminders are working.'))toast('Notifications are not allowed yet.');};
+    if(Notification.permission==='default')Notification.requestPermission().then(go);else go();
+  });
+  setInterval(function(){if(tab==='today')renderNudge();},60000);
+}
+
 /* ---------- Themes ---------- */
 var THEMES=[['auto','Auto'],['sage','Sage green'],['blue','Soft blue'],['cream','Warm cream'],['light','Light'],['dark','Dark']];
 function currentTheme(){try{return localStorage.getItem('qet-theme')||'auto';}catch(e){return 'auto';}}
@@ -1626,14 +1720,24 @@ var SUBS={today:'Eggs sold and costs, in Tk',history:'Every saved day',summary:'
 function updateSub(){var b=state.settings.business;$('sub').textContent=(b?b+' · ':'')+SUBS[tab];}
 function renderCurrent(){
   if(tab==='today')renderStrip();else if(tab==='history')renderHistory();else if(tab==='summary')renderSummary();
-  else if(tab==='flock')renderFlock();else if(tab==='sales')renderSales();else if(tab==='setup')renderSetup();else if(tab==='settings')renderSettings();
+  else if(tab==='flock')renderFlock();else if(tab==='sales')renderSales();else if(tab==='settings'){renderSettings();renderSetup();renderAlertCard();}
+}
+var sgroup='business',SGS=[['business','Business'],['setup','Setup'],['look','Look'],['alerts','Reminders'],['lock','PIN lock'],['sync','Sync']];
+function setGroup(g){
+  sgroup=g;
+  Array.prototype.forEach.call(document.querySelectorAll('#p-settings [data-sg]'),function(c){c.classList.toggle('sg-off',c.dataset.sg!==g);});
+  $('p-setup').hidden=g!=='setup';
+  $('sg-bar').innerHTML=SGS.map(function(x){return '<button class="chip" type="button" role="tab" data-sg-set="'+x[0]+'" aria-pressed="'+(x[0]===g)+'">'+x[1]+'</button>';}).join('');
+  if(g==='setup')renderSetup();
 }
 function showTab(name){
+  var toSetup=name==='setup';if(toSetup)name='settings';
   var leaving=tab;
   if(leaving==='today'&&name!=='today')saveDraft(curDate);
   if(name==='settings'&&tab!=='settings')prevTab=tab;
   tab=name;
-  ['today','history','summary','flock','sales','setup','settings'].forEach(function(t){$('p-'+t).hidden=t!==name;});
+  ['today','history','summary','flock','sales','settings'].forEach(function(t){$('p-'+t).hidden=t!==name;});
+  $('p-setup').hidden=true;if(toSetup)sgroup='setup';if(name==='settings')setGroup(sgroup);
   Array.prototype.forEach.call(document.querySelectorAll('.tabs button'),function(b){
     if(b.dataset.tab===name)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');
   });
@@ -1843,7 +1947,7 @@ function startStore(){
 
 /* ---------- wiring ---------- */
 function init(){
-  applyTheme(currentTheme());wireLock();wirePin();lockNow();
+  applyTheme(currentTheme());wireLock();wirePin();lockNow();wireAlerts();
   $('cost-grid').innerHTML=CATS.map(function(c){
     return '<label class="field"><span>'+esc(c.label)+'</span><input id="c-'+c.key+'" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"></label>';
   }).join('');
@@ -1899,6 +2003,8 @@ function init(){
     var mr=e.target.closest&&e.target.closest('[data-mrow]');if(mr){var k=mr.dataset.mrow;openMoney[k]=!openMoney[k];renderSummary();return;}
     var dd=e.target.closest&&e.target.closest('[data-dd]');if(dd){showTab('today');gotoDate(dd.dataset.dd);return;}
     var ds=e.target.closest&&e.target.closest('[data-ds]');if(ds){showTab('setup');openSetupForm(ds.dataset.ds);return;}
+    var du=e.target.closest&&e.target.closest('[data-due]');if(du){openBuyers[du.dataset.due]=true;showTab('sales');return;}
+    var sgs=e.target.closest&&e.target.closest('[data-sg-set]');if(sgs){setGroup(sgs.dataset.sgSet);return;}
     var sid=e.target.closest&&e.target.closest('[data-sid]');if(sid){openSaleForm(sid.dataset.sid,tab==='today'?'today':'buyers');return;}
     var cv=e.target.closest&&e.target.closest('[data-convert]');if(cv){convertLegacy();return;}
     var bk=e.target.closest&&e.target.closest('[data-bk]');if(bk){var kk=bk.dataset.bk;openBuyers[kk]=!openBuyers[kk];renderSales();return;}

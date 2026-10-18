@@ -1,5 +1,5 @@
 /* Offline support: the app opens without internet. Records are saved by the page itself. */
-var VERSION = 'qet-v5';
+var VERSION = 'qet-v8';
 var SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
 
 self.addEventListener('install', function (e) {
@@ -7,7 +7,7 @@ self.addEventListener('install', function (e) {
 });
 self.addEventListener('activate', function (e) {
   e.waitUntil(caches.keys().then(function (keys) {
-    return Promise.all(keys.filter(function (k) { return k !== VERSION; }).map(function (k) { return caches.delete(k); }));
+    return Promise.all(keys.filter(function (k) { return k !== VERSION && k !== 'qet-state'; }).map(function (k) { return caches.delete(k); }));
   }).then(function () { return self.clients.claim(); }));
 });
 self.addEventListener('fetch', function (e) {
@@ -26,4 +26,19 @@ self.addEventListener('fetch', function (e) {
       return hit || net;                         // open instantly from the saved copy, refresh it in the background
     });
   }));
+});
+
+/* Optional background nudge (only some installed Android apps allow it) */
+self.addEventListener('periodicsync', function (e) {
+  if (e.tag !== 'qet-daily') return;
+  e.waitUntil(caches.open('qet-state').then(function (c) { return c.match('state.json'); }).then(function (r) { return r ? r.json() : null; }).then(function (st) {
+    if (!st || !st.on) return;
+    var d = new Date(), hm = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    var today = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    if (hm >= st.time && st.saved !== today) return self.registration.showNotification('Quail Egg Tracker', { body: "Don't forget to save today's records.", icon: 'icon-192.png', tag: 'qet-daily' });
+  }));
+});
+self.addEventListener('notificationclick', function (e) {
+  e.notification.close();
+  e.waitUntil(self.clients.matchAll({ type: 'window' }).then(function (cs) { return cs.length ? cs[0].focus() : self.clients.openWindow('./'); }));
 });
