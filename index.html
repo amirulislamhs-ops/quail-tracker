@@ -2022,6 +2022,11 @@ function init(){
   });
   $('h-month').addEventListener('change',renderHistory);
   document.addEventListener('change',function(e){if(e.target&&e.target.id==='mo-range'){moneyRange=e.target.value;openMoney={};renderSummary();}if(e.target&&e.target.id==='sl-range'){slRange=e.target.value;renderSales();}});
+  $('su-add').addEventListener('click',function(){openSetupForm(null);});
+  $('s-form').addEventListener('submit',saveSetup);
+  $('s-cancel').addEventListener('click',closeSetupForm);
+  $('s-del').addEventListener('click',deleteSetup);
+  ['s-qty','s-unit'].forEach(function(id){$(id).addEventListener('input',function(){sanitize(this,id==='s-unit');updateSetupTotal();});});
   $('fl-add').addEventListener('click',function(){openFlockForm(null);});
   $('fl-form').addEventListener('submit',saveFlock);
   $('fl-cancel').addEventListener('click',closeFlockForm);

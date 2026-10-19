@@ -1,5 +1,5 @@
 /* Offline support: the app opens without internet. Records are saved by the page itself. */
-var VERSION = 'qet-v8';
+var VERSION = 'qet-v9';
 var SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
 
 self.addEventListener('install', function (e) {
