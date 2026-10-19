@@ -1058,6 +1058,31 @@ function lineSvg(sum){
   keys.forEach(function(k,i){g+='<text class="ax" x="'+X(i).toFixed(1)+'" y="'+(H-B+14)+'" text-anchor="middle">'+esc(monthShort(k))+'</text>';if(i===0||k.slice(5)==='01')g+='<text class="ax" x="'+X(i).toFixed(1)+'" y="'+(H-B+26)+'" text-anchor="middle">'+k.slice(0,4)+'</text>';});
   return '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Monthly revenue, expenses and profit in taka">'+g+'</svg>';
 }
+var lineMonth='';
+function dailyLineCard(sum){
+  var ks=sum.monthKeys.slice();if(!ks.length)return '';
+  var now=ks[ks.length-1];  if(!lineMonth)lineMonth=now;
+  var yr=lineMonth.slice(0,4),mo=lineMonth.slice(5,7);
+  var years={};ks.forEach(function(k){years[k.slice(0,4)]=1;});years[yr]=1;years[String(new Date().getFullYear())]=1;
+  var MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var ysel='<select id="ln-year" class="inp" style="min-height:40px;width:auto" aria-label="Year">'+Object.keys(years).sort().reverse().map(function(y){return '<option'+(y===yr?' selected':'')+'>'+y+'</option>';}).join('')+'</select>';
+  var msel='<select id="ln-month" class="inp" style="min-height:40px;width:auto" aria-label="Month">'+MN.map(function(n,i){var v=('0'+(i+1)).slice(-2);return '<option value="'+v+'"'+(v===mo?' selected':'')+'>'+n+'</option>';}).join('')+'</select>';
+  var days=mergedDays(state.days,state.sales),agg=salesByDay(state.sales),n=new Date(Number(yr),Number(mo),0).getDate(),data=[],any=false;
+  for(var d=1;d<=n;d++){var id=yr+'-'+mo+'-'+('0'+d).slice(-2),r=days[id],c=r?dayCalc(r,state.settings.price,agg[id]):{revenue:0,cost:0,net:0};if(r)any=true;data.push(c);}
+  var h='<div class="card"><div class="moneyhead"><h2>Revenue, expenses and profit</h2></div><div style="display:flex;gap:8px;margin:8px 0">'+msel+ysel+'</div>';
+  if(!any)return h+'<p class="sub">No records for '+MN[Number(mo)-1]+' '+yr+'.</p></div>';
+  var W=340,H=210,L=46,R=10,T=10,B=34,pw=W-L-R,ph=H-T-B,lo=0,hi=1;
+  data.forEach(function(m){[m.revenue,m.cost,m.net].forEach(function(v){hi=Math.max(hi,v);lo=Math.min(lo,v);});});
+  var nt=niceTicks(Math.max(hi,1)),top=nt.top,bot=0,st=nt.ticks.length>1?nt.ticks[1]-nt.ticks[0]:top/4;
+  if(lo<0)bot=-Math.ceil(-lo/st)*st;
+  var span=top-bot,Y=function(v){return T+ph-((v-bot)/span)*ph;},X=function(i){return n===1?L+pw/2:L+pw*i/(n-1);},g='';
+  for(var t=bot;t<=top+1e-9;t+=(st||top)){var y=Y(t);g+='<line class="grid" x1="'+L+'" x2="'+(W-R)+'" y1="'+y.toFixed(1)+'" y2="'+y.toFixed(1)+'"/><text class="ax" x="'+(L-6)+'" y="'+(y+3).toFixed(1)+'" text-anchor="end">'+compact(t)+'</text>';}
+  function line(f,cls){return '<polyline class="ln '+cls+'" points="'+data.map(function(m,i){return X(i).toFixed(1)+','+Y(m[f]).toFixed(1);}).join(' ')+'"/>'+data.map(function(m,i){return '<circle class="dot '+cls+'" cx="'+X(i).toFixed(1)+'" cy="'+Y(m[f]).toFixed(1)+'" r="2"/>';}).join('');}
+  g+=line('cost','l-cost')+line('revenue','l-rev')+line('net','l-net');
+  for(var i=0;i<n;i++){var dn=i+1;if(dn===1||dn%5===0||dn===n)g+='<text class="ax" x="'+X(i).toFixed(1)+'" y="'+(H-B+14)+'" text-anchor="middle">'+dn+'</text>';}
+  g+='<text class="ax" x="'+(L+pw/2)+'" y="'+(H-B+28)+'" text-anchor="middle">Day of month</text>';
+  return h+'<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Daily revenue, expenses and profit in taka">'+g+'</svg><div class="legend"><span><i style="background:var(--c-rev)"></i>Revenue</span><span><i style="background:var(--c-cost)"></i>Expenses</span><span><i style="background:var(--good)"></i>Profit</span></div></div>';
+}
 function top10Card(){
   var bs=buyerStats(state.sales,'all').sort(function(a,b){return b.amount-a.amount||b.eggs-a.eggs;}).slice(0,10);
   if(!bs.length)return '';
@@ -1085,7 +1110,7 @@ function renderSummary(){
   html=html+moneyCard(sum);
   if(sum.days){
     html+='<div class="card"><h2>Revenue and costs by month</h2>'+chartSvg(sum)+'<div class="legend"><span><i style="background:var(--c-rev)"></i>Egg revenue</span><span><i style="background:var(--c-cost)"></i>Running costs</span></div></div>';
-    html+='<div class="card"><h2>Revenue, expenses and profit</h2>'+lineSvg(sum)+'<div class="legend"><span><i style="background:var(--c-rev)"></i>Revenue</span><span><i style="background:var(--c-cost)"></i>Expenses</span><span><i style="background:var(--good)"></i>Profit</span></div></div>';
+    html+=dailyLineCard(sum);
     html+=top10Card();
     html+='<div class="card"><h2>Month by month</h2><div class="scroll"><table><thead><tr><th>Month</th><th>Eggs</th><th>Earned</th><th>Spent</th><th>Net</th></tr></thead><tbody>'+
       sum.monthKeys.slice().reverse().map(function(k){var m=sum.months[k],c=netClass(m.net);
@@ -2024,7 +2049,7 @@ function init(){
     var sg=e.target.closest&&e.target.closest('[data-sg]');if(sg){var s=SUGGEST[Number(sg.dataset.sg)];openSetupForm(null,{name:s[0],cat:s[1]});}
   });
   $('h-month').addEventListener('change',renderHistory);
-  document.addEventListener('change',function(e){if(e.target&&e.target.id==='mo-range'){moneyRange=e.target.value;openMoney={};renderSummary();}if(e.target&&e.target.id==='sl-range'){slRange=e.target.value;renderSales();}});
+  document.addEventListener('change',function(e){if(e.target&&e.target.id==='mo-range'){moneyRange=e.target.value;openMoney={};renderSummary();}if(e.target&&(e.target.id==='ln-month'||e.target.id==='ln-year')){lineMonth=$('ln-year').value+'-'+$('ln-month').value;renderSummary();}if(e.target&&e.target.id==='sl-range'){slRange=e.target.value;renderSales();}});
   $('su-add').addEventListener('click',function(){openSetupForm(null);});
   $('s-form').addEventListener('submit',saveSetup);
   $('s-cancel').addEventListener('click',closeSetupForm);
