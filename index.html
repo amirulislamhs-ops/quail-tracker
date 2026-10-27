@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#14241D"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><title>Quail Egg Tracker</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#14532D"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><title>Poultry Tracker</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Public+Sans:wght@400;500;600;700&display=swap">
 <style>
 [hidden]{display:none!important}
@@ -82,9 +82,6 @@ fieldset:disabled{opacity:.55}
 .link{background:none;border:0;padding:6px 0;color:var(--focus);font-weight:600;text-decoration:underline;text-align:left}
 
 /* themes */
-:root[data-theme="sage"]{--bg:#E8EFE6;--surface:#F6FAF4;--surface-2:#EAF1E7;--ink:#1D2B21;--muted:#566A5B;--line:#CBD8C8;--brand:#3E5C46;--brand-ink:#EEF4EA;--focus:#2F6B3F;--c-cost:#4A6652;--submit:#2F6B3F;--submit-ink:#fff;--good:#1F7A45;--good-bg:#DDEFE3;--bad:#B3302A;--bad-bg:#FBE4E1;color-scheme:light}
-:root[data-theme="blue"]{--bg:#E8EEF6;--surface:#F7FAFE;--surface-2:#EBF0F8;--ink:#17233A;--muted:#52627C;--line:#CBD5E4;--brand:#2F4A73;--brand-ink:#EAF1FB;--focus:#2A5DA8;--c-cost:#44587A;--submit:#2A5DA8;--submit-ink:#fff;--good:#1B7A4B;--good-bg:#DCEFE5;--bad:#B3302A;--bad-bg:#FBE4E1;color-scheme:light}
-:root[data-theme="cream"]{--bg:#F5EEDF;--surface:#FFFBF1;--surface-2:#F6EEDD;--ink:#2E2418;--muted:#6B5C48;--line:#E0D3BA;--brand:#5B452D;--brand-ink:#F8EEDC;--focus:#8A5A00;--c-cost:#6B5A46;--submit:#6B4E2E;--submit-ink:#fff;--good:#2F7A3F;--good-bg:#E4EFD9;--bad:#B3302A;--bad-bg:#FBE4E1;color-scheme:light}
 .sg-bar{overflow-x:auto;flex-wrap:nowrap}.sg-bar .chip{flex:0 0 auto}.sg-off{display:none!important}
 .due-row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line)}.due-row:first-of-type{border-top:0}
 /* lock screen */
@@ -240,16 +237,113 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 .btn.small{min-height:40px;padding:0 14px;font-size:14px}
 .bad-text{color:var(--bad);font-weight:600} .good-text{color:var(--good);font-weight:600}
 .sec-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+
+/* ===== Design refresh: calm paper background, one strong colour per bird (green = quail, rust = chicken) ===== */
+:root{--bg:#F5F3EC;--surface:#FFFFFF;--surface-2:#F0EEE6;--ink:#18231D;--muted:#5B675F;--line:#E3E0D5;
+  --brand:#14532D;--brand-ink:#FFF8EA;--accent:#15803D;--accent-ink:#FFFFFF;--accent-soft:#DDF3E5;--focus:#15803D;
+  --good:#15803D;--good-bg:#DDF3E5;--bad:#B42318;--bad-bg:#FDE7E4;
+  --c-rev:#0072B2;--c-cost:#D55E00;--c-net:#009E73;
+  --submit:#15803D;--submit-ink:#FFFFFF;--danger-solid:#B42318;--danger-ink:#FFFFFF;
+  --shadow:0 1px 2px rgba(20,35,28,.06),0 6px 18px rgba(20,35,28,.07);--r:18px;color-scheme:light}
+:root[data-bird="chicken"]{--brand:#8A2D0C;--accent:#C2410C;--accent-soft:#FFE6D6;--focus:#C2410C;--submit:#C2410C}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#0E1512;--surface:#16201B;--surface-2:#1E2A24;--ink:#EAF1EC;--muted:#9CAEA3;--line:#2A3A32;
+    --brand:#0B3D20;--brand-ink:#FFF8EA;--accent:#4ADE80;--accent-ink:#052E16;--accent-soft:#17382A;--focus:#4ADE80;
+    --good:#4ADE80;--good-bg:#163626;--bad:#FF8A7E;--bad-bg:#3B1D1A;--c-rev:#56B4E9;--c-cost:#FF9F5A;--c-net:#34D399;
+    --submit:#4ADE80;--submit-ink:#052E16;--danger-solid:#FF8A7E;--danger-ink:#3B0D09;--shadow:0 1px 2px rgba(0,0,0,.4);color-scheme:dark}
+  :root[data-bird="chicken"]:not([data-theme="light"]){--brand:#5A1E08;--accent:#FB923C;--accent-ink:#2B1004;--accent-soft:#3B2214;--focus:#FB923C;--submit:#FB923C}
+}
+:root[data-theme="dark"]{--bg:#0E1512;--surface:#16201B;--surface-2:#1E2A24;--ink:#EAF1EC;--muted:#9CAEA3;--line:#2A3A32;
+  --brand:#0B3D20;--brand-ink:#FFF8EA;--accent:#4ADE80;--accent-ink:#052E16;--accent-soft:#17382A;--focus:#4ADE80;
+  --good:#4ADE80;--good-bg:#163626;--bad:#FF8A7E;--bad-bg:#3B1D1A;--c-rev:#56B4E9;--c-cost:#FF9F5A;--c-net:#34D399;
+  --submit:#4ADE80;--submit-ink:#052E16;--danger-solid:#FF8A7E;--danger-ink:#3B0D09;--shadow:0 1px 2px rgba(0,0,0,.4);color-scheme:dark}
+:root[data-theme="dark"][data-bird="chicken"]{--brand:#5A1E08;--accent:#FB923C;--accent-ink:#2B1004;--accent-soft:#3B2214;--focus:#FB923C;--submit:#FB923C}
+body{background:var(--bg)}
+.top{background:var(--brand);background-image:none;color:var(--brand-ink);padding-top:env(safe-area-inset-top)}
+.top-in{padding-block:12px 10px}
+.glyph{width:44px;height:44px;flex:none;border-radius:14px;background:rgba(255,255,255,.14);display:grid;place-items:center;color:var(--brand-ink);--eye:var(--brand)}
+.glyph .gl{width:36px;height:36px}
+.gl .b{fill:currentColor}.gl .w{fill:currentColor;opacity:.62}.gl .k{fill:#F97316}.gl .c{fill:#EF4444}.gl .e{fill:var(--eye,#14532D)}.gl .s{fill:var(--eye,#14532D);opacity:.4}
+.gl .lg{stroke:currentColor;stroke-width:7;stroke-linecap:round;opacity:.65;fill:none}
+.brand h1{font:800 20px/1.1 var(--font-display)}
+.brand p{font-size:13px}
+.icon-btn{border-color:rgba(255,255,255,.35);width:46px;height:46px}
+.bird-switch{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;border-radius:16px;background:rgba(0,0,0,.24);margin-bottom:14px}
+.bird-switch button{min-height:48px;border:0;border-radius:12px;background:transparent;color:var(--brand-ink);--eye:var(--brand);font:700 16px var(--font-display);display:flex;align-items:center;justify-content:center;gap:8px}
+.bird-switch button[aria-pressed="true"]{background:var(--brand-ink);color:var(--brand);--eye:var(--brand-ink)}
+.bird-switch .gl{width:28px;height:28px}
+main{padding-block:16px 112px}
+.card{border:0;border-radius:var(--r);box-shadow:var(--shadow);padding:18px}
+.card h2,.label-caps{letter-spacing:.07em}
+.inp{min-height:52px;border-radius:12px;border:1.5px solid transparent;background:var(--surface-2)}
+.inp:focus{border-color:var(--accent);background:var(--surface);outline:0}
+.btn{min-height:52px;border-radius:14px;background:var(--accent);color:var(--accent-ink);font:700 16px var(--font-display)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.small{min-height:44px}
+.chip{min-height:46px;padding:0 16px;font-size:15px;background:var(--surface-2);border-color:transparent}
+.chip:active{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.kind-chips .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.link{color:var(--accent)}
+.badge{background:var(--accent);color:var(--accent-ink)}
+.datebar button,.date-pick{border:0;box-shadow:var(--shadow);border-radius:14px;background:var(--surface)}
+.cal-d.sel{background:var(--accent);color:var(--accent-ink)}.cal-d.sel i{background:var(--accent-ink)}
+.strip{border:0;gap:8px;background:transparent;overflow:visible}
+.strip>div{background:var(--surface);border-radius:14px;box-shadow:var(--shadow);padding:12px}
+.strip>div+div{border-left:0}
+.list,.mgroup,.empty{border:0;border-radius:var(--r);box-shadow:var(--shadow)}
+.tabs{border-top:0;box-shadow:0 -6px 22px rgba(0,0,0,.09)}
+.tabs button{min-height:64px;font-size:12px;gap:2px}
+.tabs button .ic{width:22px;height:22px;padding:4px 16px;border-radius:999px;box-sizing:content-box}
+.tabs button[aria-current="page"]{color:var(--accent);box-shadow:none;font-weight:700}
+.tabs button[aria-current="page"] .ic{background:var(--accent-soft)}
+.hero{background:var(--brand);color:var(--brand-ink)}
+.hero .label-caps,.hero .sub{color:rgba(255,248,234,.82)}
+.hero b.v-good{color:#9CF0B8}.hero b.v-bad{color:#FFB4A8}
+.btn.save{background:var(--submit);color:var(--submit-ink)}
+/* sell eggs card */
+#sales-card{border-top:5px solid var(--accent)}
+#sale-slot-today .card,#sale-slot-buyers .card{box-shadow:none;padding:0;background:transparent}
+#sale-slot-buyers .card{padding:18px;background:var(--surface);box-shadow:var(--shadow)}
+#sl-save{flex:1 1 100%;min-height:58px;font-size:18px}
+#sl-form{gap:14px}
+#sl-form .grid2 .field>span{font-weight:600}
+#sl-eggs,#sl-amount{font:800 26px var(--font-display);min-height:60px}
+.autosave-note{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.autosave-note i{width:8px;height:8px;border-radius:50%;background:var(--good)}
+.savebar{display:none!important}
+/* refunds */
+.amt-wrap{position:relative}.amt-wrap .inp{padding-right:50px}
+.amt-wrap .sign{position:absolute;right:5px;top:5px;bottom:5px;width:40px;border:0;border-radius:9px;background:var(--surface);color:var(--muted);font:800 20px var(--font-display);box-shadow:inset 0 0 0 1.5px var(--line)}
+.inp.neg{color:var(--good);font-weight:700}
+.hint-line{font-size:12px;color:var(--muted)}
+/* chart lines: three clearly different colours, and expenses dashed */
+svg.chart .l-rev{stroke:var(--c-rev);fill:var(--c-rev)}
+svg.chart .l-cost{stroke:var(--c-cost);fill:var(--c-cost)}
+svg.chart .l-net{stroke:var(--c-net);fill:var(--c-net)}
+svg.chart .ln{stroke-width:2.6}
+svg.chart .ln.l-cost{stroke-dasharray:7 4}
+svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
+.legend .lg-rev{background:var(--c-rev)}.legend .lg-cost{background:var(--c-cost)}.legend .lg-net{background:var(--c-net)}
+.legend i{width:18px;height:5px;border-radius:3px;vertical-align:middle}
+/* bird chooser */
+#bird-pick{position:fixed;inset:0;z-index:45;background:var(--bg);overflow:auto;padding:calc(env(safe-area-inset-top) + 28px) 18px 32px}
+#bird-pick .inner{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+#bird-pick h1{font:800 28px/1.15 var(--font-display)}
+.pick-card{display:flex;align-items:center;gap:18px;width:100%;padding:22px 20px;border:0;border-radius:24px;color:#FFF8EA;text-align:left;box-shadow:var(--shadow);--eye:currentColor}
+.pick-card .gl{width:84px;height:84px;flex:none}
+.pick-card b{display:block;font:800 26px var(--font-display)}
+.pick-card span.s{display:block;margin-top:4px;font-size:14px;opacity:.9}
+.pick-card[data-pick="quail"]{background:#14532D;--eye:#14532D}
+.pick-card[data-pick="chicken"]{background:#8A2D0C;--eye:#8A2D0C}
+.pick-card .tag{display:inline-block;margin-top:8px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.2);font:700 12px var(--font-display)}
+.glyph-lg{width:84px;height:84px;margin:0 auto;border-radius:24px;background:var(--brand);display:grid;place-items:center;color:var(--brand-ink);--eye:var(--brand)}
+.glyph-lg .gl{width:68px;height:68px}
 </style></head><body>
 
 <section id="lock" hidden>
   <div class="inner">
-    <svg class="egg" viewBox="-108 -100 218 200" aria-hidden="true" style="margin:0 auto;width:64px;height:64px"><ellipse cx="0" cy="18" rx="74" ry="56" fill="#F1EAD8"/><circle cx="52" cy="-34" r="30" fill="#F1EAD8"/>
-<path d="M44-62C46-84 62-90 66-96 64-80 66-70 70-62Z" fill="#F1EAD8"/><path d="M80-34L106-26 80-18Z" fill="#f97316"/>
-<circle cx="60" cy="-38" r="5" fill="#14241D"/><path d="M-74 8C-100-8-96-36-86-52-76-30-66-10-60 2Z" fill="#cfe8d6"/>
-<g fill="#14241D" opacity=".5"><circle cx="-14" cy="14" r="5"/><circle cx="12" cy="32" r="5"/><circle cx="-30" cy="38" r="4"/><circle cx="20" cy="6" r="4"/></g>
-<path d="M-8 72V92M16 72V92" stroke="#cfe8d6" stroke-width="7" stroke-linecap="round"/></svg>
-    <h1>Quail Egg Tracker</h1>
+    <div class="glyph-lg" data-glyph></div>
+    <h1>Poultry Tracker</h1>
     <form id="lk-form" class="panel" novalidate>
       <label class="field"><span>Enter your PIN</span><input id="lk-pin" class="inp pin-in" type="password" inputmode="numeric" autocomplete="off" maxlength="6"></label>
       <p class="err" id="lk-err" role="alert" hidden></p>
@@ -277,19 +371,30 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
     <p class="sub"><button id="cn-local" class="btn ghost" type="button">Use on this phone only, no Google Sheet</button></p>
   </div>
 </section>
+<section id="bird-pick" hidden>
+  <div class="inner">
+    <div class="glyph-lg" data-glyph></div>
+    <h1>What are you recording?</h1>
+    <p class="sub">Pick the birds first. Everything you enter next is saved under that bird, in its own tabs in your Google Sheet. You can switch any time from the top of the screen.</p>
+    <button class="pick-card" type="button" data-pick="quail"><span data-gl="quail"></span><span><b>Quail</b><span class="s" id="pk-quail">Eggs, costs, buyers and flock</span><span class="tag" id="pk-quail-tag" hidden>Last used</span></span></button>
+    <button class="pick-card" type="button" data-pick="chicken"><span data-gl="chicken"></span><span><b>Chicken</b><span class="s" id="pk-chicken">Eggs, costs, buyers and flock</span><span class="tag" id="pk-chicken-tag" hidden>Last used</span></span></button>
+  </div>
+</section>
 <header class="top">
-  <div class="wrap top-in">
-    <div class="brand">
-      <svg class="egg" viewBox="-108 -100 218 200" aria-hidden="true"><ellipse cx="0" cy="18" rx="74" ry="56" fill="#F1EAD8"/><circle cx="52" cy="-34" r="30" fill="#F1EAD8"/>
-<path d="M44-62C46-84 62-90 66-96 64-80 66-70 70-62Z" fill="#F1EAD8"/><path d="M80-34L106-26 80-18Z" fill="#f97316"/>
-<circle cx="60" cy="-38" r="5" fill="#14241D"/><path d="M-74 8C-100-8-96-36-86-52-76-30-66-10-60 2Z" fill="#cfe8d6"/>
-<g fill="#14241D" opacity=".5"><circle cx="-14" cy="14" r="5"/><circle cx="12" cy="32" r="5"/><circle cx="-30" cy="38" r="4"/><circle cx="20" cy="6" r="4"/></g>
-<path d="M-8 72V92M16 72V92" stroke="#cfe8d6" stroke-width="7" stroke-linecap="round"/></svg>
-      <div><h1>Quail Egg Tracker</h1><p id="sub">Eggs sold and costs, in Tk</p></div>
+  <div class="wrap">
+    <div class="top-in">
+      <div class="brand">
+        <div class="glyph" id="brand-glyph" aria-hidden="true"></div>
+        <div><h1 id="app-title">Poultry Tracker</h1><p id="sub">Eggs sold and costs, in Tk</p></div>
+      </div>
+      <button id="btn-settings" class="icon-btn" type="button" aria-label="Settings and backup">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></svg>
+      </button>
     </div>
-    <button id="btn-settings" class="icon-btn" type="button" aria-label="Settings and backup">
-      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></svg>
-    </button>
+    <div class="bird-switch" role="group" aria-label="Bird type">
+      <button type="button" data-bird-set="quail" aria-pressed="true"><span data-gl="quail"></span>Quail</button>
+      <button type="button" data-bird-set="chicken" aria-pressed="false"><span data-gl="chicken"></span>Chicken</button>
+    </div>
   </div>
 </header>
 
@@ -317,13 +422,14 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
     <div class="card" id="rem-today" hidden></div>
     <div class="card" id="due-card" hidden></div>
     <div class="card" id="sales-card">
-      <div class="sec-head"><h2>Egg sales</h2><button id="td-add-sale" class="btn small" type="button">Add sale</button></div>
+      <div class="sec-head"><h2>Sell eggs</h2><span class="sub" id="sell-bird"></span></div>
       <div id="sale-slot-today"></div>
       <div id="td-sales"></div>
     </div>
+    <p class="autosave-note"><i></i>Egg count and costs below save by themselves. No Submit button needed.</p>
     <fieldset id="today-fields" disabled>
       <div class="card">
-        <h2>Egg count</h2>
+        <h2>Egg count (optional)</h2>
         <div class="grid2">
           <label class="field"><span>Eggs collected (optional)</span><input id="f-collected" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="0"></label>
           <label class="field"><span>Cracked or broken</span><input id="f-cracked" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="0"></label>
@@ -334,6 +440,7 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 
       <div class="card">
         <h2>Costs today (Tk)</h2>
+        <p class="hint-line">Refund or money back? Tap the ± button on that line, or type a minus sign, like -150.</p>
         <div class="grid2" id="cost-grid"></div>
         <label class="field other-desc"><span>What was the “Other” cost? (optional)</span><input id="f-othernote" class="inp" maxlength="80" autocomplete="off" placeholder="For example: cage repair"></label>
         <div class="total-row"><span>Total cost</span><b id="f-total">Tk 0</b></div>
@@ -400,13 +507,13 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
       <h2>Eggs collected, last 30 days</h2>
       <div id="fl-chart"></div>
       <dl id="fl-lay"></dl>
-      <p class="sub">Laying rate is eggs collected divided by birds that day. Good quail flocks often lay at 70 to 90 percent.</p>
+      <p class="sub">Laying rate is eggs collected divided by birds that day. Good flocks often lay at 70 to 90 percent.</p>
     </div>
     <div class="card" id="fl-cost-card" hidden><h2>Feed and cost per egg</h2><dl id="fl-cost"></dl></div>
     <div id="fl-list" class="panel"></div>
 
     <div class="card"><div class="sec-head"><h2>Hatching batches</h2><button id="b-add" class="btn small" type="button">Add batch</button></div>
-      <p class="sub">Eggs set, expected hatch day (about 17 days for quail), how many hatched and how many chicks survived.</p></div>
+      <p class="sub">Eggs set, expected hatch day (about 17 days for quail, 21 for chicken), how many hatched and how many chicks survived.</p></div>
     <form id="b-form" class="card" hidden novalidate>
       <h2 id="b-form-title">Add a batch</h2>
       <div class="grid2">
@@ -541,7 +648,7 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
       <label class="field"><span>Category</span><select id="s-cat" class="inp"></select></label>
       <div class="grid2">
         <label class="field"><span>Quantity</span><input id="s-qty" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="1"></label>
-        <label class="field"><span>Cost of one (Tk)</span><input id="s-unit" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"></label>
+        <label class="field"><span>Cost of one (Tk)</span><span class="amt-wrap"><input id="s-unit" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"><button type="button" class="sign" data-sign="s-unit" aria-label="Switch between expense and refund">±</button></span></label>
       </div>
       <div class="grid2">
         <label class="field"><span>Date bought (optional)</span><input id="s-date" class="inp" type="date"></label>
@@ -608,6 +715,7 @@ var SUGGEST=[
 var BN_DIGITS='০১২৩৪৫৬৭৮৯';
 function asciiDigits(s){return String(s).replace(/[০-৯]/g,function(ch){return String(BN_DIGITS.indexOf(ch));});}
 function num(v){if(v===null||v===undefined||v==='')return 0;var n=Number(v);return isFinite(n)?n:0;}
+function parseSigned(s){var t=asciiDigits(s).replace(/[\u2212\u2013\u2014]/g,'-').replace(/[,\s]/g,'');if(t===''||t==='-'||t==='.'||t==='-.')return null;var n=Number(t);return isFinite(n)?n:null;}
 function parseField(s){var t=asciiDigits(s).replace(/[,\s]/g,'');if(t===''||t==='.')return null;var n=Number(t);return(isFinite(n)&&n>=0)?n:null;}
 function dayCalc(rec,defPrice,sd){
   var eggs=num(rec.eggs);
@@ -778,7 +886,7 @@ function lowAlert(days,flock,settings,date,liveCollected){
 function daysBetween(a,b){var p=a.split('-').map(Number),q=b.split('-').map(Number);return Math.round((new Date(q[0],q[1]-1,q[2])-new Date(p[0],p[1]-1,p[2]))/86400000);}
 var INCUBATION=17;
 function batchInfo(b,today){
-  var exp=addDays(b.date,INCUBATION),h=(b.hatched===undefined||b.hatched===null)?null:num(b.hatched),sv=(b.survived===undefined||b.survived===null)?null:num(b.survived),set=num(b.eggsSet);
+  var exp=addDays(b.date,BIRD==='chicken'?21:INCUBATION),h=(b.hatched===undefined||b.hatched===null)?null:num(b.hatched),sv=(b.survived===undefined||b.survived===null)?null:num(b.survived),set=num(b.eggsSet);
   return {expected:exp,daysLeft:daysBetween(today,exp),hatchRate:(h!==null&&set>0)?h/set*100:null,survRate:(sv!==null&&h>0)?sv/h*100:null,
     status:h!==null?'hatched':(today>exp?'overdue':'incubating')};
 }
@@ -845,11 +953,18 @@ var LS='quail-egg-tracker-v1';
 
 /* ---------- local fallback storage ---------- */
 function loadLocal(){
-  try{var raw=localStorage.getItem(LS);if(raw){var o=JSON.parse(raw);
-    state.settings=Object.assign({},DEF_SETTINGS,o.settings||{});COLLS.forEach(function(n){state[n]=o[n]||{};});}}catch(e){}
+  ['quail','chicken'].forEach(function(b){
+    var s=stores[b];s.settings=defSettings(b);COLLS.forEach(function(n){s[n]={};});
+    try{var raw=localStorage.getItem(b==='chicken'?LS+'-ch':LS);if(raw){var o=JSON.parse(raw);
+      s.settings=Object.assign(defSettings(b),o.settings||{});COLLS.forEach(function(n){s[n]=o[n]||{};});}}catch(e){}
+  });
+  applyStore();
 }
 function saveLocal(){
-  try{var o={settings:state.settings};COLLS.forEach(function(n){o[n]=state[n];});localStorage.setItem(LS,JSON.stringify(o));return true;}catch(e){return false;}
+  try{
+    var b=BIRD||'quail',s=stores[b];s.settings=state.settings;COLLS.forEach(function(n){s[n]=state[n];});
+    ['quail','chicken'].forEach(function(k){var o={settings:stores[k].settings||defSettings(k)};COLLS.forEach(function(n){o[n]=stores[k][n]||{};});localStorage.setItem(k==='chicken'?LS+'-ch':LS,JSON.stringify(o));});
+    return true;}catch(e){return false;}
 }
 
 /* ---------- write queue, one write at a time per document ---------- */
@@ -889,7 +1004,7 @@ function dayAgg(date){return salesByDay(state.sales)[date]||{eggs:0,amount:0};}
 function readForm(){
   var rec={},old=state.days[curDate]||{};
   if(old.eggs!==undefined){rec.eggs=old.eggs;if(old.price!==undefined)rec.price=old.price;}   /* earlier entries made before buyers existed are kept */
-  CATS.forEach(function(c){var v=parseField($('c-'+c.key).value);if(v!==null)rec[c.key]=v;});
+  CATS.forEach(function(c){var v=parseSigned($('c-'+c.key).value);if(v!==null)rec[c.key]=v;});
   var col=parseField($('f-collected').value),cr=parseField($('f-cracked').value);
   if(col!==null)rec.collected=Math.floor(col);if(cr!==null)rec.cracked=Math.floor(cr);
   var notes=$('f-notes').value.trim();if(notes)rec.notes=notes;
@@ -911,7 +1026,7 @@ function renderStrip(){
   renderTodayRem();renderTodaySales();renderDue();renderNudge();
 }
 function setFields(rec){
-  CATS.forEach(function(c){$('c-'+c.key).value=rec[c.key]!==undefined?String(rec[c.key]):'';});
+  CATS.forEach(function(c){var el=$('c-'+c.key);el.value=rec[c.key]!==undefined?String(rec[c.key]):'';el.classList.toggle('neg',num(rec[c.key])<0);});
   $('f-notes').value=rec.notes||'';
   $('f-othernote').value=rec.otherNote||'';
   $('f-collected').value=rec.collected!==undefined?String(rec.collected):'';
@@ -967,7 +1082,8 @@ function saveDraft(date){if(!state.ready||state.readOnly||!dirty)return;var d=re
 function clearDraft(date){var d=readDrafts();if(d[date]!==undefined){delete d[date];writeDrafts(d);}}
 function onEdit(){
   if(!state.ready||state.readOnly)return;
-  dirty=true;renderStrip();saveDraft(curDate);setStatus('draft');
+  dirty=true;renderStrip();saveDraft(curDate);setStatus('saving');
+  clearTimeout(saveTimer);saveTimer=setTimeout(function(){flushSave();},800);
 }
 function persistDay(date,rec){
   if(db){var ref=db.doc('days/'+date);return rec?ref.set(rec):ref.delete();}
@@ -988,10 +1104,13 @@ function flushSave(){
 }
 function gotoDate(d){saveDraft(curDate);curDate=d;populateForm();return Promise.resolve();}
 function shiftDay(delta){var p=fromYmd(curDate);return ymd(new Date(p.getFullYear(),p.getMonth(),p.getDate()+delta));}
-function sanitize(el,dec){
-  var v=asciiDigits(el.value);
+function sanitize(el,dec,neg){
+  var v=asciiDigits(el.value),minus=false;
+  if(neg){v=v.replace(/[\u2212\u2013\u2014]/g,'-');minus=v.charAt(0)==='-';}
   v=dec?v.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1'):v.replace(/[^0-9]/g,'');
+  if(minus)v='-'+v;
   if(v!==el.value)el.value=v;
+  if(neg)el.classList.toggle('neg',minus);
 }
 
 /* ---------- History ---------- */
@@ -1081,7 +1200,7 @@ function dailyLineCard(sum){
   g+=line('cost','l-cost')+line('revenue','l-rev')+line('net','l-net');
   for(var i=0;i<n;i++){var dn=i+1;if(dn===1||dn%5===0||dn===n)g+='<text class="ax" x="'+X(i).toFixed(1)+'" y="'+(H-B+14)+'" text-anchor="middle">'+dn+'</text>';}
   g+='<text class="ax" x="'+(L+pw/2)+'" y="'+(H-B+28)+'" text-anchor="middle">Day of month</text>';
-  return h+'<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Daily revenue, expenses and profit in taka">'+g+'</svg><div class="legend"><span><i style="background:var(--c-rev)"></i>Revenue</span><span><i style="background:var(--c-cost)"></i>Expenses</span><span><i style="background:var(--good)"></i>Profit</span></div></div>';
+  return h+'<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Daily revenue, expenses and profit in taka">'+g+'</svg><div class="legend"><span><i style="background:var(--c-rev)"></i>Revenue</span><span><i style="background:var(--c-cost)"></i>Expenses</span><span><i style="background:var(--c-net)"></i>Profit</span></div></div>';
 }
 function top10Card(){
   var bs=buyerStats(state.sales,'all').sort(function(a,b){return b.amount-a.amount||b.eggs-a.eggs;}).slice(0,10);
@@ -1175,7 +1294,7 @@ function openSetupForm(id,prefill){
 }
 function closeSetupForm(){$('s-form').hidden=true;editingSetup=null;}
 function updateSetupTotal(){
-  var q=parseField($('s-qty').value),u=parseField($('s-unit').value);
+  var q=parseField($('s-qty').value),u=parseSigned($('s-unit').value);
   $('s-total').textContent=(u!==null)?'Item total: '+fmtTk((q===null?1:q)*u):'';
 }
 function saveSetup(ev){
@@ -1452,10 +1571,11 @@ function renderTodaySales(){
   var rows=daySales(curDate),old=state.days[curDate]||{},leg=num(old.eggs)>0,h='',eggs=0,bill=0,paid=0;
   rows.forEach(function(x){eggs+=num(x.s.eggs);bill+=num(x.s.amount);paid+=Math.min(num(x.s.paid),num(x.s.amount));});
   if(rows.length)h+='<div class="list">'+rows.map(function(x){return saleRow(x.id,x.s,false);}).join('')+'</div><dl>'+kv('Eggs sold',fmtNum(eggs)+' ('+fmtDoz(eggs)+' dozen · '+fmtHali(eggs)+' hali)')+kv('Billed',fmtTk(bill))+kv('Received',fmtTk(paid))+kv('Outstanding',fmtTk(bill-paid))+'</dl>';
-  else if(!leg)h+='<p class="sub">No sales on this day yet. Tap Add sale for each buyer. Several sales per day are fine, even to the same buyer.</p>';
+  else if(!leg)h+='<p class="sub">No sales on this day yet. Fill in the form above and tap Save sale. Several sales per day are fine.</p>';
   if(leg){var lp=old.price===undefined?state.settings.price:old.price;
     h+='<div class="rem-row"><span class="rem-main"><b>Earlier entry, no buyer</b><span class="sub">'+esc(fmtNum(num(old.eggs)))+' eggs · '+esc(fmtTk(num(old.eggs)*num(lp)/12))+' (saved before buyers were added)</span></span><button class="btn small ghost" type="button" data-convert="1">Give it a buyer</button></div>';}
   host.innerHTML=h;
+  ensureTodayForm(false);
 }
 function convertLegacy(){
   var old=state.days[curDate];if(!old||!(num(old.eggs)>0))return;
@@ -1482,7 +1602,7 @@ function renderRecent(){
   if(!seen['walk-in'])list.push('Walk-in');
   $('sl-recent').innerHTML=list.map(function(n){return '<button class="chip" type="button" data-rb="'+esc(n)+'">'+esc(n)+'</button>';}).join('');
 }
-function openSaleForm(id,host,prefDate,pre){
+function openSaleForm(id,host,prefDate,pre,quiet){
   editingSale=id||null;var s=id?(state.sales[id]||{}):(pre||{});
   $(host==='today'?'sale-slot-today':'sale-slot-buyers').appendChild($('sl-form'));
   slAmtTouched=!!id||!!(pre&&pre.amount);
@@ -1492,10 +1612,17 @@ function openSaleForm(id,host,prefDate,pre){
   $('sl-paid').value=id&&num(s.paid)>0?String(s.paid):'';$('sl-note').value=s.note||'';
   $('sl-err').hidden=true;$('sl-del').hidden=!id;$('sl-del').textContent='Delete';$('sl-save').disabled=false;
   renderRecent();setSlStatus(id?({paid:'full',part:'part',unpaid:'none'})[saleStatus(s)]:'full');slUpdateAuto();
-  $('sl-form').hidden=false;$('sl-form').scrollIntoView({block:'nearest'});$('sl-buyer').focus();
+  $('sl-form').hidden=false;if(!quiet){$('sl-form').scrollIntoView({block:'nearest'});$('sl-buyer').focus();}
   $('sl-form').dataset.legacy=pre&&pre.legacy?'1':'';
 }
-function closeSaleForm(){$('sl-form').hidden=true;editingSale=null;}
+function closeSaleForm(){$('sl-form').hidden=true;editingSale=null;ensureTodayForm(true);}
+function ensureTodayForm(force){
+  if(tab!=='today'||!state.ready||state.readOnly)return;
+  var f=$('sl-form'),inToday=f.parentNode===$('sale-slot-today');
+  if(inToday&&!f.hidden&&editingSale)return;
+  if(!force&&inToday&&!f.hidden){if(!$('sl-buyer').value&&!$('sl-eggs').value)$('sl-date').value=curDate;return;}
+  openSaleForm(null,'today',curDate,null,true);
+}
 function afterSaleChange(){renderSales();renderStrip();}
 function saveSale(ev){
   ev.preventDefault();if(savingSale)return;
@@ -1589,7 +1716,7 @@ function renderNudge(){
   var show=state.ready&&r.on&&curDate===t&&nowHM()>=r.time&&!savedOn(state.days,state.sales,t)&&!(dirty&&Object.keys(readForm()).length);
   el.hidden=!show;if(show)el.textContent="You have not saved today's records yet. Add your sales and costs, then tap Submit.";
   pushRemState();
-  if(show&&!nudged&&document.visibilityState==='visible'){nudged=true;notify('Quail Egg Tracker',"Don't forget to save today's records.");}
+  if(show&&!nudged&&document.visibilityState==='visible'){nudged=true;notify((BNAME[BIRD||'quail'])+' Tracker',"Don't forget to save today's records.");}
 }
 var nudged=false;
 function renderAlertCard(){
@@ -1604,7 +1731,7 @@ function wireAlerts(){
   $('al-days').addEventListener('input',function(){sanitize(this,false);});
   $('al-test').addEventListener('click',function(){
     if(!('Notification' in window))return toast('This browser cannot show notifications.');
-    var go=function(){if(!notify('Quail Egg Tracker','Test: reminders are working.'))toast('Notifications are not allowed yet.');};
+    var go=function(){if(!notify((BNAME[BIRD||'quail'])+' Tracker','Test: reminders are working.'))toast('Notifications are not allowed yet.');};
     if(Notification.permission==='default')Notification.requestPermission().then(go);else go();
   });
   setInterval(function(){if(tab==='today')renderNudge();},60000);
@@ -1739,7 +1866,7 @@ function saveSettings(ev){
 function exportFile(kind){
   if(!downloads)return;
   var data=kind==='days'?toCsv(dailyRows(state.days,state.settings.price)):toCsv(setupRows(state.setup));
-  var name=kind==='days'?'quail-daily-log.csv':'quail-setup-costs.csv';
+  var bn=(BIRD||'quail'),name=kind==='days'?bn+'-daily-log.csv':bn+'-setup-costs.csv';
   downloads.save({filename:name,data:'﻿'+data}).then(function(){toast('File saved');},function(e){if(!e||e.code!=='declined')toast('Could not save the file');});
 }
 
@@ -1789,13 +1916,18 @@ function markRemote(){
 }
 function subscribeAll(){
   function fail(e){setStatus('error',errMsg(e));}
-  db.doc('settings/main').onSnapshot(function(s){
-    state.settings=Object.assign({},DEF_SETTINGS,s.exists?s.data():{});
-    got.settings=true;updateSub();markRemote();
-  },fail);
-  COLLS.forEach(function(n){db.collection(n).onSnapshot(function(q){
-    var m={};q.docs.forEach(function(d){m[d.id]=d.data();});state[n]=m;got[n]=true;markRemote();
-  },fail);});
+  ['quail','chicken'].forEach(function(b){
+    var p=b==='chicken'?'ch_':'';
+    rawDb.doc(p+'settings/main').onSnapshot(function(sn){
+      var v=Object.assign(defSettings(b),sn.exists?sn.data():{});
+      if(b==='chicken'&&!(num(v.price)>0))v.price=150;
+      stores[b].settings=v;if(b===(BIRD||'quail'))state.settings=v;
+      got.settings=true;updateSub();markRemote();
+    },fail);
+    COLLS.forEach(function(n){rawDb.collection(p+n).onSnapshot(function(q){
+      var m={};q.docs.forEach(function(d){m[d.id]=d.data();});stores[b][n]=m;if(b===(BIRD||'quail'))state[n]=m;got[n]=true;markRemote();
+    },fail);});
+  });
 }
 /* ---------- phone-first store: saves on the phone, then uploads to the Google Sheet ---------- */
 var CFG_KEY='qet2-config', CACHE_KEY='qet2-cache', Q_KEY='qet2-queue', URL_KEY='qet2-sheeturl', SYNC_KEY='qet2-lastsync';
@@ -1817,30 +1949,32 @@ function sheetCall(cfg,req){
 
 function makeSheetDb(cfg,onStatus){
   var cache=lsGet(CACHE_KEY)||{},queue=lsGet(Q_KEY)||[];
-  ['settings'].concat(COLLS).forEach(function(n){if(!cache[n]||typeof cache[n]!=='object')cache[n]={};});
+  ALLN.forEach(function(n){if(!cache[n]||typeof cache[n]!=='object')cache[n]={};});
   var hadCache=lsGet(CACHE_KEY)!==null;
-  var last={settings:''},ls={settings:[]};COLLS.forEach(function(n){last[n]='';ls[n]=[];});
+  var last={},ls={},chOK=null;ALLN.forEach(function(n){last[n]='';ls[n]=[];});
   var running=null,inflight=null,first=true,errText='',authBad=false,lastSync=lsGet(SYNC_KEY)||0,sheetUrl=lsGet(URL_KEY)||'',POLL=window.__POLL_MS||20000;
   function persist(){return lsSet(CACHE_KEY,cache)&&lsSet(Q_KEY,queue);}
   function status(){onStatus({pending:queue.length,error:errText,authBad:authBad,syncing:!!running,last:lastSync,sheetUrl:sheetUrl});}
-  function docSnap(){var o=cache.settings;return {exists:Object.keys(o).length>0,data:function(){return o;}};}
+  function docSnap(n){var o=cache[n];return {exists:Object.keys(o).length>0,data:function(){return o;}};}
   function colSnap(n){var o=cache[n];return {docs:Object.keys(o).map(function(id){return {id:id,data:function(){return o[id];}};})};}
   function emit(n,force){
     var j=JSON.stringify(cache[n]);if(!force&&j===last[n])return;last[n]=j;
-    ls[n].forEach(function(f){f(n==='settings'?docSnap():colSnap(n));});
+    ls[n].forEach(function(f){f(/settings$/.test(n)?docSnap(n):colSnap(n));});
   }
-  function emitAll(force){['settings'].concat(COLLS).forEach(function(n){emit(n,force);});first=false;}
+  function emitAll(force){ALLN.forEach(function(n){emit(n,force);});first=false;}
   function apply(r){
-    cache.settings=r.settings||{};COLLS.forEach(function(n){cache[n]=r[n]||{};});
+    chOK=!!r.ch_days;
+    ALLN.forEach(function(n){if(n.indexOf('ch_')===0&&!chOK)return;cache[n]=r[n]||{};});
     if(r.sheetUrl){sheetUrl=r.sheetUrl;lsSet(URL_KEY,sheetUrl);}
     lastSync=Date.now();lsSet(SYNC_KEY,lastSync);persist();emitAll(first);
   }
   function sync(){
     if(running)return running;
     if(navigator.onLine===false){errText='';status();return Promise.resolve();}
+    function runnable(){return queue.filter(function(o){return !(chOK===false&&String(o.coll).indexOf('ch_')===0);});}
     function step(){
-      if(queue.length){
-        var op=inflight=queue[0];
+      if(runnable().length){
+        var op=inflight=runnable()[0];
         return sheetCall(cfg,op.del?{op:'del',coll:op.coll,id:op.id}:{op:'save',coll:op.coll,id:op.id,rec:op.rec}).then(function(){
           inflight=null;var i=queue.indexOf(op);if(i>=0)queue.splice(i,1);persist();status();return step();
         },function(e){
@@ -1849,7 +1983,7 @@ function makeSheetDb(cfg,onStatus){
           throw e;
         });
       }
-      return sheetCall(cfg,{op:'getAll'}).then(function(r){if(queue.length)return step();apply(r);});
+      return sheetCall(cfg,{op:'getAll'}).then(function(r){chOK=!!r.ch_days;if(runnable().length)return step();apply(r);if(!chOK&&queue.length)throw {kind:'config',message:'Chicken records are saved on this phone. Update Code.gs in your Google Sheet (see UPDATE_STEPS.txt) so they upload.'};});
     }
     running=step().then(function(){running=null;errText='';authBad=false;status();},function(e){
       running=null;errText=e.message||'Could not sync.';authBad=e.kind==='auth';status();});
@@ -1860,7 +1994,7 @@ function makeSheetDb(cfg,onStatus){
     var op={coll:coll,id:id,rec:rec,del:rec===null},key=coll+'/'+id,hit=-1;
     for(var i=0;i<queue.length;i++){if(queue[i].coll===coll&&queue[i].id===id&&queue[i]!==inflight){hit=i;break;}}
     if(hit>=0)queue[hit]=op;else queue.push(op);
-    if(rec===null)delete cache[coll][id];else if(coll==='settings')cache.settings=rec;else cache[coll][id]=rec;
+    if(rec===null)delete cache[coll][id];else if(/settings$/.test(coll))cache[coll]=rec;else cache[coll][id]=rec;
     last[coll]=JSON.stringify(cache[coll]);
     if(!persist())return Promise.reject({code:'local',message:'This phone has no room to save. Free some storage and try again.'});
     status();sync();
@@ -1869,7 +2003,7 @@ function makeSheetDb(cfg,onStatus){
   function docRef(coll,id){return {id:id,
     set:function(rec){return write(coll,id,rec);},
     delete:function(){return write(coll,id,null);},
-    onSnapshot:function(f){ls.settings.push(f);}};}
+    onSnapshot:function(f){ls[coll].push(f);}};}
   var api={
     doc:function(path){var p=path.split('/');return docRef(p[0],p[1]);},
     collection:function(n){return {
@@ -1914,8 +2048,9 @@ function onSyncStatus(s){syncInfo=s;updateBanner();if(tab==='settings')renderSyn
 var sheetCfg=null;
 function startSheet(cfg){
   sheetCfg=cfg;state.mode='db';
-  db=makeSheetDb(cfg,onSyncStatus);
-  subscribeAll();db.start();
+  rawDb=makeSheetDb(cfg,onSyncStatus);
+  db=wrapDb(rawDb);
+  subscribeAll();rawDb.start();
 }
 function showConnect(prefill,cancelable){
   var c=lsGet(CFG_KEY)||{};prefill=prefill||{};
@@ -1973,16 +2108,65 @@ function startStore(){
   return Promise.resolve();
 }
 
+/* ---------- bird types: quail and chicken are kept apart ---------- */
+var BIRD=null,rawDb=null,stores={quail:{},chicken:{}};
+var ALLN=['settings','ch_settings'].concat(COLLS,COLLS.map(function(n){return 'ch_'+n;}));
+var BNAME={quail:'Quail',chicken:'Chicken'};
+var GL={
+ quail:'<svg class="gl" viewBox="-108 -100 218 200" aria-hidden="true"><path d="M-64 6C-80 2-92-6-98-18-82-18-70-12-58-4Z" fill="#5E4328"/><ellipse cx="0" cy="24" rx="72" ry="56" fill="#9C6E43"/><path d="M-6 30C14 8 50 6 68 20 62 56 30 80-4 78-34 76-52 56-46 36Z" fill="#E8C896"/><g fill="#5B3C22"><circle cx="-8" cy="44" r="3.4"/><circle cx="10" cy="54" r="3.4"/><circle cx="28" cy="46" r="3.4"/><circle cx="4" cy="34" r="3.2"/><circle cx="22" cy="30" r="3.2"/><circle cx="40" cy="36" r="3.2"/><circle cx="-22" cy="56" r="3"/><circle cx="-26" cy="40" r="3"/><circle cx="46" cy="52" r="3"/></g><g stroke="#F3E2BC" stroke-width="5" stroke-linecap="round"><path d="M-50 10l20 20M-34 0l20 20M-18-4l18 18M-2-6l16 16"/></g><g stroke="#4A3220" stroke-width="3.5" stroke-linecap="round" opacity=".7"><path d="M-44 18l8 8M-28 8l8 8M-12 4l8 8"/></g><ellipse cx="36" cy="-6" rx="28" ry="24" fill="#B98A57"/><circle cx="50" cy="-28" r="25" fill="#B98A57"/><path d="M30-44C38-56 58-56 70-44 62-40 40-38 30-44Z" fill="#4A3220"/><path d="M34-40C46-46 62-44 72-34" fill="none" stroke="#F3E2BC" stroke-width="5" stroke-linecap="round"/><path d="M36-12C48-2 64-2 72-12 70 4 56 10 44 6Z" fill="#F3E2BC"/><path d="M30-24C38-18 40-10 42-4" fill="none" stroke="#4A3220" stroke-width="3" stroke-linecap="round"/><path d="M72-30L88-25 72-18Z" fill="#6B4A2B"/><circle cx="56" cy="-27" r="4.5" fill="#1B1208"/><circle cx="57.5" cy="-28.5" r="1.4" fill="#fff"/><path d="M-8 76V92M14 76V92M-14 92h12M8 92h12" stroke="#C99A6A" stroke-width="6" stroke-linecap="round" fill="none"/></svg>',
+ chicken:'<svg class="gl" viewBox="-108 -100 218 200" aria-hidden="true"><path class="w" d="M-60 0C-92-6-104-40-92-72-78-52-56-38-44-30Z"/><path class="w" d="M-66 14C-100 14-112-12-106-34-92-22-72-12-56 0Z"/><ellipse class="b" cx="-2" cy="22" rx="68" ry="52"/><circle class="b" cx="46" cy="-32" r="26"/><g class="c"><circle cx="36" cy="-62" r="9"/><circle cx="50" cy="-66" r="9"/><circle cx="63" cy="-58" r="8"/></g><path class="k" d="M68-36L96-28 68-20Z"/><ellipse class="c" cx="66" cy="-8" rx="7" ry="11"/><circle class="e" cx="54" cy="-38" r="5"/><ellipse class="w" cx="-10" cy="26" rx="34" ry="24"/><path class="lg" d="M-12 70V92M14 70V92"/></svg>'
+};
+function pref(){return BIRD==='chicken'?'ch_':'';}
+function defSettings(b){return Object.assign({},DEF_SETTINGS,b==='chicken'?{price:150}:{});}
+function wrapDb(r){return {
+  doc:function(path){var p=path.split('/');return r.doc(pref()+p[0]+'/'+p[1]);},
+  collection:function(n){return r.collection(pref()+n);},
+  sync:r.sync,setConfig:r.setConfig,start:r.start};}
+function applyStore(){
+  var s=stores[BIRD||'quail'];
+  COLLS.forEach(function(n){state[n]=s[n]||(s[n]={});});
+  state.settings=Object.assign(defSettings(BIRD||'quail'),s.settings||{});
+}
+function paintGlyphs(){
+  Array.prototype.forEach.call(document.querySelectorAll('[data-gl]'),function(el){el.innerHTML=GL[el.dataset.gl];});
+  var cur=GL[BIRD||'quail'];
+  Array.prototype.forEach.call(document.querySelectorAll('[data-glyph],#brand-glyph'),function(el){el.innerHTML=cur;});
+}
+function showPicker(){
+  var last=null;try{last=localStorage.getItem('qet-bird');}catch(e){}
+  ['quail','chicken'].forEach(function(b){$('pk-'+b+'-tag').hidden=last!==b;});
+  $('bird-pick').hidden=false;
+}
+function setBird(b){
+  if(b!=='quail'&&b!=='chicken')b='quail';
+  if(b===BIRD){$('bird-pick').hidden=true;return Promise.resolve();}
+  var p=BIRD?flushSave():Promise.resolve();
+  return p.then(function(){
+    if(BIRD){var s=stores[BIRD];COLLS.forEach(function(n){s[n]=state[n];});s.settings=state.settings;}
+    BIRD=b;DKEY='qet-drafts'+(b==='chicken'?'-ch':'');lastSaved={};dirty=false;
+    try{localStorage.setItem('qet-bird',b);}catch(e){}
+    document.documentElement.dataset.bird=b;
+    var tc=document.querySelector('meta[name="theme-color"]');if(tc)tc.content=b==='chicken'?'#8A2D0C':'#14532D';
+    applyStore();paintGlyphs();
+    $('app-title').textContent=BNAME[b]+' Tracker';document.title=BNAME[b]+' Tracker';
+    $('sell-bird').textContent=BNAME[b]+' eggs';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-bird-set]'),function(x){x.setAttribute('aria-pressed',String(x.dataset.birdSet===b));});
+    try{closeSetupForm();closeFlockForm();closeBatchForm();closeRemForm();closeSaleForm();}catch(e){}
+    curDate=todayStr();$('bird-pick').hidden=true;
+    populateForm();renderCurrent();window.scrollTo(0,0);
+  });
+}
+
 /* ---------- wiring ---------- */
 function init(){
-  applyTheme(currentTheme());wireLock();wirePin();lockNow();wireAlerts();
+  paintGlyphs();applyTheme(currentTheme());wireLock();wirePin();lockNow();wireAlerts();
   $('cost-grid').innerHTML=CATS.map(function(c){
-    return '<label class="field"><span>'+esc(c.label)+'</span><input id="c-'+c.key+'" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"></label>';
+    return '<label class="field"><span>'+esc(c.label)+'</span><span class="amt-wrap"><input id="c-'+c.key+'" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"><button type="button" class="sign" data-sign="c-'+c.key+'" aria-label="Switch between expense and refund">±</button></span></label>';
   }).join('');
   $('s-cat').innerHTML=SETUP_CATS.map(function(c){return '<option>'+esc(c)+'</option>';}).join('');
   $('s-sugg').innerHTML=SUGGEST.map(function(s){return '<option value="'+esc(s[0])+'"></option>';}).join('');
 
-  CATS.forEach(function(c){$('c-'+c.key).addEventListener('input',function(){sanitize(this,true);onEdit();});});
+  CATS.forEach(function(c){$('c-'+c.key).addEventListener('input',function(){sanitize(this,true,true);onEdit();});});
   $('f-collected').addEventListener('input',function(){sanitize(this,false);onEdit();});
   $('f-cracked').addEventListener('input',function(){sanitize(this,false);onEdit();});
   $('f-notes').addEventListener('input',onEdit);
@@ -2025,6 +2209,9 @@ function init(){
   Array.prototype.forEach.call(document.querySelectorAll('.tabs button'),function(b){b.addEventListener('click',function(){showTab(b.dataset.tab);});});
   $('btn-settings').addEventListener('click',function(){showTab(tab==='settings'?prevTab:'settings');});
   document.addEventListener('click',function(e){
+    var pk=e.target.closest&&e.target.closest('[data-pick]');if(pk){setBird(pk.dataset.pick);return;}
+    var bs=e.target.closest&&e.target.closest('[data-bird-set]');if(bs){setBird(bs.dataset.birdSet);return;}
+    var sgn=e.target.closest&&e.target.closest('[data-sign]');if(sgn){var inp0=$(sgn.dataset.sign);var v0=inp0.value;inp0.value=v0.charAt(0)==='-'?v0.slice(1):'-'+(v0||'');inp0.dispatchEvent(new Event('input',{bubbles:true}));inp0.focus();return;}
     var go=e.target.closest&&e.target.closest('[data-go]');if(go){showTab(go.dataset.go);return;}
     var day=e.target.closest&&e.target.closest('.day');
     if(day){var d=day.dataset.date;showTab('today');gotoDate(d);return;}
@@ -2054,7 +2241,7 @@ function init(){
   $('s-form').addEventListener('submit',saveSetup);
   $('s-cancel').addEventListener('click',closeSetupForm);
   $('s-del').addEventListener('click',deleteSetup);
-  ['s-qty','s-unit'].forEach(function(id){$(id).addEventListener('input',function(){sanitize(this,true);updateSetupTotal();});});
+  ['s-qty','s-unit'].forEach(function(id){$(id).addEventListener('input',function(){sanitize(this,true,id==='s-unit');updateSetupTotal();});});
   $('fl-add').addEventListener('click',function(){openFlockForm(null);});
   $('fl-form').addEventListener('submit',saveFlock);
   $('fl-cancel').addEventListener('click',closeFlockForm);
@@ -2067,7 +2254,6 @@ function init(){
   $('r-add').addEventListener('click',function(){openRemForm(null);});
   $('r-form').addEventListener('submit',saveRem);$('r-cancel').addEventListener('click',closeRemForm);$('r-del').addEventListener('click',deleteRem);
   $('sl-add').addEventListener('click',function(){openSaleForm(null,'buyers');});
-  $('td-add-sale').addEventListener('click',function(){openSaleForm(null,'today',curDate);});
   $('sl-form').addEventListener('submit',saveSale);$('sl-cancel').addEventListener('click',closeSaleForm);$('sl-del').addEventListener('click',deleteSale);
   $('sl-eggs').addEventListener('input',function(){sanitize(this,false);slUpdateAuto();});
   $('sl-amount').addEventListener('input',function(){sanitize(this,true);slAmtTouched=true;slUpdateAuto();});
@@ -2086,6 +2272,7 @@ function init(){
 
   var start='today';try{var t=localStorage.getItem('qet-tab');if(t&&/^(today|history|summary|flock|sales|setup)$/.test(t))start=t;}catch(e){}
   populateForm();showTab(start);
+  showPicker();
   startStore();
 }
 init();
