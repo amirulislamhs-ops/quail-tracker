@@ -1,6 +1,6 @@
 /* Offline support: the app opens without internet. Records are saved by the page itself. */
-var VERSION = 'qet-v14';
-var SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
+var VERSION = 'qet-v23';
+var SHELL = ['./', './index.html', './manifest.webmanifest', './icon-v4-192.png', './icon-v4-512.png', './icon-v4-maskable-512.png'];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(SHELL); }).then(function () { return self.skipWaiting(); }));
@@ -35,7 +35,7 @@ self.addEventListener('periodicsync', function (e) {
     if (!st || !st.on) return;
     var d = new Date(), hm = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
     var today = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
-    if (hm >= st.time && st.saved !== today) return self.registration.showNotification('Quail Egg Tracker', { body: "Don't forget to save today's records.", icon: 'icon-192.png', tag: 'qet-daily' });
+    if (hm >= st.time && st.saved !== today) return self.registration.showNotification('Poultry Tracker', { body: "Don't forget to save today's records.", icon: 'icon-v4-192.png', tag: 'qet-daily' });
   }));
 });
 self.addEventListener('notificationclick', function (e) {

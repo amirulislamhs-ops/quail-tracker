@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#14532D"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><title>Poultry Tracker</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#14532D"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-v4-192.png"><link rel="apple-touch-icon" href="icon-v4-192.png"><title>Poultry Tracker</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Public+Sans:wght@400;500;600;700&display=swap">
 <style>
 [hidden]{display:none!important}
@@ -53,7 +53,7 @@ svg.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;str
 
 main{padding-block:16px 104px}
 .panel{display:flex;flex-direction:column;gap:14px}
-.local-note{margin-top:12px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:13px;color:var(--muted)}
+.local-note{margin-top:0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:13px;color:var(--muted)}
 
 /* cards and fields */
 .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
@@ -193,7 +193,8 @@ th:first-child,td:first-child{text-align:left}
 .tabs .wrap{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding-inline:2px}
 .tabs button{min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;color:var(--muted);font:600 11px var(--font-display)}
 .tabs button[aria-current="page"]{color:var(--ink);box-shadow:inset 0 3px 0 var(--accent)}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(132px + env(safe-area-inset-bottom,0px));z-index:20;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;text-align:center}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 12px);z-index:60;max-width:calc(100% - 32px);box-shadow:0 6px 20px rgba(0,0,0,.25);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;text-align:center}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 .other-desc{margin-top:12px}
 .savebar{position:sticky;bottom:calc(66px + env(safe-area-inset-bottom,0px));z-index:5}
@@ -260,7 +261,8 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 :root[data-theme="dark"][data-bird="chicken"]{--brand:#5A1E08;--accent:#FB923C;--accent-ink:#2B1004;--accent-soft:#3B2214;--focus:#FB923C;--submit:#FB923C}
 body{background:var(--bg)}
 .top{background:var(--brand);background-image:none;color:var(--brand-ink);padding-top:env(safe-area-inset-top)}
-.top-in{padding-block:12px 10px}
+.top-in{padding-block:8px 8px}.glyph{width:38px;height:38px;border-radius:12px}.glyph .gl{width:30px;height:30px}.brand p{font-size:12px;opacity:.85}.brand h1{font-size:18px}
+#btn-settings{position:relative}.sync-dot{position:absolute;top:4px;right:4px;width:11px;height:11px;border-radius:50%;background:#9AA59E;border:2px solid var(--brand)}.sync-dot[data-s=ok]{background:#4ADE80}.sync-dot[data-s=wait]{background:#FBBF24}.sync-dot[data-s=err]{background:#F87171}
 .glyph{width:44px;height:44px;flex:none;border-radius:14px;background:rgba(255,255,255,.14);display:grid;place-items:center;color:var(--brand-ink);--eye:var(--brand)}
 .glyph .gl{width:36px;height:36px}
 .gl .b{fill:currentColor}.gl .w{fill:currentColor;opacity:.62}.gl .k{fill:#F97316}.gl .c{fill:#EF4444}.gl .e{fill:var(--eye,#14532D)}.gl .s{fill:var(--eye,#14532D);opacity:.4}
@@ -268,10 +270,10 @@ body{background:var(--bg)}
 .brand h1{font:800 20px/1.1 var(--font-display)}
 .brand p{font-size:13px}
 .icon-btn{border-color:rgba(255,255,255,.35);width:46px;height:46px}
-.bird-switch{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;border-radius:16px;background:rgba(0,0,0,.24);margin-bottom:14px}
-.bird-switch button{min-height:48px;border:0;border-radius:12px;background:transparent;color:var(--brand-ink);--eye:var(--brand);font:700 16px var(--font-display);display:flex;align-items:center;justify-content:center;gap:8px}
+.bird-switch{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:3px;border-radius:14px;background:rgba(0,0,0,.24);margin-bottom:10px}
+.bird-switch button{min-height:38px;border:0;border-radius:11px;background:transparent;color:var(--brand-ink);--eye:var(--brand);font:700 16px var(--font-display);display:flex;align-items:center;justify-content:center;gap:8px}
 .bird-switch button[aria-pressed="true"]{background:var(--brand-ink);color:var(--brand);--eye:var(--brand-ink)}
-.bird-switch .gl{width:28px;height:28px}
+.bird-switch .gl{width:24px;height:24px}.bird-switch button{font-size:15px}
 main{padding-block:16px 112px}
 .card{border:0;border-radius:var(--r);box-shadow:var(--shadow);padding:18px}
 .card h2,.label-caps{letter-spacing:.07em}
@@ -312,6 +314,20 @@ main{padding-block:16px 112px}
 .autosave-note i{width:8px;height:8px;border-radius:50%;background:var(--good)}
 .savebar{display:none!important}
 /* refunds */
+.glance{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:14px;background:var(--accent-soft);color:var(--ink);font-size:14px}
+.glance:empty{display:none}.glance b{font-weight:700}.glance .up{color:var(--good);font-weight:700}.glance .dn{color:var(--bad);font-weight:700}
+.qchips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.qchips:empty{display:none}
+.qchip{min-height:34px;padding:0 12px;border-radius:999px;border:0;background:var(--accent-soft);color:var(--accent);font:700 13px var(--font-display)}
+#sync-foot{min-height:36px;font-size:13px}
+#local-note-wrap{display:flex;align-items:center;gap:8px}#local-note-wrap{margin-top:22px}#local-note-wrap .local-note{flex:1}#local-x{min-height:40px;font-size:14px}
+.bar.rev i{background:var(--accent)}
+#sl-metric .on,.metric.on{background:var(--accent)}
+.dlink{min-height:40px;padding:0 6px;font-size:13px;color:var(--muted);text-decoration:underline;background:none;border:0}
+.dlink[data-arm="1"]{color:var(--bad);font-weight:700}
+.more-costs{grid-column:1/-1;border-top:1px solid var(--line);padding-top:10px}
+.more-costs summary{min-height:44px;display:flex;align-items:center;font:700 15px var(--font-display);color:var(--accent);cursor:pointer}
+.more-costs .grid2{margin-top:6px}
+.btn.save-card{width:100%;margin-top:14px;background:var(--submit);color:var(--submit-ink);min-height:56px;font-size:17px}
 .amt-wrap{position:relative}.amt-wrap .inp{padding-right:50px}
 .amt-wrap .sign{position:absolute;right:5px;top:5px;bottom:5px;width:40px;border:0;border-radius:9px;background:var(--surface);color:var(--muted);font:800 20px var(--font-display);box-shadow:inset 0 0 0 1.5px var(--line)}
 .inp.neg{color:var(--good);font-weight:700}
@@ -375,7 +391,7 @@ svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
   <div class="inner">
     <div class="glyph-lg" data-glyph></div>
     <h1>What are you recording?</h1>
-    <p class="sub">Pick the birds first. Everything you enter next is saved under that bird, in its own tabs in your Google Sheet. You can switch any time from the top of the screen.</p>
+    <p class="sub">Each bird is saved separately. You can switch any time from the top of the screen.</p>
     <button class="pick-card" type="button" data-pick="quail"><span data-gl="quail"></span><span><b>Quail</b><span class="s" id="pk-quail">Eggs, costs, buyers and flock</span><span class="tag" id="pk-quail-tag" hidden>Last used</span></span></button>
     <button class="pick-card" type="button" data-pick="chicken"><span data-gl="chicken"></span><span><b>Chicken</b><span class="s" id="pk-chicken">Eggs, costs, buyers and flock</span><span class="tag" id="pk-chicken-tag" hidden>Last used</span></span></button>
   </div>
@@ -388,7 +404,7 @@ svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
         <div><h1 id="app-title">Poultry Tracker</h1><p id="sub">Eggs sold and costs, in Tk</p></div>
       </div>
       <button id="btn-settings" class="icon-btn" type="button" aria-label="Settings and backup">
-        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></svg>
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></svg><span class="sync-dot" id="sync-dot" data-s="local" title="Sync status"></span>
       </button>
     </div>
     <div class="bird-switch" role="group" aria-label="Bird type">
@@ -398,7 +414,6 @@ svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
   </div>
 </header>
 
-<div class="wrap" id="local-note-wrap" hidden><p class="local-note" id="local-note">Connecting…</p></div>
 
 <main class="wrap">
 
@@ -417,6 +432,7 @@ svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
       <div id="s-net-cell"><span class="k" id="s-net-label">Net</span><span class="v" id="s-net">Tk 0</span></div>
     </div>
 
+    <div class="glance" id="glance" aria-live="polite"></div>
     <div class="warn" id="low-alert" role="alert" hidden></div>
     <div class="warn" id="save-nudge" role="status" hidden></div>
     <div class="card" id="rem-today" hidden></div>
@@ -436,6 +452,7 @@ svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
         </div>
         <p class="sub" id="egg-balance"></p>
         <div class="bird-note"><span class="sub" id="bird-note"></span><button class="link" type="button" data-go="flock">Birds changed? Update the flock</button></div>
+        <button class="btn save-card" type="button" data-savecard="Egg count">Save egg count</button>
       </div>
 
       <div class="card">
@@ -444,6 +461,7 @@ svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
         <div class="grid2" id="cost-grid"></div>
         <label class="field other-desc"><span>What was the “Other” cost? (optional)</span><input id="f-othernote" class="inp" maxlength="80" autocomplete="off" placeholder="For example: cage repair"></label>
         <div class="total-row"><span>Total cost</span><b id="f-total">Tk 0</b></div>
+        <button class="btn save-card" type="button" data-savecard="Costs">Save costs</button>
       </div>
 
       <div class="card">
@@ -455,7 +473,7 @@ svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
 
     <div class="foot">
       <span id="save-status" role="status" data-kind="loading">Loading your records…</span>
-      <span class="btn-row"><button id="retry" class="btn ghost" type="button" hidden>Try again</button><button id="clear-day" class="btn clear" type="button">Clear this day</button></span>
+      <button id="sync-foot" class="link" type="button"></button><span class="btn-row"><button id="retry" class="btn ghost" type="button" hidden>Try again</button><button id="clear-day" class="link dlink" type="button">Clear this day</button></span>
     </div>
   </section>
 
@@ -513,7 +531,7 @@ svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
     <div id="fl-list" class="panel"></div>
 
     <div class="card"><div class="sec-head"><h2>Hatching batches</h2><button id="b-add" class="btn small" type="button">Add batch</button></div>
-      <p class="sub">Eggs set, expected hatch day (about 17 days for quail, 21 for chicken), how many hatched and how many chicks survived.</p></div>
+      <p class="sub">Eggs set, expected hatch day, hatched and survived.</p></div>
     <form id="b-form" class="card" hidden novalidate>
       <h2 id="b-form-title">Add a batch</h2>
       <div class="grid2">
@@ -553,7 +571,7 @@ svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
         <div><span class="label-caps">Buyers owe you</span><b id="sl-owed">Tk 0</b></div>
         <button id="sl-add" class="btn" type="button">Add sale</button>
       </div>
-      <p class="sub">Sales you add on Today appear here automatically, and the other way round. Edit or delete a sale in either place and both stay in step.</p>
+      <p class="sub">Sales from the Today page show up here too.</p>
     </div>
     <div id="sale-slot-buyers">
     <form id="sl-form" class="card" hidden novalidate>
@@ -567,6 +585,7 @@ svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
       </div>
       <div class="chips" role="group" aria-label="Add eggs"><button class="chip" type="button" data-sadd="4">+4 (1 hali)</button><button class="chip" type="button" data-sadd="12">+12</button><button class="chip" type="button" data-sadd="30">+30</button></div>
       <label class="field"><span>Total price (Tk)</span><input id="sl-amount" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"></label>
+      <label class="field"><span>Price per</span><select id="sl-unit" class="inp"><option value="dozen">Dozen (12 eggs)</option><option value="hali">Hali (4 eggs)</option><option value="egg">Single egg</option></select></label>
       <p class="sub" id="sl-hint"></p>
       <div class="chips kind-chips" id="sl-st" role="group" aria-label="Payment"><button class="chip" type="button" data-st="full" aria-pressed="true">Fully paid</button><button class="chip" type="button" data-st="part" aria-pressed="false">Part paid</button><button class="chip" type="button" data-st="none" aria-pressed="false">Not paid yet</button></div>
       <label class="field" id="sl-paid-wrap" hidden><span>Amount paid (Tk)</span><input id="sl-paid" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"></label>
@@ -587,11 +606,11 @@ svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
     <div class="card" data-sg="business">
       <h2>Business</h2>
       <label class="field"><span>Business name (optional)</span><input id="st-business" class="inp" maxlength="60" autocomplete="off"></label>
-      <label class="field"><span>I sell eggs by the</span><select id="st-unit" class="inp"><option value="dozen">Dozen (12 eggs)</option><option value="hali">Hali (4 eggs)</option></select></label>
+      <label class="field"><span>I sell eggs by the</span><select id="st-unit" class="inp"><option value="dozen">Dozen (12 eggs)</option><option value="hali">Hali (4 eggs)</option><option value="egg">Single egg</option></select></label>
       <label class="field"><span id="st-price-label">Price per dozen eggs (Tk)</span><input id="st-price" class="inp num-r" inputmode="decimal" autocomplete="off"></label>
       <p class="sub">New days start with this price. Days you already saved keep the price they were saved with.</p>
       <label class="field"><span>Low-laying alert: warn me below this laying rate (%)</span><input id="st-low" class="inp num-r" inputmode="numeric" autocomplete="off" placeholder="for example 60"></label>
-      <p class="sub">Laying rate is eggs collected divided by hens. A sudden drop can be an early sign of sickness or heat. Leave empty to turn the alert off.</p>
+      <p class="sub">Warns you when laying drops below this rate. Leave empty to turn it off.</p>
     </div>
     <div class="card" data-sg="look"><h2>Look</h2><div class="chips kind-chips" id="th-chips" role="group" aria-label="Theme"></div></div>
     <div class="card" data-sg="alerts" id="alert-card">
@@ -669,6 +688,7 @@ svg.chart .ln.l-rev,svg.chart .ln.l-cost,svg.chart .ln.l-net{fill:none}
     </div>
   </section>
 
+<div id="local-note-wrap" hidden><p class="local-note" id="local-note">Connecting…</p><button id="local-x" class="link" type="button" aria-label="Hide this message" hidden>Hide</button></div>
 </main>
 
 <nav class="tabs" aria-label="Sections">
@@ -760,20 +780,20 @@ function moneyBreakdown(days,setupItems,range){
     var items=[],v=0;
     Object.keys(days).sort().reverse().forEach(function(id){
       if(range!=='all'&&monthKey(id)!==range)return;
-      var a=num(days[id][c.key]);if(a>0){v+=a;items.push({kind:'day',date:id,amount:a,note:c.key==='other'?(days[id].otherNote||''):''});}
+      var a=num(days[id][c.key]);if(a!==0){v+=a;items.push({kind:'day',date:id,amount:a,note:c.key==='other'?(days[id].otherNote||''):''});}
     });
-    if(v>0){rows.push({key:c.key,label:c.label,v:v,items:items});total+=v;}
+    if(items.length){rows.push({key:c.key,label:c.label,v:v,items:items});total+=v;}
   });
   rows.sort(function(a,b){return b.v-a.v;});
   var sitems=[],sv=0;
   Object.keys(setupItems||{}).forEach(function(id){
     var r=setupItems[id],a=num(r.qty)*num(r.unitCost);
-    if(!(a>0))return;
+    if(a===0)return;
     if(range!=='all'&&!(r.date&&monthKey(r.date)===range))return;
     sv+=a;sitems.push({kind:'setup',id:id,date:r.date||'',amount:a,note:r.name||'Item',sub:num(r.qty)+' × '+num(r.unitCost)});
   });
   sitems.sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:0;});
-  if(sv>0){rows.push({key:'__setup',label:'Setup costs (one-time)',v:sv,items:sitems});total+=sv;}
+  if(sitems.length){rows.push({key:'__setup',label:'Setup costs (one-time)',v:sv,items:sitems});total+=sv;}
   rows.sort(function(a,b){return b.v-a.v;});
   return {rows:rows,total:total};
 }
@@ -853,9 +873,9 @@ function setupRows(items){
   return rows;
 }
 /* ---- v3 logic: sexes, price unit, buyers, alerts, feed, batches, reminders ---- */
-function unitOf(st){return(st&&st.priceUnit==='hali')?'hali':'dozen';}
-function toUnitPrice(perDozen,unit){return unit==='hali'?perDozen/3:perDozen;}
-function fromUnitPrice(p,unit){return unit==='hali'?p*3:p;}
+function unitOf(st){var u=st&&st.priceUnit;return(u==='hali'||u==='egg')?u:'dozen';}
+function toUnitPrice(perDozen,unit){return unit==='hali'?perDozen/3:unit==='egg'?perDozen/12:perDozen;}
+function fromUnitPrice(p,unit){return unit==='hali'?p*3:unit==='egg'?p*12:p;}
 function sexCounts(flock,date){
   var m=0,f=0,u=0;
   Object.keys(flock||{}).forEach(function(k){var e=flock[k];if(!e||!e.date||e.date>date)return;
@@ -983,10 +1003,10 @@ function applyReadOnly(){$('today-fields').disabled=state.readOnly||!state.ready
 /* ---------- status and toast ---------- */
 function setStatus(kind,msg){
   var el=$('save-status');el.dataset.kind=kind;
-  el.textContent=({loading:'Loading your records…',saving:'Submitting…',saved:'Submitted',idle:'Up to date',draft:'Not submitted yet. Tap Submit to save.',error:msg||'Could not submit.'})[kind];
+  el.textContent=({loading:'Loading your records…',saving:'Saving…',saved:'Saved at '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}),idle:'All changes saved',draft:'Saving…',error:msg||'Could not save.'})[kind];
   $('retry').hidden=kind!=='error'||state.readOnly;
   clearTimeout(idleTimer);
-  if(kind==='saved')idleTimer=setTimeout(function(){if(el.dataset.kind==='saved')setStatus('idle');},2500);
+  if(kind==='saved')idleTimer=setTimeout(function(){if(el.dataset.kind==='saved')setStatus('idle');},4000);
 }
 function toast(msg){
   var t=$('toast');t.textContent=msg;t.hidden=false;clearTimeout(toastTimer);
@@ -1001,6 +1021,24 @@ function alertText(date,live){
 }
 function S(){return summarize(state.days,state.setup,state.settings.price,state.flock,state.sales);}
 function dayAgg(date){return salesByDay(state.sales)[date]||{eggs:0,amount:0};}
+function dayNums(d){var days=mergedDays(state.days,state.sales),agg=salesByDay(state.sales);return dayCalc(days[d]||{},state.settings.price,agg[d]);}
+function diffTxt(n,unit){if(r2(n)===0)return 'same as yesterday';var up=n>0;return '<span class="'+(up?'up':'dn')+'">'+(up?'+':'−')+(unit==='Tk'?fmtTk(Math.abs(n)):fmtNum(Math.abs(n)))+'</span> vs yesterday';}
+function renderGlance(){
+  var el=$('glance');if(!el)return;
+  if(!state.ready){el.innerHTML='';return;}
+  var t=dayNums(curDate),y=dayNums(addDays(curDate,-1)),name=curDate===todayStr()?'Today':dayLabel(curDate);
+  if(!(t.eggs>0||t.cost!==0||y.eggs>0)){el.innerHTML='';return;}
+  el.innerHTML='<div>'+name+': <b>'+esc(fmtNum(t.eggs))+' eggs</b> sold ('+diffTxt(t.eggs-y.eggs,'')+')</div><div>Profit <b>'+esc(fmtNet(t.net))+'</b> ('+diffTxt(t.net-y.net,'Tk')+')</div>';
+}
+function qHist(key){
+  var cnt={},last={};Object.keys(state.days).sort().forEach(function(d,i){var v=num(state.days[d][key]);if(v>0){cnt[v]=(cnt[v]||0)+1;last[v]=i;}});
+  return Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a]||last[b]-last[a];}).slice(0,3);
+}
+function renderQuick(){
+  Array.prototype.forEach.call(document.querySelectorAll('[data-qc]'),function(el){
+    el.innerHTML=qHist(el.dataset.qc).map(function(v){return '<button type="button" class="qchip" data-qk="'+el.dataset.qc+'" data-qv="'+v+'">'+fmtNum(Number(v))+'</button>';}).join('');
+  });
+}
 function readForm(){
   var rec={},old=state.days[curDate]||{};
   if(old.eggs!==undefined){rec.eggs=old.eggs;if(old.price!==undefined)rec.price=old.price;}   /* earlier entries made before buyers existed are kept */
@@ -1014,7 +1052,7 @@ function readForm(){
 function formJson(){var r=readForm();return JSON.stringify(Object.keys(r).length?r:null);}
 function renderStrip(){
   var rec=readForm(),c=dayCalc(rec,state.settings.price,dayAgg(curDate)),cls=netClass(c.net);
-  $('s-earn').textContent=fmtTk(c.revenue);$('s-spent').textContent=fmtTk(c.cost);$('f-total').textContent=fmtTk(c.cost);
+  $('s-earn').textContent=fmtTk(c.revenue);$('s-spent').textContent=fmtTk(c.cost);$('f-total').textContent=fmtTk(c.cost);$('s-spent').classList.toggle('v-good',c.cost<0);$('f-total').classList.toggle('v-good',c.cost<0);
   $('s-net').textContent=fmtNet(c.net);
   $('s-net-label').textContent=cls==='good'?'Profit':cls==='bad'?'Loss':'Net';
   $('s-net-cell').className=cls==='zero'?'':cls;
@@ -1029,6 +1067,7 @@ function setFields(rec){
   CATS.forEach(function(c){var el=$('c-'+c.key);el.value=rec[c.key]!==undefined?String(rec[c.key]):'';el.classList.toggle('neg',num(rec[c.key])<0);});
   $('f-notes').value=rec.notes||'';
   $('f-othernote').value=rec.otherNote||'';
+  var mc=$('more-costs');if(mc){var any=false;CATS.forEach(function(c){if(['feed','medicine','other'].indexOf(c.key)<0&&num(rec[c.key])!==0)any=true;});if(any)mc.open=true;}
   $('f-collected').value=rec.collected!==undefined?String(rec.collected):'';
   $('f-cracked').value=rec.cracked!==undefined?String(rec.cracked):'';
 }
@@ -1233,7 +1272,7 @@ function renderSummary(){
     html+=top10Card();
     html+='<div class="card"><h2>Month by month</h2><div class="scroll"><table><thead><tr><th>Month</th><th>Eggs</th><th>Earned</th><th>Spent</th><th>Net</th></tr></thead><tbody>'+
       sum.monthKeys.slice().reverse().map(function(k){var m=sum.months[k],c=netClass(m.net);
-        return '<tr><td>'+esc(monthLabel(k))+'</td><td>'+esc(fmtNum(m.eggs))+'</td><td>'+esc(fmtTk(m.revenue))+'</td><td>'+esc(fmtTk(m.cost))+'</td><td class="'+(c==='good'?'v-good':c==='bad'?'v-bad':'')+'"><b>'+esc(fmtNet(m.net))+'</b></td></tr>';
+        return '<tr><td>'+esc(monthLabel(k))+'</td><td>'+esc(fmtNum(m.eggs))+'</td><td>'+esc(fmtTk(m.revenue))+'</td><td class="'+(m.cost<0?'v-good':'')+'">'+esc(fmtTk(m.cost))+'</td><td class="'+(c==='good'?'v-good':c==='bad'?'v-bad':'')+'"><b>'+esc(fmtNet(m.net))+'</b></td></tr>';
       }).join('')+'</tbody></table></div></div>';
   }
   host.innerHTML=html;
@@ -1247,18 +1286,18 @@ function moneyCard(sum){
   var mb=moneyBreakdown(state.days,state.setup,moneyRange);
   var opts='<option value="all">All time</option>'+months.map(function(m){return '<option value="'+m+'"'+(m===moneyRange?' selected':'')+'>'+esc(monthLabel(m))+'</option>';}).join('');
   var h='<div class="card"><div class="moneyhead"><h2>Where the money goes</h2><select id="mo-range" class="inp" style="max-width:150px;min-height:40px" aria-label="Period">'+opts+'</select></div>';
-  if(!mb.rows.length||!(mb.total>0))return h+'<p class="sub">Nothing spent in this period.</p></div>';
+  if(!mb.rows.length)return h+'<p class="sub">Nothing spent in this period.</p></div>';
   h+='<ul class="cb">'+mb.rows.map(function(r){
-    var pct=Math.round(r.v/mb.total*100),open=!!openMoney[r.key];
+    var pct=mb.total?Math.round(r.v/mb.total*100):0,open=!!openMoney[r.key];
     var det='';
     if(open){
-      det='<div class="det"><div class="det-h"><span>'+r.items.length+(r.items.length===1?' entry':' entries')+'</span><span>'+esc(fmtTk(r.v))+'</span></div><div class="det-list">'+r.items.map(function(it){
-        if(it.kind==='setup')return '<button class="det-row" type="button" data-ds="'+esc(it.id)+'"><span class="d-main"><span>'+esc(it.note)+'</span><span class="sub">'+esc(it.sub)+(it.date?' · '+esc(dayLabel(it.date)):' · no date')+'</span></span><b>'+esc(fmtTk(it.amount))+'</b></button>';
-        return '<button class="det-row" type="button" data-dd="'+it.date+'"><span class="d-main"><span>'+esc(dayLabel(it.date))+'</span>'+(it.note?'<span class="sub">'+esc(it.note)+'</span>':'')+'</span><b>'+esc(fmtTk(it.amount))+'</b></button>';
+      det='<div class="det"><div class="det-h"><span>'+r.items.length+(r.items.length===1?' entry':' entries')+'</span><span class="'+(r.v<0?'v-good':'')+'">'+esc(fmtTk(r.v))+'</span></div><div class="det-list">'+r.items.map(function(it){
+        if(it.kind==='setup')return '<button class="det-row" type="button" data-ds="'+esc(it.id)+'"><span class="d-main"><span>'+esc(it.note)+'</span><span class="sub">'+esc(it.sub)+(it.date?' · '+esc(dayLabel(it.date)):' · no date')+'</span></span><b class="'+(it.amount<0?'v-good':'')+'">'+esc(fmtTk(it.amount))+'</b></button>';
+        return '<button class="det-row" type="button" data-dd="'+it.date+'"><span class="d-main"><span>'+esc(dayLabel(it.date))+'</span>'+(it.note?'<span class="sub">'+esc(it.note)+'</span>':'')+'</span><b class="'+(it.amount<0?'v-good':'')+'">'+esc(fmtTk(it.amount))+'</b></button>';
       }).join('')+'</div></div>';
     }
-    return '<li><button class="mrow" type="button" data-mrow="'+esc(r.key)+'" aria-expanded="'+open+'"><div class="cb-top"><span class="lab"><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'+esc(r.label)+'</span><b>'+esc(fmtTk(r.v))+'</b><span class="pct">'+pct+'%</span></div><div class="bar"><i style="width:'+Math.max(2,pct)+'%"></i></div></button>'+det+'</li>';
-  }).join('')+'</ul><p class="sub">Tap a row to see the dates and amounts. Percentages are of everything spent, running costs plus one-time setup.</p></div>';
+    return '<li><button class="mrow" type="button" data-mrow="'+esc(r.key)+'" aria-expanded="'+open+'"><div class="cb-top"><span class="lab"><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'+esc(r.label)+'</span><b class="'+(r.v<0?'v-good':'')+'">'+esc(fmtTk(r.v))+'</b><span class="pct '+(r.v<0?'v-good':'')+'">'+pct+'%</span></div><div class="bar"><i style="width:'+Math.max(2,pct)+'%"></i></div></button>'+det+'</li>';
+  }).join('')+'</ul><p class="sub">Tap a row for the dates. Shares are of all spending, including setup.</p></div>';
   return h;
 }
 function kv(k,v){return '<div class="kv"><dt>'+esc(k)+'</dt><dd>'+esc(v)+'</dd></div>';}
@@ -1594,7 +1633,8 @@ function slBalance(){
 function slUpdateAuto(){
   var e=parseField($('sl-eggs').value),unit=unitOf(state.settings);
   if(!slAmtTouched&&e!==null)$('sl-amount').value=String(r2(Math.floor(e)*state.settings.price/12));
-  $('sl-hint').textContent=e!==null?('Price filled in at your usual '+fmtTk(r2(toUnitPrice(state.settings.price,unit)))+' per '+unit+'. Change it if this sale was different.'):'';
+  $('sl-hint').textContent=e!==null?('Price filled in at your usual '+fmtTk(r2(toUnitPrice(state.settings.price,unit)))+' per '+({dozen:'dozen',hali:'hali (4 eggs)',egg:'egg'})[unit]+(unit==='egg'?'':' ('+fmtTk(r2(state.settings.price/12))+' per egg)')+'. Change it if this sale was different.'):'';
+  if($('sl-unit'))$('sl-unit').value=unit;
   slBalance();
 }
 function renderRecent(){
@@ -1702,7 +1742,7 @@ function pushRemState(){   /* tell the service worker, so it can nudge you even 
 function nowHM(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
 function notify(title,body){
   try{if(!('Notification' in window)||Notification.permission!=='granted')return false;
-    if(navigator.serviceWorker&&navigator.serviceWorker.ready)navigator.serviceWorker.ready.then(function(r){r.showNotification(title,{body:body,icon:'icon-192.png',tag:'qet-daily'});});else new Notification(title,{body:body});return true;}catch(e){return false;}
+    if(navigator.serviceWorker&&navigator.serviceWorker.ready)navigator.serviceWorker.ready.then(function(r){r.showNotification(title,{body:body,icon:'icon-v4-192.png',tag:'qet-daily'});});else new Notification(title,{body:body});return true;}catch(e){return false;}
 }
 function renderDue(){
   var r=remGet(),card=$('due-card'),list=overdueBuyers(state.sales,todayStr(),r.days);
@@ -1848,13 +1888,13 @@ function renderSettings(){
 function persistSettings(next,msg){
   state.settings=next;
   var w=db?enqueue('settings/main',function(){return db.doc('settings/main').set(next);}):localWrite(function(){});
-  return w.then(function(){toast(msg||'Settings saved');updateSub();renderSettings();if(!dirty)populateForm();else renderStrip();},function(e){toast(errMsg(e));});
+  return w.then(function(){toast(msg||'Settings saved');updateSub();renderSettings();if(!dirty)populateForm();else renderStrip();try{slUpdateAuto();}catch(e){}},function(e){toast(errMsg(e));});
 }
 function saveSettings(ev){
   var unit=unitOf(state.settings),p=parseField($('st-price').value),next=Object.assign({},state.settings);
   var kind=ev&&ev.target&&ev.target.id;
   next.business=$('st-business').value.trim();
-  if(kind==='st-unit'){next.priceUnit=$('st-unit').value==='hali'?'hali':'dozen';}
+  if(kind==='st-unit'){next.priceUnit=({hali:'hali',egg:'egg'})[$('st-unit').value]||'dozen';}
   else{
     if(p===null){renderSettings();toast('Enter a price in Tk');return;}
     var shown=String(r2(toUnitPrice(state.settings.price,unit)));
@@ -1873,6 +1913,7 @@ function exportFile(kind){
 /* ---------- tabs ---------- */
 var SUBS={today:'Eggs sold and costs, in Tk',history:'Every saved day',summary:'Profit, costs and payback',flock:'Birds, hatching and reminders',sales:'Buyers and unpaid orders',setup:'One-time costs',settings:'Settings and backup'};
 function updateSub(){var b=state.settings.business;$('sub').textContent=(b?b+' · ':'')+SUBS[tab];}
+var _rs0=renderStrip;renderStrip=function(){_rs0();renderGlance();renderQuick();};
 function renderCurrent(){
   if(tab==='today')renderStrip();else if(tab==='history')renderHistory();else if(tab==='summary')renderSummary();
   else if(tab==='flock')renderFlock();else if(tab==='sales')renderSales();else if(tab==='settings'){renderSettings();renderSetup();renderAlertCard();}
@@ -2029,7 +2070,10 @@ function updateBanner(){
   else if(i.authBad)msg='The passcode was not accepted. Open Settings, then Change connection.';
   else if(i.pending&&(navigator.onLine===false||i.error))msg='Saved on this phone. '+i.pending+(i.pending>1?' changes wait':' change waits')+' to upload. '+(navigator.onLine===false?'You are offline.':i.error);
   else if(i.error&&!i.last)msg='Could not reach your Google Sheet. '+i.error;
-  $('local-note').textContent=msg;w.hidden=!msg;
+  var isLocal=state.mode==='local',dis=false;try{dis=isLocal&&localStorage.getItem('qet-local-hide')==='1';}catch(e){}
+  $('local-note').textContent=msg;w.hidden=!msg||dis;$('local-x').hidden=!isLocal;
+  var sf=$('sync-foot');if(sf){var st0=isLocal?'local':(i.authBad||(i.error&&!i.last))?'err':(i.pending||i.error)?'wait':'ok';sf.textContent=({local:'Saved on this phone only',ok:'✓ Uploaded to Google Sheet',wait:(i.pending||'Some')+' change'+(i.pending===1?'':'s')+' waiting to upload',err:'Cannot reach Google Sheet'})[st0];}
+  var dot=$('sync-dot');if(dot){var st=isLocal?'local':(i.authBad||(i.error&&!i.last))?'err':(i.pending||i.error)?'wait':'ok';dot.dataset.s=st;dot.title=({local:'Saved on this phone only',ok:'Everything is uploaded',wait:'Changes waiting to upload',err:'Cannot reach your Google Sheet'})[st];}
 }
 function renderSync(){
   var card=$('backup-card'),i=syncInfo;card.hidden=false;
@@ -2091,6 +2135,9 @@ function wireConnect(){
     if(!db){state.mode='local';loadLocal();markAllGot();checkReady();updateBanner();renderCurrent();}
   });
   $('sync-now').addEventListener('click',function(){if(db){db.sync();toast('Syncing…');}});
+  $('local-x').addEventListener('click',function(){try{localStorage.setItem('qet-local-hide','1');}catch(e){}$('local-note-wrap').hidden=true;});
+  $('sync-foot').addEventListener('click',function(){sgroup='sync';showTab('settings');});
+  $('sync-dot').addEventListener('click',function(){sgroup='sync';});
   $('conn-change').addEventListener('click',function(){showConnect(null,true);});
 }
 function startStore(){
@@ -2160,9 +2207,9 @@ function setBird(b){
 /* ---------- wiring ---------- */
 function init(){
   paintGlyphs();applyTheme(currentTheme());wireLock();wirePin();lockNow();wireAlerts();
-  $('cost-grid').innerHTML=CATS.map(function(c){
-    return '<label class="field"><span>'+esc(c.label)+'</span><span class="amt-wrap"><input id="c-'+c.key+'" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"><button type="button" class="sign" data-sign="c-'+c.key+'" aria-label="Switch between expense and refund">±</button></span></label>';
-  }).join('');
+  function costField(c){return '<label class="field"><span>'+esc(c.label)+'</span><span class="amt-wrap"><input id="c-'+c.key+'" class="inp num-r" inputmode="decimal" autocomplete="off" placeholder="0"><button type="button" class="sign" data-sign="c-'+c.key+'" aria-label="Switch between expense and refund">±</button></span><span class="qchips" data-qc="'+c.key+'"></span></label>';}
+  var MAINC=['feed','medicine','other'],mainC=CATS.filter(function(c){return MAINC.indexOf(c.key)>=0;}),restC=CATS.filter(function(c){return MAINC.indexOf(c.key)<0;});
+  $('cost-grid').innerHTML=mainC.map(costField).join('')+'<details class="more-costs" id="more-costs"><summary>More costs: transport, electricity, labor, packaging</summary><div class="grid2">'+restC.map(costField).join('')+'</div></details>';
   $('s-cat').innerHTML=SETUP_CATS.map(function(c){return '<option>'+esc(c)+'</option>';}).join('');
   $('s-sugg').innerHTML=SUGGEST.map(function(s){return '<option value="'+esc(s[0])+'"></option>';}).join('');
 
@@ -2211,6 +2258,8 @@ function init(){
   document.addEventListener('click',function(e){
     var pk=e.target.closest&&e.target.closest('[data-pick]');if(pk){setBird(pk.dataset.pick);return;}
     var bs=e.target.closest&&e.target.closest('[data-bird-set]');if(bs){setBird(bs.dataset.birdSet);return;}
+    var svc=e.target.closest&&e.target.closest('[data-savecard]');if(svc){if(!state.ready||state.readOnly)return;var lab=svc.dataset.savecard;dirty=true;flushSave().then(function(){return (db&&db.sync)?db.sync():null;}).then(function(){toast(dirty?'Could not save. Try again.':lab+' saved');});return;}
+    var qc=e.target.closest&&e.target.closest('.qchip');if(qc){var qi=$('c-'+qc.dataset.qk);qi.value=qc.dataset.qv;qi.dispatchEvent(new Event('input',{bubbles:true}));return;}
     var sgn=e.target.closest&&e.target.closest('[data-sign]');if(sgn){var inp0=$(sgn.dataset.sign);var v0=inp0.value;inp0.value=v0.charAt(0)==='-'?v0.slice(1):'-'+(v0||'');inp0.dispatchEvent(new Event('input',{bubbles:true}));inp0.focus();return;}
     var go=e.target.closest&&e.target.closest('[data-go]');if(go){showTab(go.dataset.go);return;}
     var day=e.target.closest&&e.target.closest('.day');
@@ -2264,6 +2313,7 @@ function init(){
   $('st-price').addEventListener('input',function(){sanitize(this,true);});
   $('st-price').addEventListener('change',saveSettings);
   $('st-unit').addEventListener('change',saveSettings);
+  $('sl-unit').addEventListener('change',function(){var v=this.value;if(!state.ready||state.readOnly)return;persistSettings(Object.assign({},state.settings,{priceUnit:v}),'Price shown per '+({dozen:'dozen',hali:'hali',egg:'egg'})[v]);});
   $('st-low').addEventListener('input',function(){sanitize(this,false);});
   $('st-low').addEventListener('change',saveSettings);
 
