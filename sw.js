@@ -1,10 +1,11 @@
 /* Offline support: the app opens without internet. Records are saved by the page itself. */
-var VERSION = 'qet-v23';
+var VERSION = 'qet-v28';
 var SHELL = ['./', './index.html', './manifest.webmanifest', './icon-v4-192.png', './icon-v4-512.png', './icon-v4-maskable-512.png'];
 
 self.addEventListener('install', function (e) {
-  e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(SHELL); }).then(function () { return self.skipWaiting(); }));
+  e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(SHELL); }));
 });
+self.addEventListener('message', function (e) { if (e.data === 'skipWaiting') self.skipWaiting(); });
 self.addEventListener('activate', function (e) {
   e.waitUntil(caches.keys().then(function (keys) {
     return Promise.all(keys.filter(function (k) { return k !== VERSION && k !== 'qet-state'; }).map(function (k) { return caches.delete(k); }));
