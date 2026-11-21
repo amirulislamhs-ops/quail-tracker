@@ -413,6 +413,31 @@ html[lang="bn"] body{line-height:1.6}
 .tiles3 .k{display:block;font:700 10.5px var(--font-display);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .tiles3 b{display:block;margin:4px 0 2px;font:800 clamp(14px,4.4vw,18px)/1.15 var(--font-display)}
 .tiles3 small{font:700 12px var(--font-display);min-height:16px;display:block}
+
+/* ---- phone fit fixes ---- */
+.kv{align-items:baseline}
+.kv dt{flex:1 1 auto}
+.kv dd{white-space:normal;flex:0 1 auto;max-width:58%;overflow-wrap:anywhere}
+#sales-card .card{border:0;padding:0;background:transparent;box-shadow:none}
+#sales-card #sl-form-title{display:none}
+.card>*{min-width:0}
+.strip>div{padding:12px 8px;min-width:0}
+.strip .k{font-size:10.5px;letter-spacing:.04em;overflow-wrap:anywhere}
+.strip .v{font-size:clamp(15px,4.8vw,20px);overflow-wrap:anywhere}
+.tiles4{gap:6px}
+.tiles4>div{padding:10px 2px}
+.tiles4 .k{text-transform:none;letter-spacing:0;font-size:11px;font-weight:600}
+.tiles3 .k{text-transform:none;letter-spacing:0;font-size:11.5px}
+table.mm{min-width:0;width:100%;font-size:13px}
+table.mm th,table.mm td{padding:9px 3px;white-space:nowrap}
+table.mm th{font-size:10px;letter-spacing:.03em}
+.more-btn{width:100%;min-height:44px;border:1px solid var(--line);border-radius:12px;background:transparent;font:700 14px var(--font-display);color:var(--muted)}
+.rp-prev{border:1px solid var(--line);border-radius:12px;padding:0 14px}
+.rp-prev summary{min-height:44px;display:flex;align-items:center;font:700 14px var(--font-display);cursor:pointer}
+.rp-prev[open]{padding-bottom:14px}
+
+#sl-form .grid2{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
+#sl-date{font-size:15px;padding-left:10px;padding-right:6px}
 </style></head><body>
 
 <section id="lock" hidden>
@@ -1191,7 +1216,7 @@ function trendHtml(cur,prev,upGood){
   cur=r2(cur);prev=r2(prev);var d=r2(cur-prev);
   if(cur===0&&prev===0)return '';
   if(d===0)return '<span class="tr-flat">● same</span>';
-  var up=d>0,good=(up===upGood),pct=prev!==0?Math.round(Math.abs(d)/Math.abs(prev)*100)+'%':fmtTk(Math.abs(d));
+  var up=d>0,good=(up===upGood),pct=prev>0?Math.round(Math.abs(d)/prev*100)+'%':fmtTk(Math.abs(d));
   return '<span class="'+(good?'tr-good':'tr-bad')+'">'+(up?'▲':'▼')+' '+esc(pct)+'</span>';
 }
 function renderStrip(){
@@ -1393,6 +1418,7 @@ function top10Card(){
   return '<div class="card"><h2>Top '+bs.length+' buyers</h2><ul class="cb">'+bs.map(function(b){var w=Math.max(2,Math.round(b.amount/top*100));
     return '<li><div class="cb-top"><span class="lab"><b>'+esc(b.name)+'</b></span><b>'+esc(fmtTk(b.amount))+'</b></div><div class="bar rev"><i style="width:'+w+'%"></i></div><span class="sub">'+esc(fmtNum(b.eggs))+' eggs · '+b.orders+(b.orders===1?' order':' orders')+'</span></li>';}).join('')+'</ul></div>';
 }
+var mmOpen=false;
 function renderSummary(){
   var host=$('sum-body');
   if(!state.ready){host.innerHTML='<p class="sub">Loading your records…</p>';return;}
@@ -1404,27 +1430,26 @@ function renderSummary(){
     '</b><span class="sub">Operating profit '+esc(fmtNet(sum.profit))+' minus setup cost '+esc(fmtTk(sum.setup))+'</span></div>';
   var mk0=monthKey(todayStr()),mc=sum.months[mk0],mp=sum.months[shiftMonth(mk0,-1)]||{revenue:0,cost:0,net:0};
   if(mc||mp.revenue||mp.cost)html+='<div class="card"><h2>This month, compared with last month</h2><div class="tiles3">'+[['Earned',(mc||{}).revenue||0,mp.revenue,true],['Spent',(mc||{}).cost||0,mp.cost,false],['Net',(mc||{}).net||0,mp.net,true]].map(function(x){return '<div><span class="k">'+x[0]+'</span><b>'+esc(x[0]==='Net'?fmtNet(x[1]):fmtTk(x[1]))+'</b><small>'+trendHtml(x[1],x[2],x[3])+'</small></div>';}).join('')+'</div><p class="sub">Arrows compare with the whole of last month. Green is good news, red needs attention.</p></div>';
-  html+='<div class="card"><h2>Totals</h2><dl>'+
-    kv('Eggs sold',fmtNum(sum.eggs)+' ('+fmtDoz(sum.eggs)+' dozen · '+fmtHali(sum.eggs)+' hali)')+(sum.collected>0?kv('Eggs collected',fmtNum(sum.collected)):'')+(sum.cracked>0?kv('Cracked or broken',fmtNum(sum.cracked)+' ('+r2(sum.cracked/(sum.eggs+sum.cracked)*100)+'% of sold + cracked)'):'')+(sum.layRate!==null?kv('Average laying rate',Math.round(sum.layRate)+'%'):'')+(Object.keys(state.flock).length?kv('Birds now',fmtNum(birdsOn(state.flock,todayStr()))):'')+kv('Days saved',fmtNum(sum.days))+(owedTotal(state.sales)>0?kv('Unpaid by buyers',fmtTk(owedTotal(state.sales))):'')+kv('Egg revenue',fmtTk(sum.revenue))+kv('Running costs',fmtTk(sum.cost))+
-    (sum.birdRevenue>0?kv('Revenue from birds sold',fmtTk(sum.birdRevenue)):'')+kv('Average price per dozen',fmtTk(sum.avgPriceDozen))+kv('Running cost per dozen',fmtTk(sum.costPerDozen))+costKvs(sum)+kv('Setup cost earned back by',payback)+'</dl></div>';
+  html+='<div class="card"><h2>Money totals</h2><dl>'+kv('Days saved',fmtNum(sum.days))+kv('Egg revenue',fmtTk(sum.revenue-sum.birdRevenue))+(sum.birdRevenue>0?kv('Revenue from birds sold',fmtTk(sum.birdRevenue)):'')+kv('Running costs',fmtTk(sum.cost))+(owedTotal(state.sales)>0?kv('Unpaid by buyers',fmtTk(owedTotal(state.sales))):'')+kv('Average price per dozen',fmtTk(sum.avgPriceDozen))+kv('Running cost per dozen',fmtTk(sum.costPerDozen))+costKvs(sum)+kv('Setup cost earned back by',payback)+'</dl></div>';
   if(sum.activeDays){
     html+='<div class="card"><h2>Business at a glance</h2><dl>'+(sum.margin!==null?kv('Profit margin',r2(sum.margin)+'% of sales'):'')+kv('Average eggs sold per selling day',fmtNum(sum.eggs/sum.activeDays))+kv('Average profit per selling day',fmtNet(sum.profit/sum.activeDays))+
       (sum.best.id?kv('Best sales day',shortDay(sum.best.id)+' · '+fmtTk(sum.best.rev)):'')+(sum.revenue>0?kv('Cash received',fmtTk(sum.received)+' ('+Math.round(sum.received/sum.revenue*100)+'% of sales)'):'')+
       (sum.buyers?kv('Buyers',sum.buyers+(sum.repeatBuyers?' ('+sum.repeatBuyers+' bought more than once)':'')):'')+'</dl></div>';
   }
   var es=eggStock(todayStr());
-  if(es.collected>0||es.cracked>0)html+='<div class="card"><h2>Egg stock</h2><dl>'+kv('Eggs collected',fmtNum(es.collected))+kv('Eggs sold',fmtNum(es.sold))+kv('Cracked or broken',fmtNum(es.cracked))+kv('Eggs left in stock',fmtNum(es.left)+' ('+fmtDoz(es.left)+' dozen)')+'</dl></div>';
+  if(es.collected>0||es.cracked>0||sum.eggs>0)html+='<div class="card"><h2>Eggs and birds</h2><dl>'+(es.collected>0?kv('Eggs collected',fmtNum(es.collected)):'')+kv('Eggs sold',fmtNum(es.sold)+' ('+fmtDoz(es.sold)+' dozen)')+(es.cracked>0?kv('Cracked or broken',fmtNum(es.cracked)+(es.collected>0?' ('+r2(es.cracked/es.collected*100)+'% of collected)':'')):'')+(es.collected>0?kv('Eggs left in stock',fmtNum(es.left)+' ('+fmtDoz(es.left)+' dozen)'):'')+(sum.layRate!==null?kv('Average laying rate',Math.round(sum.layRate)+'%'):'')+(Object.keys(state.flock).length?kv('Birds now',fmtNum(birdsOn(state.flock,todayStr()))):'')+'</dl></div>';
   html=html+moneyCard(sum);
-  html+=reportCard();
   if(sum.days){
-    html+='<div class="card"><h2>Revenue and costs by month</h2>'+chartSvg(sum)+'<div class="legend"><span><i style="background:var(--c-rev)"></i>Egg revenue</span><span><i style="background:var(--c-cost)"></i>Running costs</span></div></div>';
+    html+='<div class="card"><h2>Revenue and costs by month</h2>'+chartSvg(sum)+'<div class="legend"><span><i style="background:var(--c-rev)"></i>Revenue (eggs + birds)</span><span><i style="background:var(--c-cost)"></i>Running costs</span></div></div>';
     html+=dailyLineCard(sum);
     html+=top10Card();
-    html+='<div class="card"><h2>Month by month</h2><div class="scroll"><table><thead><tr><th>Month</th><th>Eggs</th><th>Earned</th><th>Spent</th><th>Net</th></tr></thead><tbody>'+
-      sum.monthKeys.slice().reverse().map(function(k){var m=sum.months[k],c=netClass(m.net);
-        return '<tr><td>'+esc(monthLabel(k))+'</td><td>'+esc(fmtNum(m.eggs))+'</td><td>'+esc(fmtTk(m.revenue))+'</td><td class="'+(m.cost<0?'v-good':'')+'">'+esc(fmtTk(m.cost))+'</td><td class="'+(c==='good'?'v-good':c==='bad'?'v-bad':'')+'"><b>'+esc(fmtNet(m.net))+'</b></td></tr>';
-      }).join('')+'</tbody></table></div></div>';
+    var mks=sum.monthKeys.slice().reverse();
+    html+='<div class="card"><h2>Month by month</h2><table class="mm"><thead><tr><th>Month</th><th>Eggs</th><th>Earned</th><th>Spent</th><th>Net</th></tr></thead><tbody>'+
+      mks.map(function(k,i){var m=sum.months[k],c=netClass(m.net);
+        return '<tr'+(i>=3&&!mmOpen?' hidden':'')+'><td>'+esc(monthLabel(k))+'</td><td>'+esc(fmtNum(m.eggs))+'</td><td>'+esc(fmtTk(m.revenue))+'</td><td class="'+(m.cost<0?'v-good':'')+'">'+esc(fmtTk(m.cost))+'</td><td class="'+(c==='good'?'v-good':c==='bad'?'v-bad':'')+'"><b>'+esc(fmtNet(m.net))+'</b></td></tr>';
+      }).join('')+'</tbody></table>'+(mks.length>3?'<button type="button" class="more-btn" id="mm-toggle" aria-expanded="'+mmOpen+'">'+(mmOpen?'Show fewer months ▲':'Show '+(mks.length-3)+' older months ▼')+'</button>':'')+'</div>';
   }
+  html+=reportCard();
   host.innerHTML=html;
 }
 var moneyRange='all',openMoney={};
@@ -2556,15 +2581,18 @@ function reportBody(mk){
 function reportCard(){
   var ms=reportMonths();if(!ms.length)return '';
   if(ms.indexOf(reportMonth)<0)reportMonth=ms[0];
-  return '<div class="card" id="rp-card"><div class="moneyhead"><h2>Monthly report</h2><select id="rp-month" class="inp" style="max-width:150px;min-height:40px" aria-label="Month">'+ms.map(function(k){return '<option value="'+k+'"'+(k===reportMonth?' selected':'')+'>'+esc(monthLabel(k))+'</option>';}).join('')+'</select></div><div id="rp-view">'+reportBody(reportMonth)+'</div><button id="rp-print" class="btn" type="button">Save or print report (PDF)</button><p class="sub">Choose a month, then save as PDF to share or keep.</p></div>';
+  return '<div class="card" id="rp-card"><div class="moneyhead"><h2>Monthly report</h2><select id="rp-month" class="inp" style="max-width:150px;min-height:40px" aria-label="Month">'+ms.map(function(k){return '<option value="'+k+'"'+(k===reportMonth?' selected':'')+'>'+esc(monthLabel(k))+'</option>';}).join('')+'</select></div><details class="rp-prev"><summary>Preview report</summary><div id="rp-view">'+reportBody(reportMonth)+'</div></details><button id="rp-print" class="btn" type="button">Save or print report (PDF)</button><p class="sub">Choose a month, then save as PDF to share or keep.</p></div>';
 }
 function setupReport(){
   document.addEventListener('change',function(e){if(e.target&&e.target.id==='rp-month'){reportMonth=e.target.value;$('rp-view').innerHTML=reportBody(reportMonth);}});
-  document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#rp-print');if(!b)return;
+  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('#mm-toggle');if(t){mmOpen=!mmOpen;renderSummary();return;}
+    var b=e.target.closest&&e.target.closest('#rp-print');if(!b)return;
     $('print-area').innerHTML=reportBody(reportMonth);trAll();try{window.print();}catch(x){}});
 }
 /* ---------- Language: English / Bangla ---------- */
-var BN={
+var BN={'Revenue (eggs + birds)':'আয় (ডিম + পাখি)',
+'of collected':'সংগ্রহের',
+'Money totals':'টাকার মোট হিসাব','Eggs and birds':'ডিম ও পাখি','Preview report':'রিপোর্ট দেখুন','Show fewer months ▲':'কম মাস দেখান ▲','older months ▼':'আগের মাস ▼','Show':'দেখান',
 'This month, compared with last month':'এই মাস, গত মাসের তুলনায়','Arrows compare with the whole of last month. Green is good news, red needs attention.':'তীর চিহ্ন গোটা গত মাসের সাথে তুলনা করে। সবুজ ভালো খবর, লাল মনোযোগ দরকার।','● same':'● একই',
 'Egg count saved':'ডিমের গণনা সেভ হয়েছে','Costs saved':'খরচ সেভ হয়েছে','Sale saved.':'বিক্রি সেভ হয়েছে','Cleared':'মুছে ফেলা হয়েছে',
 'Today':'আজ','Buyers':'ক্রেতা','Birds':'পাখি','History':'ইতিহাস','Summary':'সারসংক্ষেপ','Settings':'সেটিংস','Sections':'বিভাগ',
